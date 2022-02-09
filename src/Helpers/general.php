@@ -185,5 +185,5 @@ function getDistanceBetweenTwoPoints($latitudeFrom, $longitudeFrom, $latitudeTo,
 
 function adminroViewsPath()
 {
-  return __DIR__ . '/../../resources/views';
+  return __DIR__ . '/../resources/views';
 }
