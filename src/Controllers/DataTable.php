@@ -2,7 +2,7 @@
 
 namespace Adminro\Controllers;
 
-use Adminro\Config\SelectOptions;
+use Adminro\Constants\SelectOptions;
 
 class DataTable
 {
