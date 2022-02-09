@@ -2,7 +2,7 @@
 
 @section('head')
     @isset($dataTable)
-        <link href='{{ URL::asset('vendor/adminro/plugins/datatables/datatables.bundle.css') }}' rel='stylesheet' type='text/css' />
+        <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/datatables.bundle.css' rel='stylesheet' type='text/css' />
     @endisset
 @endsection
 
@@ -30,8 +30,8 @@
         <script>
             const dataTable = @json($dataTable);
         </script>
-        <script src='{{ URL::asset('vendor/adminro/plugins/datatables/datatables.bundle.js') }}'></script>
-        <script src='{{ URL::asset('vendor/adminro/plugins/datatables/buttons.server-side.js') }}'></script>
+        <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/datatables.bundle.js'></script>
+        <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/buttons.server-side.js'></script>
         <script src='{{ URL::asset('vendor/adminro/js/utils/datatables-forms.js') }}'></script>
     @endisset
 

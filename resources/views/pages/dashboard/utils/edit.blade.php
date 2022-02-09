@@ -1,10 +1,10 @@
 @extends('adminro::layouts.admin')
 
 @section('head')
-    <link rel='stylesheet' href='{{ URL::asset('vendor/adminro/plugins/multiselect/css/multi-select.css') }}' type='text/css' />
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/multiselect/css/multi-select.css' type='text/css' />
 
     @isset($dataTable)
-        <link href='{{ URL::asset('vendor/adminro/plugins/datatables/datatables.bundle.css') }}' rel='stylesheet' type='text/css' />
+        <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/datatables.bundle.css' rel='stylesheet' type='text/css' />
     @endisset
 @endsection
 
@@ -39,8 +39,8 @@
         const item = @json($controllerSettings->model()->model());
     </script>
 
-    <script src='{{ URL::asset('vendor/adminro/plugins/multiselect/js/jquery.multi-select.js') }}'></script>
-    <script src='{{ URL::asset('vendor/adminro/plugins/multiselect/js/jquery.quicksaerch.js') }}'></script>
+    <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/multiselect/js/jquery.multi-select.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/multiselect/js/jquery.quicksaerch.js'></script>
 
     <script src='{{ URL::asset('vendor/adminro/js/utils/modals.js') }}'></script>
     <script src='{{ URL::asset('vendor/adminro/js/utils/form-utils.js') }}'></script>
@@ -51,9 +51,9 @@
         <script>
             const dataTable = @json($dataTable);
         </script>
-        <script src='{{ URL::asset('vendor/adminro/plugins/custom/datatables/datatables.bundle.js') }}'></script>
-        <script src='{{ URL::asset('vendor/adminro/js/pages/utils/datatables-forms.js') }}'></script>
-        <script src='{{ URL::asset('vendor/datatables/buttons.server-side.js') }}'></script>
+        <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/datatables.bundle.js'></script>
+        <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/buttons.server-side.js'></script>
+        <script src='{{ URL::asset('vendor/adminro/js/utils/datatables-forms.js') }}'></script>
     @endisset
 
     @foreach ($controllerSettings->info()->scriptFiles() as $script_file)

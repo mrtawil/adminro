@@ -9,10 +9,11 @@
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
 
     <link href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700' rel='stylesheet' />
-    <link href='{{ URL::asset('vendor/adminro/plugins/plugins.bundle.css') }}' rel='stylesheet' type='text/css' />
-    <link href='{{ URL::asset('vendor/adminro/css/style.bundle.css') }}' rel='stylesheet' type='text/css' />
-    <link href='{{ URL::asset('vendor/adminro/css/theme.css') }}' rel='stylesheet' type='text/css' />
-    <link href='{{ URL::asset('favicon.ico') }}' rel='shortcut icon'>
+    <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/plugins.bundle.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/css/style.bundle.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/css/theme.css' rel='stylesheet' type='text/css' />
+    <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/favicon.png' rel='shortcut icon'>
+    <link href='{{ URL::asset('vendor/adminro/css/custom.css') }}' rel='stylesheet' type='text/css'>
     @livewireStyles
     @yield('head')
 </head>
@@ -48,11 +49,11 @@
         var REDIRECT_URL = @json(session('redirect_url'));
     </script>
     <script src='https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js'></script>
-    <script src='{{ URL::asset('vendor/adminro/plugins/plugins.bundle.js') }}'></script>
+    <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/plugins.bundle.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/js/scripts.bundle.js'></script>
+    <script src='https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}'></script>
     <script src='{{ URL::asset('vendor/adminro/js/pages/admin.js') }}'></script>
     <script src='{{ URL::asset('vendor/adminro/js/utils/helpers.js') }}'></script>
-    <script src='{{ URL::asset('vendor/adminro/js/scripts.bundle.js') }}'></script>
-    <script src='https://maps.google.com/maps/api/js?key={{env('GOOGLE_MAPS_API_KEY')}}'></script>
     @yield('scripts')
     @livewireScripts
 </body>
