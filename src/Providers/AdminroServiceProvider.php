@@ -15,7 +15,7 @@ class AdminroServiceProvider extends ServiceProvider
   public function boot()
   {
     $this->loadViewsFrom(__DIR__ . '/../resources/views', 'adminro');
-    $this->publishes([__DIR__ . '/../public' => public_path('vendor/adminro')], 'public');
+    $this->publishes([__DIR__ . '/../public' => public_path('vendor/adminro')], 'adminro::public');
     if ($this->app->runningInConsole()) {
       $this->commands([
         RefreshPermissions::class,
