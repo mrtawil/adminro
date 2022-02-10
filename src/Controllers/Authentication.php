@@ -2,8 +2,6 @@
 
 namespace Adminro\Controllers;
 
-use App\Models\Company;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Gate;
 
@@ -54,7 +52,7 @@ class Authentication
         return $this->required;
     }
 
-    public function user(): User
+    public function user()
     {
         if ($this->required() && !$this->user) {
             abort(409, 'Please set auth.');
@@ -63,7 +61,7 @@ class Authentication
         return $this->user;
     }
 
-    public function company(): Company
+    public function company()
     {
         return $this->company;
     }

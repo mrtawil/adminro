@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\Managers\StorageManager;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 function customizeValidated($validated, $forms)
 {
@@ -90,7 +93,7 @@ function postSaveModel($model, $validated, $forms, $isStore, $storeFolderName = 
                     $fileStoreName = 'file-' . Str::random(16) . '.' . $file->extension();
                     $targetFolder = public_path("storage/$storeFolderName");
                     $targetFile = "$targetFolder/$fileStoreName";
-                    StorageManager::checkFolder($targetFolder);
+                    checkFolder($targetFolder);
                     $file = Image::make($source)->save($targetFile, $image_quality);
                     $fileHeight = $file->getHeight();
                     $fileWidth = $file->getWidth();
@@ -105,7 +108,7 @@ function postSaveModel($model, $validated, $forms, $isStore, $storeFolderName = 
 
                         $targetFolder = public_path("storage/$storeFolderName/{$height}x{$width}");
                         $targetFile = "$targetFolder/$fileStoreName";
-                        StorageManager::checkFolder($targetFolder);
+                        checkFolder($targetFolder);
                         $file = Image::make($source)->resize($height, $width, function ($constraint) {
                             $constraint->aspectRatio();
                         });

@@ -17,10 +17,13 @@
         "laravel/ui": "^3.3",
         "livewire/livewire": "^2.10",
         "laravel/framework": "^8.0",
+        "illuminate/support": "^8.0",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-buttons": "^4.0",
         "yajra/laravel-datatables-html": "^4.0",
-        "yajra/laravel-datatables-oracle": "^9.18"
+        "yajra/laravel-datatables-oracle": "^9.18",
+        "intervention/image": "^2.7",
+        "grimzy/laravel-mysql-spatial": "^5.0"
     },
     "require-dev": {
         "spatie/laravel-ray": "^1.29"
@@ -35,7 +38,8 @@
             "/src/Helpers/forms.php",
             "/src/Helpers/model.php",
             "/src/Helpers/request.php",
-            "/src/Helpers/select.php"
+            "/src/Helpers/select.php",
+            "/src/Helpers/storage.php"
         ]
     },
     "autoload-dev": {

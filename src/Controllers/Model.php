@@ -2,7 +2,6 @@
 
 namespace Adminro\Controllers;
 
-use App\Http\Controllers\Managers\ModelOwnerSettingsManager;
 use Exception;
 use Illuminate\Validation\ValidationException;
 
@@ -125,8 +124,8 @@ class Model
     public function updateSettings($remove = false, $store = false)
     {
         try {
-            if ($remove) ModelOwnerSettingsManager::removeOwnerSettings($this->model());
-            if ($store) ModelOwnerSettingsManager::storeOwnerSettings($this->model(), $this->controllerSettings()->request()->validated());
+            if ($remove) call_user_func([config('adminro.model_owner_settings_manager'), 'removeOwnerSettings'], $this->model());
+            if ($store) call_user_func([config('adminro.model_owner_settings_manager'), 'storeOwnerSettings'], $this->model(), $this->controllerSettings()->request()->validated());
         } catch (Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }

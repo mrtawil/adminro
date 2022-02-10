@@ -11,7 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Route;
-use Str;
+use Illuminate\Support\Str;
 
 class Controller extends BaseController
 {
@@ -123,7 +123,7 @@ class Controller extends BaseController
         $this->controllerSettings->subheader()->setActionCreate(true);
         $this->controllerSettings->subheader()->setActionUpdate(true);
         $this->controllerSettings->subheader()->setActionExit(true);
-        $this->controllerSettings->formFields()->addSelect('status', SelectManager::getPublishSelect(1));
+        $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], 1));
         $this->addOnAll();
         $this->addOnCreate();
 
@@ -173,7 +173,7 @@ class Controller extends BaseController
         $this->controllerSettings->subheader()->setActionUpdate(true);
         $this->controllerSettings->subheader()->setActionDelete(true);
         $this->controllerSettings->subheader()->setActionExit(true);
-        $this->controllerSettings->formFields()->addSelect('status', SelectManager::getPublishSelect($this->controllerSettings->model()->model()->status));
+        $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], $this->controllerSettings->model()->model()->status));
         $this->addOnAll();
         $this->addOnEdit();
 

@@ -13,6 +13,7 @@ class AdminroServiceProvider extends ServiceProvider
 {
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../config/adminro.php', 'adminro');
     }
 
     public function boot()
@@ -20,6 +21,7 @@ class AdminroServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'adminro');
 
         $this->publishes([__DIR__ . '/../public' => public_path('vendor/adminro')], 'adminro::public');
+        $this->publishes([__DIR__ . '/../config/adminro.php' => config_path('adminro.php')], 'adminro::config');
 
         Livewire::component('select', Select::class);
         Livewire::component('model-select', ModelSelect::class);
