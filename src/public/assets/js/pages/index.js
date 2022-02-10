@@ -1,17 +1,30 @@
-var app = new Vue({
-    el: "#app",
-    data: {
-        collapseShown: true,
-    },
-    methods: {
-        toggleAllCollapse: function () {
-            if (this.collapseShown) {
-                $(".collapse").collapse("hide");
-            } else {
-                $(".collapse").collapse("show");
-            }
+class IndexClass {
+    constructor() {
+        this.collapse = true;
+    }
 
-            this.collapseShown = !this.collapseShown;
-        },
-    },
+    initFields() {
+        $("#all_collapse").on("click", () => {
+            this.toggleAllCollapse();
+        });
+    }
+
+    toggleAllCollapse() {
+        if (this.collapseShown) {
+            $(".collapse").collapse("hide");
+        } else {
+            $(".collapse").collapse("show");
+        }
+
+        this.collapseShown = !this.collapseShown;
+    }
+
+    mounted() {
+        this.initFields();
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    var indexClass = new IndexClass();
+    indexClass.mounted();
 });
