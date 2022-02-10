@@ -87,7 +87,6 @@ class DynamicSelect extends Component
     public function storeProperty($key, $value)
     {
         $this->$key = $value;
-        $this->rebuildSelects();
     }
 
     public function resetDynamicValue()
@@ -98,7 +97,6 @@ class DynamicSelect extends Component
     public function updateDynamicItems()
     {
         $this->dynamic_select['items'] = Select::make(items: getSelectQueryItems($this->dynamic_select, $this), attributes: $this->dynamic_select)->attributes()['items'];
-        $this->rebuildSelects();
     }
 
     public function onDynamicValueChange()

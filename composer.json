@@ -22,7 +22,9 @@
         "yajra/laravel-datatables-html": "^4.0",
         "yajra/laravel-datatables-oracle": "^9.18"
     },
-    "require-dev": {},
+    "require-dev": {
+        "spatie/laravel-ray": "^1.29"
+    },
     "autoload": {
         "psr-4": {
             "Adminro\\": "/src"

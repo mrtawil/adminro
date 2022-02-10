@@ -70,15 +70,11 @@ class ModelSelect extends Component
 
     public function onModelTypeChange()
     {
-        $this->dispatchBrowserEvent('loaderState', ['state' => 'show']);
-
         $this->reset('model_id');
         $this->emit($this->key . '_id_changed', $this->key . '_id', '');
 
         $this->updateModelIdItems();
         $this->rebuildSelects();
-
-        $this->dispatchBrowserEvent('loaderState', ['state' => 'hide']);
     }
 
     public function onModelIdChange()

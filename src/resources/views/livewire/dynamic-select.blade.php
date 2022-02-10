@@ -3,7 +3,12 @@
         @if ($dynamic_select)
             <div class="col-md-{{ $form['column'] }} @if (isset($form['class_name'])){{ $form['class_name'] }}@endif" data-label="container_{{ $key }}">
                 <div class="form-group">
-                    <label class="font-weight-bold" for="{{ $key }}">{{ $form['name'] }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))*@endif @if (isset($form['additional']))<small class="text-muted">{{ $form['additional'] }}</small>@endif</label>
+                    <label class="font-weight-bold d-flex align-items-center" for="{{ $key }}">
+                        <span>{{ $form['name'] }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))*@endif @if (isset($form['additional']))<small class="text-muted">{{ $form['additional'] }}</small>@endif</span>
+                        <div wire:loading class="ml-2">
+                            <div class="spinner spinner-track spinner-primary"></div>
+                        </div>
+                    </label>
                     <select wire:model="dynamic_value" wire:change="onDynamicValueChange" name="{{ $key }}" id="{{ $key }}" class="form-control form-control-lg form-control-solid selectpicker" data-size="7" data-live-search="true" @if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create'])) required @endif @if ($form['multiple']) multiple @endif @if (($edit_mode && $form['readonly_edit']) || (!$edit_mode && $form['readonly_create'])) readonly @endif @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
                         @if ($dynamic_select['empty_option'])
                             <option value="" selected>Select</option>

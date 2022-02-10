@@ -24,7 +24,12 @@
         @if ($model_select_id)
             <div class="col-md-{{ $form['column'] }} @if (isset($form['class_name'])){{ $form['class_name'] }}@endif" data-label="container_{{ $key . '_id' }}">
                 <div class="form-group">
-                    <label class="font-weight-bold" for="{{ $key . '_id' }}">{{ $form['name'] }} {{ 'Id' }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))*@endif @if (isset($form['additional']))<small class="text-muted">{{ $form['additional'] }}</small>@endif</label>
+                    <label class="font-weight-bold d-flex align-items-center" for="{{ $key . '_id' }}">
+                        <span>{{ $form['name'] }} {{ 'Id' }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))*@endif @if (isset($form['additional']))<small class="text-muted">{{ $form['additional'] }}</small>@endif</span>
+                        <div wire:loading wire:target="model_type" class="ml-2">
+                            <div class="spinner spinner-track spinner-primary"></div>
+                        </div>
+                    </label>
                     <select wire:model="model_id" wire:change="onModelIdChange" name="{{ $key . '_id' }}" id="{{ $key . '_id' }}" class="form-control form-control-lg form-control-solid selectpicker" data-size="7" data-live-search="true" @if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create'])) required @endif @if ($form['multiple']) multiple @endif @if (($edit_mode && $form['readonly_edit']) || (!$edit_mode && $form['readonly_create'])) readonly @endif @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
                         @if ($model_select_id['empty_option'])
                             <option value="" selected>Select</option>
