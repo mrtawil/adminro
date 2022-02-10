@@ -4,74 +4,74 @@ namespace Adminro\Classes;
 
 class SelectListener
 {
-  protected $key_listener;
-  protected $functions = [];
-  protected $default;
+    protected $key_listener;
+    protected $functions = [];
+    protected $default;
 
-  public function __construct($attributes = [])
-  {
-    if (isset($attributes['key_listener'])) $this->setKeyListener($attributes['key_listener']);
-    if (isset($attributes['functions'])) $this->setFunction($attributes['functions']);
-    if (isset($attributes['default'])) $this->setFunction($attributes['default']);
-  }
-
-  static public function make($key_listener = null, $functions = null, $attributes = [])
-  {
-    if ($key_listener !== null) {
-      $attributes['key_listener'] = $key_listener;
+    public function __construct($attributes = [])
+    {
+        if (isset($attributes['key_listener'])) $this->setKeyListener($attributes['key_listener']);
+        if (isset($attributes['functions'])) $this->setFunction($attributes['functions']);
+        if (isset($attributes['default'])) $this->setFunction($attributes['default']);
     }
 
-    if ($functions !== null) {
-      $attributes['functions'] = $functions;
+    static public function make($key_listener = null, $functions = null, $attributes = [])
+    {
+        if ($key_listener !== null) {
+            $attributes['key_listener'] = $key_listener;
+        }
+
+        if ($functions !== null) {
+            $attributes['functions'] = $functions;
+        }
+
+        return new static($attributes);
     }
 
-    return new static($attributes);
-  }
+    public function setKeyListener($key_listener)
+    {
+        $this->key_listener = $key_listener;
 
-  public function setKeyListener($key_listener)
-  {
-    $this->key_listener = $key_listener;
+        return $this;
+    }
 
-    return $this;
-  }
+    public function setFunction($functions)
+    {
+        $this->functions = $functions;
 
-  public function setFunction($functions)
-  {
-    $this->functions = $functions;
+        return $this;
+    }
 
-    return $this;
-  }
+    public function setDefault($default)
+    {
+        $this->default = $default;
 
-  public function setDefault($default)
-  {
-    $this->default = $default;
+        return $this;
+    }
 
-    return $this;
-  }
+    public function keyListener()
+    {
+        return $this->key_listener;
+    }
 
-  public function keyListener()
-  {
-    return $this->key_listener;
-  }
+    public function functions()
+    {
+        return $this->functions;
+    }
 
-  public function functions()
-  {
-    return $this->functions;
-  }
+    public function default()
+    {
+        return $this->default;
+    }
 
-  public function default()
-  {
-    return $this->default;
-  }
+    public function attributes()
+    {
+        $attributes = [
+            'key_listener' => $this->keyListener(),
+            'functions' => $this->functions(),
+            'default' => $this->default(),
+        ];
 
-  public function attributes()
-  {
-    $attributes = [
-      'key_listener' => $this->keyListener(),
-      'functions' => $this->functions(),
-      'default' => $this->default(),
-    ];
-
-    return $attributes;
-  }
+        return $attributes;
+    }
 }

@@ -4,56 +4,56 @@ namespace Adminro\Classes;
 
 class SelectStringQuery
 {
-  protected $query;
-  protected $params = [];
+    protected $query;
+    protected $params = [];
 
-  public function __construct($attributes = [])
-  {
-    if (isset($attributes['query'])) $this->setQuery($attributes['query']);
-    if (isset($attributes['params'])) $this->setParams($attributes['params']);
-  }
-
-  static public function make($query = null, $attributes = [])
-  {
-    if ($query !== null) {
-      $attributes['query'] = $query;
+    public function __construct($attributes = [])
+    {
+        if (isset($attributes['query'])) $this->setQuery($attributes['query']);
+        if (isset($attributes['params'])) $this->setParams($attributes['params']);
     }
 
-    return new static($attributes);
-  }
+    static public function make($query = null, $attributes = [])
+    {
+        if ($query !== null) {
+            $attributes['query'] = $query;
+        }
 
-  public function setQuery($query)
-  {
-    $this->query = $query;
+        return new static($attributes);
+    }
 
-    return $this;
-  }
+    public function setQuery($query)
+    {
+        $this->query = $query;
 
-  public function setParams($params)
-  {
-    $this->params = $params;
+        return $this;
+    }
 
-    return $this;
-  }
+    public function setParams($params)
+    {
+        $this->params = $params;
 
-  public function query()
-  {
-    return $this->query;
-  }
+        return $this;
+    }
 
-  public function params()
-  {
-    return $this->params;
-  }
+    public function query()
+    {
+        return $this->query;
+    }
 
-  public function attributes()
-  {
-    $attributes = [
-      'class' => get_class($this),
-      'query' => $this->query(),
-      'params' => $this->params(),
-    ];
+    public function params()
+    {
+        return $this->params;
+    }
 
-    return $attributes;
-  }
+    public function attributes()
+    {
+        $attributes = [
+            'class' => get_class($this),
+            'query' => $this->query(),
+            'params' => $this->params(),
+        ];
+
+        return $attributes;
+    }
 }

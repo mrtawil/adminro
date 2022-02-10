@@ -4,40 +4,40 @@ namespace Adminro\Controllers;
 
 class GlobalVariables
 {
-  protected $controllerSettings;
-  protected $global_variables = [];
+    protected $controllerSettings;
+    protected $global_variables = [];
 
-  public function __construct($controllerSettings)
-  {
-    $this->controllerSettings = $controllerSettings;
-  }
-
-  public function controllerSettings(): ControllerSettings
-  {
-    return $this->controllerSettings;
-  }
-
-  public function setGlobalVariables($global_variables)
-  {
-    $this->global_variables = $global_variables;
-  }
-
-  public function addGlobalVariable($key, $value)
-  {
-    $this->global_variables[$key] = $value;
-  }
-
-  public function globalVariables()
-  {
-    return $this->global_variables;
-  }
-
-  public function globalVariable($key)
-  {
-    if (!isset($this->global_variables[$key])) {
-      return null;
+    public function __construct($controllerSettings)
+    {
+        $this->controllerSettings = $controllerSettings;
     }
 
-    return $this->global_variables[$key];
-  }
+    public function controllerSettings(): ControllerSettings
+    {
+        return $this->controllerSettings;
+    }
+
+    public function setGlobalVariables($global_variables)
+    {
+        $this->global_variables = $global_variables;
+    }
+
+    public function addGlobalVariable($key, $value)
+    {
+        $this->global_variables[$key] = $value;
+    }
+
+    public function globalVariables()
+    {
+        return $this->global_variables;
+    }
+
+    public function globalVariable($key)
+    {
+        if (!isset($this->global_variables[$key])) {
+            return null;
+        }
+
+        return $this->global_variables[$key];
+    }
 }

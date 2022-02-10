@@ -6,266 +6,266 @@ use Illuminate\Support\Str;
 
 class Info
 {
-  protected $controllerSettings;
-  protected $key;
-  protected $store_folder_name;
-  protected $active_route;
-  protected $back_url;
-  protected $create_url;
-  protected $store_url;
-  protected $edit_url;
-  protected $update_url;
-  protected $delete_url;
-  protected $restore_url;
-  protected $force_delete_url;
-  protected $remove_file_url;
-  protected $singular_title;
-  protected $plural_title;
-  protected $page_title;
-  protected $project_details;
-  protected $card_toolbar;
-  protected $script_files = [];
+    protected $controllerSettings;
+    protected $key;
+    protected $store_folder_name;
+    protected $active_route;
+    protected $back_url;
+    protected $create_url;
+    protected $store_url;
+    protected $edit_url;
+    protected $update_url;
+    protected $delete_url;
+    protected $restore_url;
+    protected $force_delete_url;
+    protected $remove_file_url;
+    protected $singular_title;
+    protected $plural_title;
+    protected $page_title;
+    protected $project_details;
+    protected $card_toolbar;
+    protected $script_files = [];
 
-  public function __construct($controllerSettings)
-  {
-    $this->controllerSettings = $controllerSettings;
-  }
-
-  public function controllerSettings(): ControllerSettings
-  {
-    return $this->controllerSettings;
-  }
-
-  public function setKey($key)
-  {
-    $this->key = $key;
-  }
-
-  public function setStoreFolderName($store_folder_name)
-  {
-    $this->store_folder_name = $store_folder_name;
-  }
-
-  public function setActiveRoute($active_route)
-  {
-    $this->active_route = $active_route;
-  }
-
-  public function setBackUrl($back_url)
-  {
-    $this->back_url = $back_url;
-  }
-
-  public function setCreateUrl($create_url)
-  {
-    $this->create_url = $create_url;
-  }
-
-  public function setStoreUrl($store_url)
-  {
-    $this->store_url = $store_url;
-  }
-
-  public function setEditUrl($edit_url)
-  {
-    $this->edit_url = $edit_url;
-  }
-
-  public function setUpdateUrl($update_url)
-  {
-    $this->update_url = $update_url;
-  }
-
-  public function setDeleteUrl($delete_url)
-  {
-    $this->delete_url = $delete_url;
-  }
-
-  public function setRestoreUrl($restore_url)
-  {
-    $this->restore_url = $restore_url;
-  }
-
-  public function setForceDeleteUrl($force_delete_url)
-  {
-    $this->force_delete_url = $force_delete_url;
-  }
-
-  public function setRemoveFileUrl($remove_file_url)
-  {
-    $this->remove_file_url = $remove_file_url;
-  }
-
-  public function setSingularTitle($singular_title = '')
-  {
-    $this->singular_title = $singular_title;
-  }
-
-  public function setPluralTitle($plural_title = '')
-  {
-    $this->plural_title = $plural_title;
-  }
-
-  public function setPageTitle($page_title = '')
-  {
-    $this->page_title = $page_title;
-  }
-
-  public function setProjectDetails($project_details)
-  {
-    $this->project_details = $project_details;
-  }
-
-  public function setCardToolbar($card_toolbar)
-  {
-    $this->card_toolbar = $card_toolbar;
-  }
-
-  public function setScriptFiles($script_file)
-  {
-    $this->script_files = $script_file;
-  }
-
-  public function addScriptFile($script_file)
-  {
-    array_push($this->script_files, $script_file);
-  }
-
-  public function key()
-  {
-    return $this->key;
-  }
-
-  public function storeFolderName()
-  {
-    return $this->store_folder_name;
-  }
-
-  public function activeRoute()
-  {
-    return $this->active_route;
-  }
-
-  public function backUrl()
-  {
-    return $this->back_url;
-  }
-
-  public function createUrl()
-  {
-    if (!$this->create_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.create', $this->controllerSettings()->route()->params());
+    public function __construct($controllerSettings)
+    {
+        $this->controllerSettings = $controllerSettings;
     }
 
-    return $this->create_url;
-  }
-
-  public function storeUrl()
-  {
-    if (!$this->store_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.store', $this->controllerSettings()->route()->params());
+    public function controllerSettings(): ControllerSettings
+    {
+        return $this->controllerSettings;
     }
 
-    return $this->store_url;
-  }
-
-  public function editUrl()
-  {
-    if (!$this->edit_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.edit', $this->controllerSettings()->route()->params());
+    public function setKey($key)
+    {
+        $this->key = $key;
     }
 
-    return $this->edit_url;
-  }
-
-  public function updateUrl()
-  {
-    if (!$this->update_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.update', $this->controllerSettings()->route()->params());
+    public function setStoreFolderName($store_folder_name)
+    {
+        $this->store_folder_name = $store_folder_name;
     }
 
-    return $this->update_url;
-  }
-
-  public function deleteUrl()
-  {
-    if (!$this->delete_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.delete', $this->controllerSettings()->route()->params());
+    public function setActiveRoute($active_route)
+    {
+        $this->active_route = $active_route;
     }
 
-    return $this->delete_url;
-  }
-
-  public function restoreUrl()
-  {
-    if (!$this->restore_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.restore', $this->controllerSettings()->route()->params());
+    public function setBackUrl($back_url)
+    {
+        $this->back_url = $back_url;
     }
 
-    return $this->restore_url;
-  }
-
-  public function forceDeleteUrl()
-  {
-    if (!$this->force_delete_url) {
-      return route($this->controllerSettings()->route()->routeKey() . '.force_delete', $this->controllerSettings()->route()->params());
+    public function setCreateUrl($create_url)
+    {
+        $this->create_url = $create_url;
     }
 
-    return $this->force_delete_url;
-  }
-
-  public function removeFileUrl($attribute)
-  {
-    if (!$this->remove_file_url) {
-      $this->controllerSettings()->route()->addParam('attribute', $attribute);
-      return route($this->controllerSettings()->route()->routeKey() . '.remove_file', $this->controllerSettings()->route()->params());
+    public function setStoreUrl($store_url)
+    {
+        $this->store_url = $store_url;
     }
 
-    return Str::replace(':attribute', $attribute, $this->remove_file_url);
-  }
-
-  public function singularTitle($uppercase = true)
-  {
-    if ($uppercase) {
-      return Str::ucfirst($this->singular_title);
+    public function setEditUrl($edit_url)
+    {
+        $this->edit_url = $edit_url;
     }
 
-    return $this->singular_title;
-  }
-
-  public function pluralTitle($uppercase = true)
-  {
-    if ($uppercase) {
-      return Str::ucfirst($this->plural_title);
+    public function setUpdateUrl($update_url)
+    {
+        $this->update_url = $update_url;
     }
 
-    return $this->plural_title;
-  }
-
-  public function pageTitle($prefix = '', $suffix = '')
-  {
-    if ($this->page_title) {
-      return $this->page_title;
+    public function setDeleteUrl($delete_url)
+    {
+        $this->delete_url = $delete_url;
     }
 
-    $output = $this->pluralTitle();
-    if ($prefix) $output = $prefix . $output;
-    if ($suffix) $output = $output . $suffix;
-    return $output;
-  }
+    public function setRestoreUrl($restore_url)
+    {
+        $this->restore_url = $restore_url;
+    }
 
-  public function projectDetails()
-  {
-    return $this->project_details;
-  }
+    public function setForceDeleteUrl($force_delete_url)
+    {
+        $this->force_delete_url = $force_delete_url;
+    }
 
-  public function cardToolbar()
-  {
-    return $this->card_toolbar;
-  }
+    public function setRemoveFileUrl($remove_file_url)
+    {
+        $this->remove_file_url = $remove_file_url;
+    }
 
-  public function scriptFiles()
-  {
-    return $this->script_files;
-  }
+    public function setSingularTitle($singular_title = '')
+    {
+        $this->singular_title = $singular_title;
+    }
+
+    public function setPluralTitle($plural_title = '')
+    {
+        $this->plural_title = $plural_title;
+    }
+
+    public function setPageTitle($page_title = '')
+    {
+        $this->page_title = $page_title;
+    }
+
+    public function setProjectDetails($project_details)
+    {
+        $this->project_details = $project_details;
+    }
+
+    public function setCardToolbar($card_toolbar)
+    {
+        $this->card_toolbar = $card_toolbar;
+    }
+
+    public function setScriptFiles($script_file)
+    {
+        $this->script_files = $script_file;
+    }
+
+    public function addScriptFile($script_file)
+    {
+        array_push($this->script_files, $script_file);
+    }
+
+    public function key()
+    {
+        return $this->key;
+    }
+
+    public function storeFolderName()
+    {
+        return $this->store_folder_name;
+    }
+
+    public function activeRoute()
+    {
+        return $this->active_route;
+    }
+
+    public function backUrl()
+    {
+        return $this->back_url;
+    }
+
+    public function createUrl()
+    {
+        if (!$this->create_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.create', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->create_url;
+    }
+
+    public function storeUrl()
+    {
+        if (!$this->store_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.store', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->store_url;
+    }
+
+    public function editUrl()
+    {
+        if (!$this->edit_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.edit', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->edit_url;
+    }
+
+    public function updateUrl()
+    {
+        if (!$this->update_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.update', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->update_url;
+    }
+
+    public function deleteUrl()
+    {
+        if (!$this->delete_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.delete', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->delete_url;
+    }
+
+    public function restoreUrl()
+    {
+        if (!$this->restore_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.restore', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->restore_url;
+    }
+
+    public function forceDeleteUrl()
+    {
+        if (!$this->force_delete_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.force_delete', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->force_delete_url;
+    }
+
+    public function removeFileUrl($attribute)
+    {
+        if (!$this->remove_file_url) {
+            $this->controllerSettings()->route()->addParam('attribute', $attribute);
+            return route($this->controllerSettings()->route()->routeKey() . '.remove_file', $this->controllerSettings()->route()->params());
+        }
+
+        return Str::replace(':attribute', $attribute, $this->remove_file_url);
+    }
+
+    public function singularTitle($uppercase = true)
+    {
+        if ($uppercase) {
+            return Str::ucfirst($this->singular_title);
+        }
+
+        return $this->singular_title;
+    }
+
+    public function pluralTitle($uppercase = true)
+    {
+        if ($uppercase) {
+            return Str::ucfirst($this->plural_title);
+        }
+
+        return $this->plural_title;
+    }
+
+    public function pageTitle($prefix = '', $suffix = '')
+    {
+        if ($this->page_title) {
+            return $this->page_title;
+        }
+
+        $output = $this->pluralTitle();
+        if ($prefix) $output = $prefix . $output;
+        if ($suffix) $output = $output . $suffix;
+        return $output;
+    }
+
+    public function projectDetails()
+    {
+        return $this->project_details;
+    }
+
+    public function cardToolbar()
+    {
+        return $this->card_toolbar;
+    }
+
+    public function scriptFiles()
+    {
+        return $this->script_files;
+    }
 }

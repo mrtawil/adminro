@@ -4,47 +4,47 @@ namespace Adminro\Traits;
 
 trait Controller
 {
-  public function addOnConstruct()
-  {
-  }
+    public function addOnConstruct()
+    {
+    }
 
-  public function addOnAll()
-  {
-  }
+    public function addOnAll()
+    {
+    }
 
-  public function addOnIndex()
-  {
-  }
+    public function addOnIndex()
+    {
+    }
 
-  public function addOnCreate()
-  {
-  }
+    public function addOnCreate()
+    {
+    }
 
-  public function addOnStore()
-  {
-  }
+    public function addOnStore()
+    {
+    }
 
-  public function addOnEdit()
-  {
-  }
+    public function addOnEdit()
+    {
+    }
 
-  public function addOnUpdate()
-  {
-  }
+    public function addOnUpdate()
+    {
+    }
 
-  public function addOnDelete()
-  {
-  }
+    public function addOnDelete()
+    {
+    }
 
-  public function addOnRestore()
-  {
-  }
+    public function addOnRestore()
+    {
+    }
 
-  public function addOnForceDelete()
-  {
-  }
+    public function addOnForceDelete()
+    {
+    }
 
-  public function addOnRemoveFile($attribute)
-  {
-  }
+    public function addOnRemoveFile($attribute)
+    {
+    }
 }

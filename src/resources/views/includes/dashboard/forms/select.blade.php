@@ -8,7 +8,7 @@
                     <option value="">Select</option>
                 @endif
                 @foreach ($selectForm->items() as $item)
-                    <option value="{{ $selectForm->value($item) }}" @if (!$form->hiddenValue()) @if ($controllerSettings->request()->editMode()) @if (in_array($selectForm->value($item), $selectForm->itemsSelected(), true)) selected @endif @else @if (in_array($selectForm->value($item), $selectForm->itemsSelected(), true)) selected @endif @if(in_array(strval($selectForm->value($item)), is_array(old($key)) ? old($key) : [strval(old($key))], TRUE)) selected @endif @endif @endif>
+                    <option value="{{ $selectForm->value($item) }}" @if (!$form->hiddenValue()) @if ($controllerSettings->request()->editMode()) @if (in_array($selectForm->value($item), $selectForm->itemsSelected(), true)) selected @endif @else @if (in_array($selectForm->value($item), $selectForm->itemsSelected(), true)) selected @endif @if (in_array(strval($selectForm->value($item)), is_array(old($key)) ? old($key) : [strval(old($key))], true)) selected @endif @endif @endif>
                         <span>{{ $selectForm->title($item) }}</span>
                     </option>
                 @endforeach
