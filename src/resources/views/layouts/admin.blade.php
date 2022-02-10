@@ -19,25 +19,19 @@
 </head>
 
 <body id='kt_body' class='header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading'>
-    <div class='d-flex h-100' id='app'>
+    <div id='app'>
         @include('adminro::includes.dashboard.header-mobile')
-        <div class='d-flex flex-column flex-root w-100'>
-            <div class='d-flex flex-row flex-column-fluid page'>
-                @include('adminro::includes.dashboard.aside')
-                <div class='d-flex flex-column flex-row-fluid wrapper' id='kt_wrapper'>
-                    @include('adminro::includes.dashboard.header')
-                    <div class='content d-flex flex-column flex-column-fluid' id='kt_content'>
-                        @include('adminro::includes.dashboard.subheader')
-                        <div class='d-flex flex-column-fluid'>
-                            <div class='container-fluid'>
-                                @include('adminro::includes.dashboard.alerts')
-                                @yield('content')
-                            </div>
-                        </div>
-                    </div>
-                    @include('adminro::includes.dashboard.footer')
+        @include('adminro::includes.dashboard.aside')
+        <div class='wrapper' id='kt_wrapper'>
+            @include('adminro::includes.dashboard.header')
+            <div class='content' id='kt_content'>
+                @include('adminro::includes.dashboard.subheader')
+                <div class='container-fluid'>
+                    @include('adminro::includes.dashboard.alerts')
+                    @yield('content')
                 </div>
             </div>
+            @include('adminro::includes.dashboard.footer')
         </div>
     </div>
 
