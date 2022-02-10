@@ -12,7 +12,7 @@
             <div class="ml-auto d-flex align-items-center justify-content-end">
                 <div class="mr-2" id="subheader_loader" style="display: none;">
                     <div class="mr-2">Loading..</div>
-                    <div class="spinner spinner-track spinner-primary spinner-lg"></div>
+                    <div class="spinner-border text-primary"></div>
                 </div>
                 <div ref="subheaderRight">
                     @if ($controllerSettings->subheader()->back())
