@@ -81,7 +81,7 @@ class DynamicSelect extends Component
 
     public function updated($name, $value)
     {
-        $this->emit($this->key, $this->key, $value);
+        $this->emit($this->key . '_changed', $this->key, $value);
     }
 
     public function storeProperty($key, $value)
@@ -101,7 +101,6 @@ class DynamicSelect extends Component
 
     public function onDynamicValueChange()
     {
-        $this->emit($this->key . '_changed');
         $this->rebuildSelects();
     }
 

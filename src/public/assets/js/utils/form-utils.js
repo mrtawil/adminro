@@ -418,17 +418,3 @@ window.addEventListener('contentChanged', event => {
         $('#' + event.detail.key).selectpicker();
     }
 });
-
-window.addEventListener('loaderState', event => {
-    let loader = $("#subheader_loader");
-    switch (event.detail.state) {
-        case 'show':
-            $(loader).show();
-            break;
-        case 'hide':
-            $(loader).hide();
-            break;
-        default:
-            break;
-    }
-});

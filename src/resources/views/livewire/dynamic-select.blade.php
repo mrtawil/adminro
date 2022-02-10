@@ -5,7 +5,7 @@
                 <div class="form-group">
                     <label class="font-weight-bold d-flex align-items-center" for="{{ $key }}">
                         <span>{{ $form['name'] }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))*@endif @if (isset($form['additional']))<small class="text-muted">{{ $form['additional'] }}</small>@endif</span>
-                        <div wire:loading class="ml-2">
+                        <div id="{{ $key }}_loader" class="ml-2" style="display: none;">
                             <div class="spinner spinner-track spinner-primary"></div>
                         </div>
                     </label>
@@ -26,4 +26,22 @@
             </div>
         @endif
     </div>
+
+    <script>
+        document.addEventListener('livewire:load', function() {
+            const key = @this.key;
+            const listeners = @this.dynamic_select.listeners;
+
+            const dynamic_loader_event = new Event(key + '_loader');
+            @this.on(key + '_changed', () => {
+                window.dispatchEvent(dynamic_loader_event);
+            });
+
+            listeners.forEach((listener) => {
+                window.addEventListener(listener.key_listener + '_loader', () => {
+                    $('#' + key + '_loader').show();
+                });
+            });
+        });
+    </script>
 </div>

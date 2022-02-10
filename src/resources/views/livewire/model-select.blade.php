@@ -47,4 +47,20 @@
             </div>
         @endif
     </div>
+
+    <script>
+        document.addEventListener('livewire:load', function() {
+            const key = @this.key;
+
+            const model_id_loader_event = new Event('model_id_loader');
+            @this.on(key + '_id' + '_changed', () => {
+                window.dispatchEvent(model_id_loader_event);
+            });
+
+            const model_type_loader_event = new Event('model_type_loader');
+            @this.on(key + '_type' + '_changed', () => {
+                window.dispatchEvent(model_type_loader_event);
+            });
+        });
+    </script>
 </div>
