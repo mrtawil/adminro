@@ -4,8 +4,8 @@ namespace Adminro\Providers;
 
 use Adminro\Console\Commands\RefreshPermissions;
 use Adminro\Console\Commands\RefreshTablesWithDummy;
-use Adminro\Livewire\DynamicSelect;
 use Adminro\Livewire\ModelSelect;
+use Adminro\Livewire\Select;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -21,8 +21,8 @@ class AdminroServiceProvider extends ServiceProvider
 
         $this->publishes([__DIR__ . '/../public' => public_path('vendor/adminro')], 'adminro::public');
 
+        Livewire::component('select', Select::class);
         Livewire::component('model-select', ModelSelect::class);
-        Livewire::component('dynamic-select', DynamicSelect::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

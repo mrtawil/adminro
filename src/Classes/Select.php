@@ -12,7 +12,7 @@ class Select
     protected $value_key = 'id';
     protected $additional = [];
     protected $empty_option = true;
-    protected $static_items = false;
+    protected $static_items = true;
     protected $listeners = [];
     protected $default_query;
     protected $conditional_queries;

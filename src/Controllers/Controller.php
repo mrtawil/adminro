@@ -128,7 +128,7 @@ class Controller extends BaseController
         $this->addOnCreate();
 
         if ($this->controllerSettings->dataTable()->dataTable()) {
-            return $this->controllerSettings->dataTable()->dataTable()->render('pages.dashboard.utils.create', ['controllerSettings' => $this->controllerSettings, 'dataTable' => $this->controllerSettings->dataTable()->dataTable()]);
+            return $this->controllerSettings->dataTable()->dataTable()->render('adminro::pages.dashboard.utils.create', ['controllerSettings' => $this->controllerSettings, 'dataTable' => $this->controllerSettings->dataTable()->dataTable()]);
         }
 
         return view('adminro::pages.dashboard.utils.create', ['controllerSettings' => $this->controllerSettings]);

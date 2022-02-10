@@ -10,7 +10,6 @@ class FormFields
     protected $multi_selects = [];
     protected $table_selects = [];
     protected $model_selects = [];
-    protected $dynamic_selects = [];
 
     public function __construct($controllerSettings)
     {
@@ -45,11 +44,6 @@ class FormFields
     public function addModelSelect($key, $model_select)
     {
         $this->model_selects[$key] = $model_select;
-    }
-
-    public function addDynamicSelect($key, $dynamic_select)
-    {
-        $this->dynamic_selects[$key] = $dynamic_select;
     }
 
     public function forms($main = true, $only_attributes = false)
@@ -132,20 +126,6 @@ class FormFields
     public function modelSelects()
     {
         return $this->model_selects;
-    }
-
-    public function dynamicSelect($key)
-    {
-        if (!isset($this->dynamic_selects[$key])) {
-            return null;
-        }
-
-        return $this->dynamic_selects[$key];
-    }
-
-    public function dynamicSelects()
-    {
-        return $this->dynamic_selects;
     }
 
     public function customizeValidated()
