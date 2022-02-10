@@ -2,6 +2,8 @@
 
 namespace Adminro\Providers;
 
+use Adminro\Console\Commands\RefreshPermissions;
+use Adminro\Console\Commands\RefreshTablesWithDummy;
 use Illuminate\Support\ServiceProvider;
 
 class AdminroServiceProvider extends ServiceProvider
@@ -14,5 +16,11 @@ class AdminroServiceProvider extends ServiceProvider
   {
     $this->loadViewsFrom(__DIR__ . '/../resources/views', 'adminro');
     $this->publishes([__DIR__ . '/../public' => public_path('vendor/adminro')], 'public');
+    if ($this->app->runningInConsole()) {
+      $this->commands([
+        RefreshPermissions::class,
+        RefreshTablesWithDummy::class,
+      ]);
+    }
   }
 }
