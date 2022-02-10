@@ -42,14 +42,13 @@
         var HOST_URL = 'https://preview.keenthemes.com/metronic/theme/html/tools/preview';
         var REDIRECT_URL = @json(session('redirect_url'));
     </script>
-    <script src='https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js'></script>
     <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/plugins.bundle.js'></script>
     <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/js/scripts.bundle.js'></script>
     <script src='https://maps.google.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}'></script>
-    <script src='{{ URL::asset('vendor/adminro/assets/js/pages/admin.js') }}'></script>
     <script src='{{ URL::asset('vendor/adminro/assets/js/utils/helpers.js') }}'></script>
-    @yield('scripts')
+    <script src='{{ URL::asset('vendor/adminro/assets/js/pages/admin.js') }}'></script>
     @livewireScripts
+    @yield('scripts')
 </body>
 
 </html>

@@ -7,7 +7,7 @@
                 <h2 class="mb-5">{{ $group['info']['title'] }}</h2>
                 <div class="d-flex ml-auto">
                     @if ($loop->first)
-                        <div class="d-flex align-items-center badge badge-success cursor-pointer mr-2" v-on:click="toggleAllCollapse()">Show/Hide All<i class="ml-2 text-light fas fa-arrows-alt-v"></i></div>
+                        <div class="d-flex align-items-center badge badge-success cursor-pointer mr-2" id="all_collapse">Show/Hide All<i class="ml-2 text-light fas fa-arrows-alt-v"></i></div>
                     @endif
                     <a class="d-flex align-items-center badge badge-primary" data-toggle="collapse" href="#{{ $key }}Collapse" role="button" aria-expanded="true" aria-controls="{{ $key }}Collapse">Show/Hide<i class="ml-2 text-light fas fa-arrows-alt-v"></i></a>
                 </div>
@@ -111,8 +111,5 @@
 @endsection
 
 @section('scripts')
-    <script>
-        var data = @json($data);
-    </script>
     <script src="{{ URL::asset('vendor/adminro/assets/js/pages/index.js') }}"></script>
 @endsection

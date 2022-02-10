@@ -1,5 +1,3 @@
-Vue.config.productionTip = false;
-
 var KTAppSettings = {
     "breakpoints": {
         "sm": 576,
