@@ -78,5 +78,22 @@
             }))
             .append(document.createElement('span'))
         );
+
+        $('#checkbox-all').on('click', (e) => {
+            let value = e.target.value;
+
+            $('.checkable').each(function() {
+                $(this).prop('checked', value);
+            });
+
+            if (value) {
+                e.target.value = '';
+            } else {
+                e.target.value = 'on';
+            }
+        });
+
+        $('.bulk-action-container').append($('#bulk_action_form'));
+        $('#bulk_action_form').show();
     }
 </script>

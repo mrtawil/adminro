@@ -19,6 +19,7 @@ class Info
     protected $restore_url;
     protected $force_delete_url;
     protected $remove_file_url;
+    protected $bulk_action_url;
     protected $singular_title;
     protected $plural_title;
     protected $page_title;
@@ -94,6 +95,11 @@ class Info
     public function setRemoveFileUrl($remove_file_url)
     {
         $this->remove_file_url = $remove_file_url;
+    }
+
+    public function setBulkActionUrl($bulk_action_url)
+    {
+        $this->bulk_action_url = $bulk_action_url;
     }
 
     public function setSingularTitle($singular_title = '')
@@ -222,6 +228,15 @@ class Info
         }
 
         return Str::replace(':attribute', $attribute, $this->remove_file_url);
+    }
+
+    public function bulkActionUrl()
+    {
+        if (!$this->bulk_action_url) {
+            return route($this->controllerSettings()->route()->routeKey() . '.bulk_action', $this->controllerSettings()->route()->params());
+        }
+
+        return $this->bulk_action_url;
     }
 
     public function singularTitle($uppercase = true)

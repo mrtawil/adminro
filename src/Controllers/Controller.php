@@ -84,7 +84,9 @@ class Controller extends BaseController
         if (Route::has($this->route_key . '.update')) $this->controllerSettings->info()->setUpdateUrl(route($this->route_key . '.update', ['id' => ':id']));
         if (Route::has($this->route_key . '.delete')) $this->controllerSettings->info()->setDeleteUrl(route($this->route_key . '.delete', ['id' => ':id']));
         if (Route::has($this->route_key . '.restore')) $this->controllerSettings->info()->setRestoreUrl(route($this->route_key . '.restore', ['id' => ':id']));
+        if (Route::has($this->route_key . '.remove_file')) $this->controllerSettings->info()->setRestoreUrl(route($this->route_key . '.restore', ['id' => ':id', 'attribute' => ':attribute']));
         if (Route::has($this->route_key . '.force_delete')) $this->controllerSettings->info()->setForceDeleteUrl(route($this->route_key . '.force_delete', ['id' => ':id']));
+        if (Route::has($this->route_key . '.bulk_action')) $this->controllerSettings->info()->setBulkActionUrl(route($this->route_key . '.bulk_action'));
 
         $this->addOnConstruct();
     }

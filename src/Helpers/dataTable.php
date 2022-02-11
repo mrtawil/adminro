@@ -117,9 +117,9 @@ function prepareDataTableHTML($datatables, $columns)
             Button::make('colvis')->text('Filter'),
         )
         ->dom("
-            <'row'<'col-md-12 dataTables_pager'l>>
+            <'row'<'col-md-12 d-flex justify-content-between align-items-center bulk-action-container'l>>
             <'row'<'col-sm-12'tr>>
-            <'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6 dataTables_pager'p>>
+            <'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6 d-flex aling-item-center justify-content-center justify-content-md-end mt-2 mt-md-0'p>>
         ")
         ->lengthMenu(['5', '10', '25', '50', '100'])
         ->pageLength('10')
