@@ -119,6 +119,8 @@ function prepareDataTableHTML($datatables, $columns)
             <'row'<'col-sm-12'tr>>
             <'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6 dataTables_pager'p>>
         ")
+        ->lengthMenu(['5', '10', '25', '50', '100'])
+        ->pageLength('10')
         ->languageLengthMenu('Display _MENU_')
         ->initComplete($init_complete_callback);
 }
