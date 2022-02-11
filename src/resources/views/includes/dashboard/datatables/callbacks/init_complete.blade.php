@@ -28,33 +28,33 @@
 
             $('.datatable-input').each(function() {
                 $(this).val('');
-                $(this).selectpicker("refresh");
+                $(this).selectpicker('refresh');
             });
 
             table.api().button('.buttons-reset').trigger();
         });
 
-        $("#export-print").on("click", () => {
+        $('#export-print').on('click', () => {
             table.api().button('.buttons-print').trigger();
         });
 
-        $("#export-copy").on("click", () => {
+        $('#export-copy').on('click', () => {
             table.api().button('.buttons-copy').trigger();
         });
 
-        $("#export-excel").on("click", () => {
+        $('#export-excel').on('click', () => {
             table.api().button('.buttons-excel').trigger();
         });
 
-        $("#export-csv").on("click", () => {
+        $('#export-csv').on('click', () => {
             table.api().button('.buttons-csv').trigger();
         });
 
-        $("#export-pdf").on("click", () => {
+        $('#export-pdf').on('click', () => {
             table.api().button('.buttons-pdf').trigger();
         });
 
-        $("#search-colvis").on("click", () => {
+        $('#search-colvis').on('click', () => {
             table.api().button('.buttons-colvis').trigger();
         });
 
@@ -65,5 +65,18 @@
                 initDateRangePicker2(column.data);
             }
         });
+
+        $('th.datatable-checkbox').html(
+            $(document.createElement('label')).prop({
+                for: 'checkbox-all',
+                class: 'checkbox checkbox-single',
+            })
+            .append($(document.createElement('input')).prop({
+                id: 'checkbox-all',
+                type: 'checkbox',
+                class: 'checkable',
+            }))
+            .append(document.createElement('span'))
+        );
     }
 </script>

@@ -9,13 +9,9 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
     $columns = $controllerSettings->dataTable()->dataTable()->getColumns();
     $datatables = datatables()->of($model);
 
-    $user_profile_full_name_column = collect($columns)->search(function ($column) {
-        return $column['data'] == 'created_user.profile.full_name';
-    });
-
-    $model_title_column = collect($columns)->search(function ($column) {
-        return $column['data'] == 'model.title';
-    });
+    $checkbox_column = collect($columns)->firstWhere('data', 'checkbox');
+    $user_profile_full_name_column = collect($columns)->firstWhere('data', 'created_user.profile.full_name');
+    $model_title_column = collect($columns)->firstWhere('data', 'model.title');
 
     $columnsDateRange = collect($columns)->filter(function ($column) {
         return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date_range';
@@ -68,6 +64,12 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         });
     }
 
+    if ($checkbox_column) {
+        $datatables->addColumn('checkbox', function ($item) use ($controllerSettings) {
+            return view('adminro::includes.dashboard.datatables.columns.checkbox', ['controllerSettings' => $controllerSettings, 'item' => $item]);
+        });
+    }
+
     if ($user_profile_full_name_column) {
         $datatables->addColumn('created_user.profile.full_name', function ($item) use ($controllerSettings) {
             return view('adminro::includes.dashboard.datatables.columns.created_user', ['controllerSettings' => $controllerSettings, 'item' => $item]);
@@ -105,7 +107,7 @@ function prepareDataTableHTML($datatables, $columns)
         ->setTableId('datatable-html')
         ->columns($columns)
         ->minifiedAjax()
-        ->orderBy(0)
+        ->orderBy(1)
         ->responsive()
         ->buttons(
             Button::make('export')->addClass('d-none'),
