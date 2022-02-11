@@ -15,7 +15,7 @@ class Select
     protected $static_items = true;
     protected $listeners = [];
     protected $default_query;
-    protected $conditional_queries;
+    protected $conditional_queries = [];
 
     public function __construct($attributes = [])
     {
