@@ -2,6 +2,7 @@
 
 use Adminro\Classes\Select;
 use Adminro\Classes\SelectStringQuery;
+use Illuminate\Support\Str;
 
 function getSelectQueryItems($select, $class)
 {

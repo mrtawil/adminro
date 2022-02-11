@@ -4,7 +4,6 @@ namespace Adminro\Controllers;
 
 use Adminro\Controllers\ControllerSettings;
 use Adminro\Traits\Controller as TraitsController;
-use App\Http\Controllers\Managers\SelectManager;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
