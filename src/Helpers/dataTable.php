@@ -115,9 +115,10 @@ function prepareDataTableHTML($datatables, $columns)
             Button::make('colvis')->text('Filter'),
         )
         ->dom("
-    <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 mt-0 justify-content-md-end dataTables_pager' <'col-md-12 d-md-flex justify-content-md-end d-block'<'d-flex flex-center'p><'d-flex flex-center'l>>>>
-    <'row'<'col-sm-12'tr>>
-    ")
+            <'row'<'col-md-12 dataTables_pager'l>>
+            <'row'<'col-sm-12'tr>>
+            <'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6 dataTables_pager'p>>
+        ")
         ->languageLengthMenu('Display _MENU_')
         ->initComplete($init_complete_callback);
 }
