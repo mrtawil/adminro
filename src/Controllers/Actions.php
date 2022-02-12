@@ -8,7 +8,7 @@ class Actions
     protected $create = true;
     protected $edit = true;
     protected $update = true;
-    protected $delete = true;
+    protected $destroy = true;
     protected $show = false;
     protected $print = false;
     protected $restore = true;
@@ -16,6 +16,7 @@ class Actions
     protected $search = true;
     protected $reset = true;
     protected $buttons = true;
+    protected $bulk_action = true;
 
     public function __construct($controllerSettings)
     {
@@ -42,9 +43,9 @@ class Actions
         $this->update = $update;
     }
 
-    public function setDelete($delete)
+    public function setDestroy($destroy)
     {
-        $this->delete = $delete;
+        $this->destroy = $destroy;
     }
 
     public function setShow($show)
@@ -82,6 +83,11 @@ class Actions
         $this->buttons = $buttons;
     }
 
+    public function setBulkAction($bulk_action)
+    {
+        $this->bulk_action = $bulk_action;
+    }
+
     public function create()
     {
         return $this->create;
@@ -97,9 +103,9 @@ class Actions
         return $this->update;
     }
 
-    public function delete()
+    public function destroy()
     {
-        return $this->delete;
+        return $this->destroy;
     }
 
     public function show()
@@ -135,5 +141,10 @@ class Actions
     public function buttons()
     {
         return $this->buttons;
+    }
+
+    public function bulkAction()
+    {
+        return $this->bulk_action;
     }
 }

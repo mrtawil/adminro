@@ -14,7 +14,7 @@ class Subheader
     protected $subheader_action_print;
     protected $subheader_action_create;
     protected $subheader_action_exit;
-    protected $subheader_action_delete;
+    protected $subheader_action_destroy;
 
     public function __construct($controllerSettings)
     {
@@ -71,9 +71,9 @@ class Subheader
         $this->subheader_action_exit = $subheader_action_exit;
     }
 
-    public function setActionDelete($subheader_action_delete)
+    public function setActionDestroy($subheader_action_destroy)
     {
-        $this->subheader_action_delete = $subheader_action_delete;
+        $this->subheader_action_destroy = $subheader_action_destroy;
     }
 
     public function show()
@@ -133,8 +133,8 @@ class Subheader
         return $this->subheader_action_exit;
     }
 
-    public function actionDelete()
+    public function actionDestroy()
     {
-        return $this->subheader_action_delete;
+        return $this->subheader_action_destroy;
     }
 }

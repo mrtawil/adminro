@@ -2,7 +2,7 @@
 
 namespace Adminro\Constants;
 
-class SelectOptions
+class Constants
 {
     const PUBLISH = [
         [
@@ -44,5 +44,9 @@ class SelectOptions
             "title" => "Deleted",
             "value" => 4,
         ],
+    ];
+
+    const BULK_ACTION_VALUES = [
+        'bulk_delete', 'bulk_restore',  'bulk_force_delete'
     ];
 }

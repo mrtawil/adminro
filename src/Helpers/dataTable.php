@@ -102,6 +102,7 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
 function prepareDataTableHTML($datatables, $columns)
 {
     $init_complete_callback = strip_tags(file_get_contents(adminroViewsPath() . '\includes\dashboard\datatables\callbacks\init_complete.blade.php'));
+    $draw_callback = strip_tags(file_get_contents(adminroViewsPath() . '\includes\dashboard\datatables\callbacks\draw.blade.php'));
 
     return $datatables->builder()
         ->setTableId('datatable-html')
@@ -124,7 +125,8 @@ function prepareDataTableHTML($datatables, $columns)
         ->lengthMenu(['5', '10', '25', '50', '100'])
         ->pageLength('10')
         ->languageLengthMenu('Display _MENU_')
-        ->initComplete($init_complete_callback);
+        ->initComplete($init_complete_callback)
+        ->drawCallback($draw_callback);
 }
 
 function prepareDataTableQuery($model, $request)

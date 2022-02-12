@@ -32,7 +32,7 @@ trait Controller
     {
     }
 
-    public function addOnDelete()
+    public function addOnDestroy()
     {
     }
 
@@ -45,6 +45,10 @@ trait Controller
     }
 
     public function addOnRemoveFile($attribute)
+    {
+    }
+
+    public function addOnBulkAction()
     {
     }
 }
