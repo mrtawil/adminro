@@ -3,8 +3,8 @@
         <i class="la la-edit"></i>
     </a>
 @endif
-@if ($controllerSettings->actions()->delete() && $item->deleted_at == null)
-    <form action="{{ Str::replace(':id', $item->id, $controllerSettings->info()->deleteUrl()) }}" method="POST" class="d-inline">
+@if ($controllerSettings->actions()->destroy() && $item->deleted_at == null)
+    <form action="{{ Str::replace(':id', $item->id, $controllerSettings->info()->destroyUrl()) }}" method="POST" class="d-inline">
         @method("DELETE")
         @csrf
         <button type="submit" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-clean btn-icon" title="Delete">

@@ -18,7 +18,7 @@ class Route
     const ROUTE_ACTION_MESSAGES = [
         'store' => '{model} is stored successfully: {title}',
         'update' => '{model} is updated successfully: {title}',
-        'delete' => '{model} is deleted successfully: {title}',
+        'destroy' => '{model} is deleted successfully: {title}',
         'restore' => '{model} is restored successfully: {title}',
         'force_delete' => '{model} is force deleted successfully: {title}',
         'bulk_action' => '{model} bulk action is applied successfully',

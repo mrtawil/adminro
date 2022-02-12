@@ -60,7 +60,7 @@
     </div>
 </form>
 
-@if ($controllerSettings->actions()->bulkAction())
+@if ($controllerSettings->actions()->bulkAction() && $controllerSettings->info()->bulkActionUrl())
     <form action="{{ $controllerSettings->info()->bulkActionUrl() }}" id="bulk_action_form" method="POST" style="display: none;">
         @csrf
         <select name="bulk_action" id="bulk_action_select" class="form-control selectpicker" data-container="body" data-size="7" required>

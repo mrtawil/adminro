@@ -32,7 +32,7 @@ trait Controller
     {
     }
 
-    public function addOnDelete()
+    public function addOnDestroy()
     {
     }
 

@@ -15,7 +15,7 @@ class Info
     protected $store_url;
     protected $edit_url;
     protected $update_url;
-    protected $delete_url;
+    protected $destroy_url;
     protected $restore_url;
     protected $force_delete_url;
     protected $remove_file_url;
@@ -77,9 +77,9 @@ class Info
         $this->update_url = $update_url;
     }
 
-    public function setDeleteUrl($delete_url)
+    public function setDestroyUrl($destroy_url)
     {
-        $this->delete_url = $delete_url;
+        $this->destroy_url = $destroy_url;
     }
 
     public function setRestoreUrl($restore_url)
@@ -177,9 +177,9 @@ class Info
         return $this->update_url;
     }
 
-    public function deleteUrl()
+    public function destroyUrl()
     {
-        return $this->delete_url;
+        return $this->destroy_url;
     }
 
     public function restoreUrl()

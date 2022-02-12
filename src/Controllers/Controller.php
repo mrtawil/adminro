@@ -32,7 +32,7 @@ class Controller extends BaseController
     protected $action_create = true;
     protected $action_edit = true;
     protected $action_update = true;
-    protected $action_delete = true;
+    protected $action_destroy = true;
     protected $action_show = false;
     protected $action_print = false;
     protected $action_restore = true;
@@ -65,7 +65,7 @@ class Controller extends BaseController
         $this->controllerSettings->actions()->setCreate($this->action_create);
         $this->controllerSettings->actions()->setEdit($this->action_edit);
         $this->controllerSettings->actions()->setUpdate($this->action_update);
-        $this->controllerSettings->actions()->setDelete($this->action_delete);
+        $this->controllerSettings->actions()->setDestroy($this->action_destroy);
         $this->controllerSettings->actions()->setShow($this->action_show);
         $this->controllerSettings->actions()->setPrint($this->action_print);
         $this->controllerSettings->actions()->setRestore($this->action_restore);
@@ -85,7 +85,7 @@ class Controller extends BaseController
         if (Route::has($this->route_key . '.store')) $this->controllerSettings->info()->setStoreUrl(route($this->route_key . '.store'));
         if (Route::has($this->route_key . '.edit')) $this->controllerSettings->info()->setEditUrl(route($this->route_key . '.edit', ['id' => ':id']));
         if (Route::has($this->route_key . '.update')) $this->controllerSettings->info()->setUpdateUrl(route($this->route_key . '.update', ['id' => ':id']));
-        if (Route::has($this->route_key . '.delete')) $this->controllerSettings->info()->setDeleteUrl(route($this->route_key . '.delete', ['id' => ':id']));
+        if (Route::has($this->route_key . '.destroy')) $this->controllerSettings->info()->setDestroyUrl(route($this->route_key . '.destroy', ['id' => ':id']));
         if (Route::has($this->route_key . '.restore')) $this->controllerSettings->info()->setRestoreUrl(route($this->route_key . '.restore', ['id' => ':id']));
         if (Route::has($this->route_key . '.force_delete')) $this->controllerSettings->info()->setForceDeleteUrl(route($this->route_key . '.force_delete', ['id' => ':id']));
         if (Route::has($this->route_key . '.bulk_action')) $this->controllerSettings->info()->setBulkActionUrl(route($this->route_key . '.bulk_action'));
@@ -175,7 +175,7 @@ class Controller extends BaseController
         $this->controllerSettings->subheader()->setAction(true);
         $this->controllerSettings->subheader()->setActionCreate(true);
         $this->controllerSettings->subheader()->setActionUpdate(true);
-        $this->controllerSettings->subheader()->setActionDelete(true);
+        $this->controllerSettings->subheader()->setActionDestroy(true);
         $this->controllerSettings->subheader()->setActionExit(true);
         $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], $this->controllerSettings->model()->model()->status));
         $this->addOnAll();
@@ -210,18 +210,18 @@ class Controller extends BaseController
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
     }
 
-    public function delete(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
         $this->controllerSettings->auth()->setAuth();
-        $this->controllerSettings->auth()->authorize(action: 'delete');
+        $this->controllerSettings->auth()->authorize(action: 'destroy');
         $this->controllerSettings->model()->find($id, false);
-        $this->controllerSettings->route()->setRouteAction('delete');
+        $this->controllerSettings->route()->setRouteAction('destroy');
         $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->model()->delete();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
         $this->addOnAll();
-        $this->addOnDelete();
+        $this->addOnDestroy();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
     }
@@ -245,7 +245,7 @@ class Controller extends BaseController
     public function forceDelete(Request $request, $id)
     {
         $this->controllerSettings->auth()->setAuth();
-        $this->controllerSettings->auth()->authorize(action: 'delete');
+        $this->controllerSettings->auth()->authorize(action: 'destroy');
         $this->controllerSettings->model()->find($id, true);
         $this->controllerSettings->route()->setRouteAction('force_delete');
         $this->controllerSettings->request()->setRequest($request);
@@ -263,7 +263,6 @@ class Controller extends BaseController
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'edit');
         $this->controllerSettings->model()->find($id, true);
-        $this->controllerSettings->route()->setRouteAction('delete');
         $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->model()->removeFile($attribute);
         $this->controllerSettings->route()->setRedirectAction('edit');

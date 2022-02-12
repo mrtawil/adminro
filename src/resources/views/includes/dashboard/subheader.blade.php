@@ -15,7 +15,7 @@
                     <div class="spinner-border text-primary"></div>
                 </div>
                 <div ref="subheaderRight">
-                    @if ($controllerSettings->subheader()->back())
+                    @if ($controllerSettings->subheader()->back() && $controllerSettings->info()->backUrl())
                         <a href="{{ $controllerSettings->info()->backUrl() }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
                     @endif
 
@@ -58,8 +58,8 @@
                                             </button>
                                         </li>
                                     @endif
-                                    @if ($controllerSettings->subheader()->actionDelete())
-                                        <form action="{{ Str::replace(':id', $controllerSettings->model()->model()->id, $controllerSettings->info()->deleteUrl()) }}" method="POST">
+                                    @if ($controllerSettings->subheader()->actionDestroy() && $controllerSettings->info()->destroyUrl())
+                                        <form action="{{ Str::replace(':id', $controllerSettings->model()->model()->id, $controllerSettings->info()->destroyUrl()) }}" method="POST">
                                             @method("DELETE")
                                             @csrf
                                             <li class="navi-item">

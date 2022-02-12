@@ -8,7 +8,7 @@ class Actions
     protected $create = true;
     protected $edit = true;
     protected $update = true;
-    protected $delete = true;
+    protected $destroy = true;
     protected $show = false;
     protected $print = false;
     protected $restore = true;
@@ -43,9 +43,9 @@ class Actions
         $this->update = $update;
     }
 
-    public function setDelete($delete)
+    public function setDestroy($destroy)
     {
-        $this->delete = $delete;
+        $this->destroy = $destroy;
     }
 
     public function setShow($show)
@@ -103,9 +103,9 @@ class Actions
         return $this->update;
     }
 
-    public function delete()
+    public function destroy()
     {
-        return $this->delete;
+        return $this->destroy;
     }
 
     public function show()
