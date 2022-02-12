@@ -25,8 +25,16 @@ class Controller extends BaseController
     protected $dataTable_class;
     protected $validation_rules_store = [];
     protected $validation_rules_update = [];
+    protected $validation_classes_index = [];
+    protected $validation_classes_create = [];
     protected $validation_classes_store = [];
+    protected $validation_classes_edit = [];
     protected $validation_classes_update = [];
+    protected $validation_classes_destroy = [];
+    protected $validation_classes_restore = [];
+    protected $validation_classes_force_delete = [];
+    protected $validation_classes_remove_file = [];
+    protected $validation_classes_bulk_action = [];
     protected $subheader_show = true;
     protected $subheader_back = true;
     protected $action_create = true;
@@ -104,6 +112,8 @@ class Controller extends BaseController
         $this->addOnAll();
         $this->policyAuthorize();
 
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_index);
+        $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->dataTable()->initDataTable($this->dataTable_class);
         $this->addOnIndex();
 
@@ -131,6 +141,9 @@ class Controller extends BaseController
         $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], 1));
         $this->addOnAll();
         $this->policyAuthorize();
+
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_create);
+        $this->controllerSettings->request()->validateClasses();
         $this->addOnCreate();
 
         if ($this->controllerSettings->dataTable()->dataTable()) {
@@ -146,6 +159,9 @@ class Controller extends BaseController
         $this->controllerSettings->auth()->authorize(action: 'add');
         $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->route()->setRouteAction('store');
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->request()->setEditMode(false);
         $this->controllerSettings->request()->setRules($this->validation_rules_store);
         $this->controllerSettings->request()->addFormFieldsRules();
@@ -154,9 +170,6 @@ class Controller extends BaseController
         $this->controllerSettings->request()->setValidationClasses($this->validation_classes_store);
         $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->formFields()->customizeValidated();
-        $this->addOnAll();
-        $this->policyAuthorize();
-
         $this->controllerSettings->model()->store();
         $this->controllerSettings->route()->setRedirectData();
         $this->addOnStore();
@@ -185,6 +198,9 @@ class Controller extends BaseController
         $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], $this->controllerSettings->model()->model()->status));
         $this->addOnAll();
         $this->policyAuthorize();
+
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_edit);
+        $this->controllerSettings->request()->validateClasses();
         $this->addOnEdit();
 
         if ($this->controllerSettings->dataTable()->dataTable()) {
@@ -201,6 +217,9 @@ class Controller extends BaseController
         $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->route()->setRouteAction('update');
         $this->controllerSettings->model()->find($id, false);
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->request()->setEditMode(true);
         $this->controllerSettings->request()->setRules($this->validation_rules_update);
         $this->controllerSettings->request()->addFormFieldsRules();
@@ -208,9 +227,6 @@ class Controller extends BaseController
         $this->controllerSettings->request()->setValidationClasses($this->validation_classes_update);
         $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->formFields()->customizeValidated();
-        $this->addOnAll();
-        $this->policyAuthorize();
-
         $this->controllerSettings->model()->update();
         $this->controllerSettings->route()->setRedirectData();
         $this->addOnUpdate();
@@ -228,7 +244,9 @@ class Controller extends BaseController
         $this->addOnAll();
         $this->policyAuthorize();
 
-        $this->controllerSettings->model()->delete();
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_destroy);
+        $this->controllerSettings->request()->validateClasses();
+        $this->controllerSettings->model()->destroy();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
         $this->addOnDestroy();
@@ -246,6 +264,8 @@ class Controller extends BaseController
         $this->addOnAll();
         $this->policyAuthorize();
 
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_restore);
+        $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->model()->restore();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
@@ -264,6 +284,8 @@ class Controller extends BaseController
         $this->addOnAll();
         $this->policyAuthorize();
 
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_force_delete);
+        $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->model()->forceDelete();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
@@ -282,6 +304,8 @@ class Controller extends BaseController
         $this->addOnAll();
         $this->policyAuthorize();
 
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_remove_file);
+        $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->model()->removeFile($attribute);
         $this->controllerSettings->route()->setRedirectAction('edit');
         $this->controllerSettings->route()->setRedirectData();
@@ -300,6 +324,8 @@ class Controller extends BaseController
         $this->addOnAll();
         $this->policyAuthorize();
 
+        $this->controllerSettings->request()->setValidationClasses($this->validation_classes_bulk_action);
+        $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->model()->bulkAction();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
