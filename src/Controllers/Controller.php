@@ -97,12 +97,14 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'browse');
-        $this->controllerSettings->route()->setRouteAction('index');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('index');
         $this->controllerSettings->info()->setPageTitle($this->controllerSettings->info()->pluralTitle() . ' List');
         $this->controllerSettings->info()->setBackUrl(route('dashboard.index'));
-        $this->controllerSettings->dataTable()->initDataTable($this->dataTable_class);
         $this->addOnAll();
+        $this->policyAuthorize();
+
+        $this->controllerSettings->dataTable()->initDataTable($this->dataTable_class);
         $this->addOnIndex();
 
         if ($this->controllerSettings->dataTable()->dataTable()) {
@@ -116,8 +118,8 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'add');
-        $this->controllerSettings->route()->setRouteAction('create');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('create');
         $this->controllerSettings->info()->setPageTitle('Add ' . $this->controllerSettings->info()->singularTitle());
         $this->controllerSettings->info()->setBackUrl(route($this->controllerSettings->route()->routeKey() . '.index'));
         $this->controllerSettings->info()->setScriptFiles($this->create_script_files);
@@ -128,6 +130,7 @@ class Controller extends BaseController
         $this->controllerSettings->subheader()->setActionExit(true);
         $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], 1));
         $this->addOnAll();
+        $this->policyAuthorize();
         $this->addOnCreate();
 
         if ($this->controllerSettings->dataTable()->dataTable()) {
@@ -141,8 +144,9 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'add');
-        $this->controllerSettings->route()->setRouteAction('store');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('store');
+        $this->controllerSettings->request()->setEditMode(false);
         $this->controllerSettings->request()->setRules($this->validation_rules_store);
         $this->controllerSettings->request()->addFormFieldsRules();
         $this->controllerSettings->request()->validate();
@@ -150,9 +154,11 @@ class Controller extends BaseController
         $this->controllerSettings->request()->setValidationClasses($this->validation_classes_store);
         $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->formFields()->customizeValidated();
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->store();
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnStore();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
@@ -162,14 +168,13 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'edit');
-        $this->controllerSettings->model()->find($id, false);
-        $this->controllerSettings->route()->addParam('id', $id);
+        $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->route()->setRouteAction('edit');
+        $this->controllerSettings->model()->find($id, false);
         $this->controllerSettings->info()->setPageTitle('Edit ' . $this->controllerSettings->info()->singularTitle());
         $this->controllerSettings->info()->setBackUrl(route($this->controllerSettings->route()->routeKey() . '.index'));
         if (Route::has($this->route_key . '.remove_file')) $this->controllerSettings->info()->setRemoveFileUrl(route($this->route_key . '.remove_file', ['id' => $id, 'attribute' => ':attribute']));
         $this->controllerSettings->info()->setScriptFiles($this->edit_script_files);
-        $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->request()->setEditMode(true);
         $this->controllerSettings->subheader()->setDescription('Enter ' . $this->controllerSettings->info()->singularTitle(uppercase: false) . ' details and save');
         $this->controllerSettings->subheader()->setAction(true);
@@ -179,6 +184,7 @@ class Controller extends BaseController
         $this->controllerSettings->subheader()->setActionExit(true);
         $this->controllerSettings->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], $this->controllerSettings->model()->model()->status));
         $this->addOnAll();
+        $this->policyAuthorize();
         $this->addOnEdit();
 
         if ($this->controllerSettings->dataTable()->dataTable()) {
@@ -192,9 +198,9 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'edit');
-        $this->controllerSettings->model()->find($id, false);
-        $this->controllerSettings->route()->setRouteAction('update');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('update');
+        $this->controllerSettings->model()->find($id, false);
         $this->controllerSettings->request()->setEditMode(true);
         $this->controllerSettings->request()->setRules($this->validation_rules_update);
         $this->controllerSettings->request()->addFormFieldsRules();
@@ -202,9 +208,11 @@ class Controller extends BaseController
         $this->controllerSettings->request()->setValidationClasses($this->validation_classes_update);
         $this->controllerSettings->request()->validateClasses();
         $this->controllerSettings->formFields()->customizeValidated();
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->update();
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnUpdate();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
@@ -214,13 +222,15 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'destroy');
-        $this->controllerSettings->model()->find($id, false);
-        $this->controllerSettings->route()->setRouteAction('destroy');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('destroy');
+        $this->controllerSettings->model()->find($id, false);
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->delete();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnDestroy();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
@@ -230,13 +240,15 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'restore');
-        $this->controllerSettings->model()->find($id, true);
-        $this->controllerSettings->route()->setRouteAction('restore');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('restore');
+        $this->controllerSettings->model()->find($id, true);
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->restore();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnRestore();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
@@ -246,13 +258,15 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'destroy');
-        $this->controllerSettings->model()->find($id, true);
-        $this->controllerSettings->route()->setRouteAction('force_delete');
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('force_delete');
+        $this->controllerSettings->model()->find($id, true);
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->forceDelete();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnForceDelete();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
@@ -262,12 +276,15 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'edit');
-        $this->controllerSettings->model()->find($id, true);
         $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->route()->setRouteAction('remove_file');
+        $this->controllerSettings->model()->find($id, true);
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->removeFile($attribute);
         $this->controllerSettings->route()->setRedirectAction('edit');
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnRemoveFile($attribute);
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
@@ -277,13 +294,15 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'bulk action');
-        $this->controllerSettings->route()->setRouteAction('bulk_action');
         $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->request()->setValidated($request->validated());
+        $this->controllerSettings->route()->setRouteAction('bulk_action');
+        $this->addOnAll();
+        $this->policyAuthorize();
+
         $this->controllerSettings->model()->bulkAction();
         $this->controllerSettings->route()->setRedirectAction('index');
         $this->controllerSettings->route()->setRedirectData();
-        $this->addOnAll();
         $this->addOnBulkAction();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());

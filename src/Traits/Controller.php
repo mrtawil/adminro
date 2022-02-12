@@ -12,6 +12,10 @@ trait Controller
     {
     }
 
+    public function policyAuthorize()
+    {
+    }
+
     public function addOnIndex()
     {
     }
