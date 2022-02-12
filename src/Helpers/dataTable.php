@@ -2,6 +2,7 @@
 
 use Adminro\Controllers\ControllerSettings;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 
 function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
@@ -78,9 +79,7 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
 
         $datatables->filterColumn('createdUser.profile.full_name', function ($query, $keyword) {
             $query->whereHas('createdUser.profile', function ($query) use ($keyword) {
-                $query
-                    ->where('first_name', 'LIKE', "%$keyword%")
-                    ->orWhere('last_name', 'LIKE', "%$keyword%");
+                $query->where(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', "%$keyword%");
             });
         });
     }
@@ -92,9 +91,7 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
 
         $datatables->filterColumn('user.profile.full_name', function ($query, $keyword) {
             $query->whereHas('user.profile', function ($query) use ($keyword) {
-                $query
-                    ->where('first_name', 'LIKE', "%$keyword%")
-                    ->orWhere('last_name', 'LIKE', "%$keyword%");
+                $query->where(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', "%$keyword%");
             });
         });
     }
