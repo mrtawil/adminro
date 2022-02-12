@@ -10,7 +10,8 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
     $datatables = datatables()->of($model);
 
     $checkbox_column = collect($columns)->firstWhere('data', 'checkbox');
-    $user_profile_full_name_column = collect($columns)->firstWhere('data', 'created_user.profile.full_name');
+    $user_profile_full_name_column = collect($columns)->firstWhere('data', 'user.profile.full_name');
+    $created_user_profile_full_name_column = collect($columns)->firstWhere('data', 'created_user.profile.full_name');
     $model_title_column = collect($columns)->firstWhere('data', 'model.title');
 
     $columnsDateRange = collect($columns)->filter(function ($column) {
@@ -70,13 +71,27 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         });
     }
 
-    if ($user_profile_full_name_column) {
+    if ($created_user_profile_full_name_column) {
         $datatables->addColumn('created_user.profile.full_name', function ($item) use ($controllerSettings) {
             return view('adminro::includes.dashboard.datatables.columns.created_user', ['controllerSettings' => $controllerSettings, 'item' => $item]);
         });
 
         $datatables->filterColumn('createdUser.profile.full_name', function ($query, $keyword) {
             $query->whereHas('createdUser.profile', function ($query) use ($keyword) {
+                $query
+                    ->where('first_name', 'LIKE', "%$keyword%")
+                    ->orWhere('last_name', 'LIKE', "%$keyword%");
+            });
+        });
+    }
+
+    if ($user_profile_full_name_column) {
+        $datatables->addColumn('user.profile.full_name', function ($item) use ($controllerSettings) {
+            return view('adminro::includes.dashboard.datatables.columns.user', ['controllerSettings' => $controllerSettings, 'item' => $item]);
+        });
+
+        $datatables->filterColumn('user.profile.full_name', function ($query, $keyword) {
+            $query->whereHas('user.profile', function ($query) use ($keyword) {
                 $query
                     ->where('first_name', 'LIKE', "%$keyword%")
                     ->orWhere('last_name', 'LIKE', "%$keyword%");
