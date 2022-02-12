@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Arr;
+
 function getFillable($class_name)
 {
     if (!method_exists($class_name, 'getFillable')) {
