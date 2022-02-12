@@ -58,10 +58,10 @@ class DataTable
 
     public function addColumnsForms()
     {
-        $columns = collect($this->dataTable()->getColumns());
-        foreach ($columns->where('searchable', true) as $column) {
+        foreach ($this->dataTable()->getColumns() as $key => $column) {
             if ($column['type'] == 'string') {
                 $this->addForm($column['data'], [
+                    'index' => $key,
                     'type' => 'string',
                     'title' => $column['title'],
                 ]);
@@ -69,6 +69,7 @@ class DataTable
 
             if ($column['type'] == 'int') {
                 $this->addForm($column['data'], [
+                    'index' => $key,
                     'type' => 'int',
                     'title' => $column['title'],
                 ]);
@@ -76,6 +77,7 @@ class DataTable
 
             if ($column['type'] == 'select') {
                 $this->addForm($column['data'], [
+                    'index' => $key,
                     'type' => 'select',
                     'title' => $column['title'],
                     'options' => [],
@@ -84,6 +86,7 @@ class DataTable
 
             if ($column['type'] == 'date_range') {
                 $this->addForm($column['data'], [
+                    'index' => $key,
                     'type' => 'date_range',
                     'title' => $column['title'],
                 ]);
