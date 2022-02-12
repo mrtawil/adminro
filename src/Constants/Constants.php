@@ -47,6 +47,6 @@ class Constants
     ];
 
     const BULK_ACTION_VALUES = [
-        'bulk_delete', 'bulk_force_delete'
+        'bulk_restore', 'bulk_delete', 'bulk_force_delete'
     ];
 }

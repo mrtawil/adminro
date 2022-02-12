@@ -116,6 +116,7 @@ class Model
         try {
             removeFileFromStorage($this->model(), $attribute, $this->controllerSettings()->formFields()->form($attribute));
             $this->model()->update([$attribute => null, $attribute . '_path' => null]);
+            $this->controllerSettings()->route()->setSessionType('success');
         } catch (Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }
@@ -123,16 +124,34 @@ class Model
 
     public function bulkAction()
     {
-        dd($this->controllerSettings()->request()->validated());
         $bulk_action = $this->controllerSettings()->request()->validated()['bulk_action'];
-        $ids = json_decode($this->controllerSettings()->request()->validated()['ids']);
+        $ids = $this->controllerSettings()->request()->validated()['ids'];
 
         try {
-            if ($bulk_action == 'bulk_delete') {
+            $models_query = $this->class()::withTrashed()->whereIn('id', $ids);
+
+            switch ($bulk_action) {
+                case 'bulk_restore':
+                    $models_query->update(['status' => 1]);
+                    $models_query->restore();
+                    break;
+
+                case 'bulk_delete':
+                    $models_query->delete();
+                    $models_query->update(['status' => 4]);
+                    break;
+
+                case 'bulk_force_delete':
+                    foreach ($models_query->get() as $model) {
+                        $this->setModel($model);
+                        postDeleteModel($this->model(), $this->controllerSettings()->formFields()->forms());
+                        $this->updateSettings(remove: true);
+                    }
+                    $models_query->forceDelete();
+                    break;
             }
 
-            if ($bulk_action == 'bulk_force_delete') {
-            }
+            $this->controllerSettings()->route()->setSessionType('success');
         } catch (Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
         }

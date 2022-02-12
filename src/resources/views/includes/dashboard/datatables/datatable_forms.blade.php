@@ -64,6 +64,7 @@
     @csrf
     <select name="bulk_action" id="bulk_action_select" class="form-control selectpicker" data-container="body" required>
         <option value="" selected>Bulk Action</option>
+        <option value="bulk_restore">Restore</option>
         <option value="bulk_delete">Delete</option>
         <option value="bulk_force_delete">Force Delete</option>
     </select>

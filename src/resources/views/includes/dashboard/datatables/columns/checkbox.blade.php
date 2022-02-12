@@ -1,4 +1,4 @@
 <label class='checkbox checkbox-single'>
-    <input type='checkbox' name="checkable_ids[]" value='{{ $item->id }}' class='checkable'>
+    <input type='checkbox' value='{{ $item->id }}' class='checkable checkable-td'>
     <span></span>
 </label>

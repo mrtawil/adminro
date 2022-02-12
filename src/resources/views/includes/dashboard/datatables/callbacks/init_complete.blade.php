@@ -66,7 +66,7 @@
             }
         });
 
-        $('th.datatable-checkbox').html(
+        $('#datatable-html_wrapper th.datatable-checkbox').html(
             $(document.createElement('label')).prop({
                 for: 'checkbox-all',
                 class: 'checkbox checkbox-single',
@@ -79,7 +79,7 @@
             .append(document.createElement('span'))
         );
 
-        $('#checkbox-all').on('click', (e) => {
+        $('#datatable-html_wrapper #checkbox-all').on('click', (e) => {
             let value = e.target.value;
 
             $('.checkable').each(function() {
@@ -95,5 +95,16 @@
 
         $('.bulk-action-container').append($('#bulk_action_form'));
         $('#bulk_action_form').css('display', 'flex');
+
+        $('#bulk_action_form').on('submit', function(e) {
+            let checkables = $('#datatable-html_wrapper .checkable-td:checkbox:checked');
+            $.each(checkables, (i, checkable) => {
+                $(document.createElement('input')).attr({
+                    type: 'hidden',
+                    name: 'ids[]',
+                    value: $(checkable).val(),
+                }).appendTo(this);
+            });
+        });
     }
 </script>
