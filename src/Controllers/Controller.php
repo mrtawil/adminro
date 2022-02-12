@@ -276,7 +276,7 @@ class Controller extends BaseController
     {
         $this->controllerSettings->auth()->setAuth();
         $this->controllerSettings->auth()->authorize(action: 'bulk action');
-        $this->controllerSettings->route()->setRouteAction('bulk action');
+        $this->controllerSettings->route()->setRouteAction('bulk_action');
         $this->controllerSettings->request()->setRequest($request);
         $this->controllerSettings->request()->setValidated($request->validated());
         $this->controllerSettings->model()->bulkAction();

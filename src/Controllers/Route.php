@@ -20,7 +20,8 @@ class Route
         'update' => '{model} is updated successfully: {title}',
         'delete' => '{model} is deleted successfully: {title}',
         'restore' => '{model} is restored successfully: {title}',
-        'force_delete' => '{model} is deleted successfully: {title}',
+        'force_delete' => '{model} is force deleted successfully: {title}',
+        'bulk_action' => '{model} bulk action is applied successfully',
     ];
 
     const SUBMIT_REDIRECT_ACTION = [
@@ -122,8 +123,8 @@ class Route
 
         if (Arr::has(self::ROUTE_ACTION_MESSAGES, [$this->routeAction()])) {
             $session_message = self::ROUTE_ACTION_MESSAGES[$this->routeAction()];
-            $session_message = Str::replace('{model}', $this->controllerSettings()->info()->singularTitle(), $session_message);
-            $session_message = Str::replace('{title}', $this->controllerSettings()->model()->model()['title'], $session_message);
+            if (isStringMatch($session_message, '{model}')) $session_message = Str::replace('{model}', $this->controllerSettings()->info()->singularTitle(), $session_message);
+            if (isStringMatch($session_message, '{title}')) $session_message = Str::replace('{title}', $this->controllerSettings()->model()->model()['title'], $session_message);
             $this->setSessionMessages([$session_message]);
         }
     }
