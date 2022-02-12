@@ -159,83 +159,46 @@ class Info
 
     public function createUrl()
     {
-        if (!$this->create_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.create', $this->controllerSettings()->route()->params());
-        }
-
         return $this->create_url;
     }
 
     public function storeUrl()
     {
-        if (!$this->store_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.store', $this->controllerSettings()->route()->params());
-        }
-
         return $this->store_url;
     }
 
     public function editUrl()
     {
-        if (!$this->edit_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.edit', $this->controllerSettings()->route()->params());
-        }
-
         return $this->edit_url;
     }
 
     public function updateUrl()
     {
-        if (!$this->update_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.update', $this->controllerSettings()->route()->params());
-        }
-
         return $this->update_url;
     }
 
     public function deleteUrl()
     {
-        if (!$this->delete_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.delete', $this->controllerSettings()->route()->params());
-        }
-
         return $this->delete_url;
     }
 
     public function restoreUrl()
     {
-        if (!$this->restore_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.restore', $this->controllerSettings()->route()->params());
-        }
-
         return $this->restore_url;
     }
 
     public function forceDeleteUrl()
     {
-        if (!$this->force_delete_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.force_delete', $this->controllerSettings()->route()->params());
-        }
-
         return $this->force_delete_url;
     }
 
     public function removeFileUrl($attribute)
     {
-        if (!$this->remove_file_url) {
-            $this->controllerSettings()->route()->addParam('attribute', $attribute);
-            return route($this->controllerSettings()->route()->routeKey() . '.remove_file', $this->controllerSettings()->route()->params());
-        }
-
         return Str::replace(':attribute', $attribute, $this->remove_file_url);
     }
 
     public function bulkActionUrl()
     {
-        if (!$this->bulk_action_url) {
-            return route($this->controllerSettings()->route()->routeKey() . '.bulk_action', $this->controllerSettings()->route()->params());
-        }
-
         return $this->bulk_action_url;
     }
 
