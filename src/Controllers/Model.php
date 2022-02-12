@@ -131,14 +131,14 @@ class Model
             $models_query = $this->class()::withTrashed()->whereIn('id', $ids);
 
             switch ($bulk_action) {
-                case 'bulk_restore':
-                    $models_query->update(['status' => 1]);
-                    $models_query->restore();
-                    break;
-
                 case 'bulk_delete':
                     $models_query->delete();
                     $models_query->update(['status' => 4]);
+                    break;
+
+                case 'bulk_restore':
+                    $models_query->update(['status' => 1]);
+                    $models_query->restore();
                     break;
 
                 case 'bulk_force_delete':
