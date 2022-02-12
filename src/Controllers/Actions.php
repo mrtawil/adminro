@@ -16,6 +16,7 @@ class Actions
     protected $search = true;
     protected $reset = true;
     protected $buttons = true;
+    protected $bulk_action = true;
 
     public function __construct($controllerSettings)
     {
@@ -82,6 +83,11 @@ class Actions
         $this->buttons = $buttons;
     }
 
+    public function setBulkAction($bulk_action)
+    {
+        $this->bulk_action = $bulk_action;
+    }
+
     public function create()
     {
         return $this->create;
@@ -135,5 +141,10 @@ class Actions
     public function buttons()
     {
         return $this->buttons;
+    }
+
+    public function bulkAction()
+    {
+        return $this->bulk_action;
     }
 }

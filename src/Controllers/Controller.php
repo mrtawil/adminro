@@ -39,6 +39,7 @@ class Controller extends BaseController
     protected $action_search = true;
     protected $action_reset = true;
     protected $action_buttons = true;
+    protected $bulk_action = true;
     protected $create_script_files = [];
     protected $edit_script_files = [];
 
@@ -71,6 +72,7 @@ class Controller extends BaseController
         $this->controllerSettings->actions()->setSearch($this->action_search);
         $this->controllerSettings->actions()->setReset($this->action_reset);
         $this->controllerSettings->actions()->setButtons($this->action_buttons);
+        $this->controllerSettings->actions()->setBulkAction($this->bulk_action);
 
         if ($this->model) {
             $this->controllerSettings->info()->setStoreFolderName($this->model::STORE_FOLDER_NAME);

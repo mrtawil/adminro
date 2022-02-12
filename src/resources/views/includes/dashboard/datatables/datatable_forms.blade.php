@@ -60,13 +60,15 @@
     </div>
 </form>
 
-<form action="{{ $controllerSettings->info()->bulkActionUrl() }}" id="bulk_action_form" method="POST" style="display: none;">
-    @csrf
-    <select name="bulk_action" id="bulk_action_select" class="form-control selectpicker" data-container="body" data-size="7" required>
-        <option value="" selected>Bulk Action</option>
-        <option value="bulk_delete" class="option_bulk_delete">Delete</option>
-        <option value="bulk_restore" class="option_bulk_restore">Restore</option>
-        <option value="bulk_force_delete" class="option_bulk_force_delete">Force Delete</option>
-    </select>
-    <button type="submit" class="btn btn-light ml-2">Apply</button>
-</form>
+@if ($controllerSettings->actions()->bulkAction())
+    <form action="{{ $controllerSettings->info()->bulkActionUrl() }}" id="bulk_action_form" method="POST" style="display: none;">
+        @csrf
+        <select name="bulk_action" id="bulk_action_select" class="form-control selectpicker" data-container="body" data-size="7" required>
+            <option value="" selected>Bulk Action</option>
+            <option value="bulk_delete" class="option_bulk_delete">Delete</option>
+            <option value="bulk_restore" class="option_bulk_restore">Restore</option>
+            <option value="bulk_force_delete" class="option_bulk_force_delete">Force Delete</option>
+        </select>
+        <button type="submit" class="btn btn-light ml-2">Apply</button>
+    </form>
+@endif
