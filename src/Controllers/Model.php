@@ -77,7 +77,7 @@ class Model
         }
     }
 
-    public function delete()
+    public function destroy()
     {
         try {
             $this->model()->delete();
