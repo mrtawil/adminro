@@ -62,7 +62,7 @@
 
 <form action="{{ $controllerSettings->info()->bulkActionUrl() }}" id="bulk_action_form" method="POST" style="display: none;">
     @csrf
-    <select name="bulk_action" id="bulk_action_select" class="form-control selectpicker" data-container="body">
+    <select name="bulk_action" id="bulk_action_select" class="form-control selectpicker" data-container="body" required>
         <option value="" selected>Bulk Action</option>
         <option value="bulk_delete">Delete</option>
         <option value="bulk_force_delete">Force Delete</option>

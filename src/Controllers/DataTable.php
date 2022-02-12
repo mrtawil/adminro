@@ -2,7 +2,7 @@
 
 namespace Adminro\Controllers;
 
-use Adminro\Constants\SelectOptions;
+use Adminro\Constants\Constants;
 
 class DataTable
 {
@@ -39,7 +39,7 @@ class DataTable
     {
         $this->setDataTable(app($class, ['controllerSettings' => $this->controllerSettings()]));
         $this->addColumnsForms();
-        $this->setFormOption('status', 'options', SelectOptions::PUBLISH_WITH_DELETED);
+        $this->setFormOption('status', 'options', Constants::PUBLISH_WITH_DELETED);
     }
 
     public function addForm($key, $options)

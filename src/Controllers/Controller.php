@@ -3,6 +3,7 @@
 namespace Adminro\Controllers;
 
 use Adminro\Controllers\ControllerSettings;
+use Adminro\Requests\BulkActionRequest;
 use Adminro\Traits\Controller as TraitsController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -267,6 +268,22 @@ class Controller extends BaseController
         $this->controllerSettings->route()->setRedirectData();
         $this->addOnAll();
         $this->addOnRemoveFile($attribute);
+
+        return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
+    }
+
+    public function bulkAction(BulkActionRequest $request)
+    {
+        $this->controllerSettings->auth()->setAuth();
+        $this->controllerSettings->auth()->authorize(action: 'bulk action');
+        $this->controllerSettings->route()->setRouteAction('bulk action');
+        $this->controllerSettings->request()->setRequest($request);
+        $this->controllerSettings->request()->setValidated($request->validated());
+        $this->controllerSettings->model()->bulkAction();
+        $this->controllerSettings->route()->setRedirectAction('index');
+        $this->controllerSettings->route()->setRedirectData();
+        $this->addOnAll();
+        $this->addOnBulkAction();
 
         return redirect()->route($this->controllerSettings->route()->redirectRoute(), $this->controllerSettings->route()->params())->with($this->controllerSettings->route()->sessionType(), $this->controllerSettings->route()->sessionMessages());
     }

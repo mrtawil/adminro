@@ -47,4 +47,8 @@ trait Controller
     public function addOnRemoveFile($attribute)
     {
     }
+
+    public function addOnBulkAction()
+    {
+    }
 }

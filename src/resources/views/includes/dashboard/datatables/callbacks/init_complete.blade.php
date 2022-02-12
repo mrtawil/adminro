@@ -94,6 +94,6 @@
         });
 
         $('.bulk-action-container').append($('#bulk_action_form'));
-        $('#bulk_action_form').show();
+        $('#bulk_action_form').css('display', 'flex');
     }
 </script>

@@ -3,8 +3,8 @@
 namespace Adminro\Controllers;
 
 use Exception;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Validator;
 
 class Request
 {

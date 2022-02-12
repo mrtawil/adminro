@@ -121,6 +121,23 @@ class Model
         }
     }
 
+    public function bulkAction()
+    {
+        dd($this->controllerSettings()->request()->validated());
+        $bulk_action = $this->controllerSettings()->request()->validated()['bulk_action'];
+        $ids = json_decode($this->controllerSettings()->request()->validated()['ids']);
+
+        try {
+            if ($bulk_action == 'bulk_delete') {
+            }
+
+            if ($bulk_action == 'bulk_force_delete') {
+            }
+        } catch (Exception $e) {
+            throw ValidationException::withMessages([$e->getMessage()]);
+        }
+    }
+
     public function updateSettings($remove = false, $store = false)
     {
         try {
