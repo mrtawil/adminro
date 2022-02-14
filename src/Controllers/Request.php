@@ -132,12 +132,7 @@ class Request
 
         foreach ($forms as $key => $form) {
             if (($form->requiredCreate() && !$this->editMode()) || ($form->requiredEdit() && $this->editMode())) {
-                if ($form->type() == 'model_select') {
-                    $this->addRule($key . '_type', 'required');
-                    $this->addRule($key . '_id', 'required');
-                } else {
-                    $this->addRule($key, 'required');
-                }
+                $this->addRule($key, 'required');
             }
 
             if ($form->type() == 'multiselect') {

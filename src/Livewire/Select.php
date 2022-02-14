@@ -97,10 +97,10 @@ class Select extends Component
 
     public function onValueChange()
     {
-        $this->rebuildSelects();
+        $this->rebuildSelect();
     }
 
-    public function rebuildSelects()
+    public function rebuildSelect()
     {
         $this->dispatchBrowserEvent('contentChanged', ['key' => $this->key, 'type' => 'selectpicker']);
     }
