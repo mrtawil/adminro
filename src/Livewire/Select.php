@@ -4,13 +4,10 @@ namespace Adminro\Livewire;
 
 use Adminro\Classes\Select as AdminloSelect;
 use Adminro\Controllers\ControllerSettings;
-use Adminro\Traits\SelectLivewire;
 use Livewire\Component;
 
 class Select extends Component
 {
-    use SelectLivewire;
-
     public $key;
     public $form;
     public $model;
@@ -100,11 +97,21 @@ class Select extends Component
 
     public function onValueChange()
     {
-        $this->rebuildSelects();
+        $this->rebuildSelect();
     }
 
-    public function rebuildSelects()
+    public function rebuildSelect()
     {
         $this->dispatchBrowserEvent('contentChanged', ['key' => $this->key, 'type' => 'selectpicker']);
+    }
+
+    public function storeProperty($key, $value)
+    {
+        $this->$key = $value;
+    }
+
+    public function resetValue()
+    {
+        $this->reset('value');
     }
 }
