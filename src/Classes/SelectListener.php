@@ -8,6 +8,10 @@ class SelectListener
     protected $functions = [];
     protected $default;
 
+    const DEFAULT_FUNCTIONS = [
+        'storeProperty', 'resetValue', 'updateSelectItems', 'rebuildSelect'
+    ];
+
     public function __construct($attributes = [])
     {
         if (isset($attributes['key_listener'])) $this->setKeyListener($attributes['key_listener']);
