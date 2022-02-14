@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 
 function getSelectQueryItems($select, $class)
 {
+    ray(['key' => $class->key, 'method' => 'getSelectQueryItems'])->green();
     $items = [];
 
     if (!$select) {
@@ -24,6 +25,7 @@ function getSelectQueryItems($select, $class)
 
     foreach ($conditional_queries as $conditional_query) {
         $conditional_key = $conditional_query['conditional_key'];
+        ray(['conditional_key' => $conditional_key])->green();
         if (!property_exists($class, $conditional_key) || (property_exists($class, $conditional_key) && ($class->$conditional_key === null || $class->$conditional_key === ''))) {
             continue;
         }
@@ -59,6 +61,7 @@ function getSelectQueryItems($select, $class)
 
 function getSelectStringQueryItems($select_string_query, $class)
 {
+    ray(['key' => $class->key, 'method' => 'getSelectStringQueryItems'])->green();
     $items = [];
 
     if (!$select_string_query) {
@@ -73,6 +76,7 @@ function getSelectStringQueryItems($select_string_query, $class)
     $params = $select_string_query['params'];
 
     foreach ($params as $key => $query_param) {
+        ray(['query_param' => $query_param])->green();
         if (!property_exists($class, $query_param) || (property_exists($class, $query_param) && ($class->$query_param === null || $class->$query_param === ''))) {
             goto end;
         }
