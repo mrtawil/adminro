@@ -16,10 +16,10 @@ class SelectListener
     {
         if (isset($attributes['key_listener'])) $this->setKeyListener($attributes['key_listener']);
         if (isset($attributes['functions'])) $this->setFunction($attributes['functions']);
-        if (isset($attributes['default'])) $this->setFunction($attributes['default']);
+        if (isset($attributes['default'])) $this->setDefault($attributes['default']);
     }
 
-    static public function make($key_listener = null, $functions = null, $attributes = [])
+    static public function make($key_listener = null, $functions = null, $default = null, $attributes = [])
     {
         if ($key_listener !== null) {
             $attributes['key_listener'] = $key_listener;
@@ -27,6 +27,10 @@ class SelectListener
 
         if ($functions !== null) {
             $attributes['functions'] = $functions;
+        }
+
+        if ($default !== null) {
+            $attributes['default'] = $default;
         }
 
         return new static($attributes);
