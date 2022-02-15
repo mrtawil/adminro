@@ -44,11 +44,9 @@ class Select extends Component
             if (!$this->edit_mode && !$this->value) {
                 $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
             }
-
-            if ($this->value) {
-                $this->updateSelectItems();
-            }
         }
+
+        $this->updateSelectItems();
     }
 
     protected function getListeners()
@@ -86,9 +84,10 @@ class Select extends Component
     {
         if ($this->select['static_items']) {
             $this->select['items'] = $this->select_cp['items'];
-        } else {
-            $this->select['items'] = AdminloSelect::make(items: getSelectQueryItems($this->select, $this), attributes: $this->select)->attributes()['items'];
+            return;
         }
+
+        $this->select['items'] = AdminloSelect::make(items: getSelectQueryItems($this->select, $this), attributes: $this->select)->attributes()['items'];
     }
 
     public function onValueChange()
