@@ -39,14 +39,10 @@ class Select extends Component
         }
 
         if (!$this->form['hidden_value']) {
-            if ($this->edit_mode) {
-                $this->value = $this->select['items_selected'][0] ?? '';
-            } else {
-                $this->value = $this->select['items_selected'][0] ?? '';
+            $this->value = $this->select['items_selected'][0] ?? '';
 
-                if (!$this->value) {
-                    $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
-                }
+            if (!$this->edit_mode && !$this->value) {
+                $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
             }
 
             if ($this->value) {
