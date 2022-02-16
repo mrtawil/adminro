@@ -138,7 +138,7 @@ class Controller extends BaseController
         $this->controllerSettings()->subheader()->setActionCreate(true);
         $this->controllerSettings()->subheader()->setActionUpdate(true);
         $this->controllerSettings()->subheader()->setActionExit(true);
-        $this->controllerSettings()->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], 1));
+        $this->controllerSettings()->formFields()->addConfigDefaults();
         $this->addOnAll();
         $this->policyAuthorize();
 
@@ -196,7 +196,7 @@ class Controller extends BaseController
         $this->controllerSettings()->subheader()->setActionUpdate(true);
         $this->controllerSettings()->subheader()->setActionDestroy(true);
         $this->controllerSettings()->subheader()->setActionExit(true);
-        $this->controllerSettings()->formFields()->addSelect('status', call_user_func([config('adminro.select_manager'), 'getPublishSelect'], $this->controllerSettings()->model()->model()->status));
+        $this->controllerSettings()->formFields()->addConfigDefaults();
         $this->addOnAll();
         $this->policyAuthorize();
 

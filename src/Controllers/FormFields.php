@@ -88,6 +88,24 @@ class FormFields
         return $this->multi_selects;
     }
 
+    public function addConfigDefaults()
+    {
+        $config_forms = config('adminro.forms');
+        foreach ($config_forms as $form_type => $forms) {
+            foreach ($forms as $key => $form) {
+                switch ($form_type) {
+                    case 'select':
+                        if ($this->controllerSettings()->model()->model()) {
+                            $form->setItemsSelected($this->controllerSettings()->model()->model()->$key);
+                        }
+
+                        $this->addSelect($key, $form);
+                        break;
+                }
+            }
+        }
+    }
+
     public function customizeValidated()
     {
         $customizedValidated = customizeValidated($this->controllerSettings()->request()->validated(), $this->forms());
