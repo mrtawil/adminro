@@ -10,7 +10,7 @@
                 <form action="{{ Str::replace(':id', $controllerSettings->model()->model()->id, $controllerSettings->info()->updateUrl()) }}" method="POST" class="form" enctype="multipart/form-data" id="form">
                     @method("PUT")
                     @csrf
-                    <div class="row d-flex pb-5">
+                    <div class="row pb-5 forms">
                         @foreach ($controllerSettings->formFields()->forms() as $key => $form)
                             @include('adminro::includes.dashboard.utils.form', ["controllerSettings" => $controllerSettings, "key" => $key, "form" => $form])
                         @endforeach

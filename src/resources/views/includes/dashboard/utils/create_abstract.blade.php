@@ -9,7 +9,7 @@
             <div class="col-12">
                 <form action="{{ $controllerSettings->info()->storeUrl() }}" method="POST" class="form" enctype="multipart/form-data" id="form">
                     @csrf
-                    <div class="row pb-5">
+                    <div class="row pb-5 forms">
                         @foreach ($controllerSettings->formFields()->forms() as $key => $form)
                             @include('adminro::includes.dashboard.utils.form', ["controllerSettings" => $controllerSettings, "key" => $key, "form" => $form])
                         @endforeach

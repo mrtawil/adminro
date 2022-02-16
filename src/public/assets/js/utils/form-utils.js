@@ -11,11 +11,11 @@ const initTagify = () => {
 
 // Attach files
 const onAttachFilesClick = (key) => {
-    $("#" + key).click();
+    $(".forms #" + key).click();
 }
 
 const onFileInputChange = (key) => {
-    let files = $("#" + key)[0].files;
+    let files = $(".forms #" + key)[0].files;
     if (files.length > 0) {
         $("#dropzone-" + key + ' .dropzone-item').css('display', '');
         $("#dropzone-" + key + '-filename')[0].innerText = files[0].name;
@@ -49,9 +49,9 @@ const initMap = () => {
             var centerLocation;
             var markerLocation;
 
-            var idLatitude = "#" + key + "-latitude";
-            var idLongitude = "#" + key + "-longitude";
-            var idUseMyLocation = "#" + key + "-use-my-location";
+            var idLatitude = ".forms #" + key + "-latitude";
+            var idLongitude = ".forms #" + key + "-longitude";
+            var idUseMyLocation = ".forms #" + key + "-use-my-location";
             var latitudeInput = $(idLatitude);
             var longitudeInput = $(idLongitude);
 
@@ -63,7 +63,7 @@ const initMap = () => {
                 markerLocation = { lat: 0, lng: 0 };
             }
 
-            var idMap = "#" + key + "-map";
+            var idMap = ".forms #" + key + "-map";
             map = new google.maps.Map($(idMap)[0], {
                 center: centerLocation,
                 zoom: 12,
@@ -216,7 +216,7 @@ const initDatePickers = () => {
                 }
             }
 
-            $("#" + key).datepicker({
+            $(".forms #" + key).datepicker({
                 rtl: KTUtil.isRTL(),
                 todayHighlight: true,
                 orientation: "bottom left",
