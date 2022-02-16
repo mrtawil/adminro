@@ -190,7 +190,7 @@ class Request
     {
         try {
             foreach ($this->validationClasses() as $validation_class) {
-                app($validation_class, ['controllerSettings' => $this->controllerSettings(), 'validated' => $this->validated(), 'model' => $this->controllerSettings()->model()->model()]);
+                app($validation_class, ['validated' => $this->validated(), 'model' => $this->controllerSettings()->model()->model()]);
             }
         } catch (Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
