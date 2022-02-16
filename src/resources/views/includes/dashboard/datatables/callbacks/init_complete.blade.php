@@ -32,6 +32,11 @@
             });
 
             table.api().button('.buttons-reset').trigger();
+
+            $('#datatable-html_wrapper #checkbox-all').prop('checked', false);
+            $('.checkable').each(function() {
+                $(this).prop('checked', false);
+            });
         });
 
         $('#export-print').on('click', () => {
