@@ -133,10 +133,24 @@ class Request
         foreach ($forms as $key => $form) {
             if (($form->requiredCreate() && !$this->editMode()) || ($form->requiredEdit() && $this->editMode())) {
                 $this->addRule($key, 'required');
+            } else {
+                $this->addRule($key, 'nullable');
+            }
+
+            if ($form->type() == 'text') {
+                $this->addRule($key, 'string');
+            }
+
+            if ($form->type() == 'textarea') {
+                $this->addRule($key, 'string');
             }
 
             if ($form->type() == 'multiselect') {
                 $this->addRule($key, 'array');
+            }
+
+            if ($form->type() == 'date') {
+                $this->addRule($key, 'date');
             }
 
             if (($form->type() == 'image')) {
@@ -149,6 +163,10 @@ class Request
 
             if (($form->type() == 'file')) {
                 $this->addRule($key, []);
+            }
+
+            if ($form->dataType() == 'int') {
+                $this->addRule($key, 'integer');
             }
 
             if (!in_array($key, array_keys($this->rules()))) {
