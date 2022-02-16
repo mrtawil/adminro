@@ -4,6 +4,7 @@ namespace Adminro\Livewire;
 
 use Adminro\Classes\Select as AdminloSelect;
 use Adminro\Controllers\ControllerSettings;
+use Exception;
 use Livewire\Component;
 
 class Select extends Component
@@ -23,6 +24,10 @@ class Select extends Component
 
     public function mount(ControllerSettings $controllerSettings)
     {
+        if (!$controllerSettings->formFields()->select($this->key)) {
+            throw new Exception('Select form of [\'' . $this->key . '\'] is not found.');
+        }
+
         $this->form = $this->form->attributes();
         $this->model = $controllerSettings->model()->model();
         $this->edit_mode = $controllerSettings->request()->editMode();
