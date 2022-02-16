@@ -159,6 +159,10 @@ class Model
 
     public function updateSettings($remove = false, $store = false)
     {
+        if (!config('adminro.model_owner_settings_manager')) {
+            return;
+        }
+
         try {
             if ($remove) call_user_func([config('adminro.model_owner_settings_manager'), 'removeOwnerSettings'], $this->model());
             if ($store) call_user_func([config('adminro.model_owner_settings_manager'), 'storeOwnerSettings'], $this->model(), $this->controllerSettings()->request()->validated());
