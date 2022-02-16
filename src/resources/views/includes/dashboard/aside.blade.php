@@ -35,7 +35,7 @@
                             @endif
                             @foreach ($section['parents'] as $parent)
                                 @can($parent['permission'])
-                                    <li @if ($parent['tooltip']) data-toggle="tooltip" data-placement="left" data-theme="dark" @endif title="{{ $parent['title'] }}" class="menu-item menu-item-submenu @if (isset($parent['intent']) && isCurrentUrl($controllerSettings->info()->activeRoute(), 'parent', $parent['id'])) menu-item-open @endif @if (isset($parent['href']) && isCurrentUrl($controllerSettings->info()->activeRoute(), 'parent', $parent['id'], $parent['href'])) menu-item-here @endif" aria-haspopup="true" data-menu-toggle="hover">
+                                    <li @if ($parent['tooltip']) data-toggle="tooltip" data-placement="left" data-theme="dark" @endif title="{{ $parent['title'] }}" class="menu-item menu-item-submenu @if (isset($parent['intent']) && isCurrentUrl($controllerSettings->info()->activeRoute(), 'parent', $parent['id'])) menu-item-open @endif @if (isCurrentUrl($controllerSettings->info()->activeRoute(), 'parent', $parent['id'], $parent['href'] ?? '')) menu-item-here @endif" aria-haspopup="true" data-menu-toggle="hover">
                                         <a @if (($parent['type'] == 'asset' || $parent['type'] == 'route') && isset($parent['href'])) href="{{ route($parent['href']) }}" @else href="javascript:;" @endif class=" menu-link menu-toggle">
                                             <span class="menu-icon {{ $parent['icon'] }}"></span>
                                             <span class="menu-text">{{ $parent['name'] }}</span>
