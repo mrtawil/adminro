@@ -27,8 +27,6 @@
         @include('adminro::includes.dashboard.forms.switch', ['controllerSettings' => $controllerSettings, 'key' => $key, 'form' => $form])
     @elseif($form->type() == 'map')
         @include('adminro::includes.dashboard.forms.map', ['controllerSettings' => $controllerSettings, 'key' => $key, 'form' => $form])
-    @elseif($form->type() == 'table_select')
-        @include('adminro::includes.dashboard.forms.table_select', ['controllerSettings' => $controllerSettings, 'key' => $key, 'form' => $form])
     @elseif($form->type() == 'addition')
         @include('adminro::includes.dashboard.forms.addition', ['controllerSettings' => $controllerSettings, 'key' => $key, 'form' => $form])
     @endif

@@ -1,5 +1,3 @@
-var table_select_data = [];
-
 // Tagify
 const initTagify = () => {
     let inputs = $("input.tagify");
@@ -240,161 +238,6 @@ const initSwitches = () => {
     $('[data-switch=true]').bootstrapSwitch();
 }
 
-const initTableSelects = () => {
-    Object.keys(formFields).forEach((key) => {
-        const form = formFields[key];
-        if (form.type != 'table_select') {
-            return;
-        }
-
-        const table_select = tableSelects[key];
-        if (!table_select) {
-            return;
-        }
-
-        table_select_data[key] = [];
-        let old_data = old[key] ? JSON.parse(old[key]) : [];
-        if (old_data && old_data.length > 0) {
-            getTableUsersData(key, old_data);
-        }
-
-        const table = $(`#table_select_${key}`).DataTable({
-            dom: `<'d-flex justify-content-between'<l><f>><'row'<'col-sm-12'tr>>
-			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 mt-0 justify-content-md-end dataTables_pager'p>>`,
-            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
-            pageLength: 5,
-            responsive: true,
-            searchDelay: 500,
-            processing: true,
-            serverSide: true,
-            orderCellsTop: true,
-            columns: table_select.columns,
-            ajax: {
-                url: table_select.url,
-                type: 'GET',
-            },
-            language: {
-                'lengthMenu': 'Display _MENU_',
-            },
-            columnDefs: [{
-                targets: 0,
-                orderable: false,
-                render: function (data, type, full, meta) {
-                    const checked = arrayIncludes(table_select_data[key], 'id', full._id);
-                    return `
-            <label class="checkbox checkbox-single checkbox-primary mb-0 w-100 d-flex justify-content-center">
-                <input type="checkbox" value="" class="checkable" ${checked ? 'checked' : null}/>
-                <span></span>
-            </label>`;
-                },
-            }],
-            select: {
-                style: 'multi',
-                selector: 'td:first-child .checkable',
-            },
-            order: [[1, 'desc']],
-        });
-
-        table.getTableRowData = function (obj) {
-            let tr = $(obj.closest('tr'));
-            let table = $(obj.closest('table'));
-            let data = table.DataTable().row(tr).data();
-            return data;
-        }
-
-        table.on('change', '.checkable', function (e) {
-            const checked = $(this).is(':checked');
-            const raw = table.getTableRowData(e.target);
-
-            if (checked) {
-                table_select_data[key].push(raw);
-            } else {
-                removeTableSelectRaw(key, raw._id, false);
-            }
-
-            reloadTable(`#table_select_results_${key}`, table_select_data[key]);
-        });
-
-        const table_select_results = $(`#table_select_results_${key}`).DataTable({
-            data: table_select_data[key],
-            dom: `<'d-flex justify-content-between'<l><f>><'row'<'col-sm-12'tr>>
-			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 mt-0 justify-content-md-end dataTables_pager'p>>`,
-            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
-            pageLength: 5,
-            responsive: true,
-            orderCellsTop: true,
-            columns: table_select.columns_result,
-            language: {
-                'lengthMenu': 'Display _MENU_',
-            },
-            columnDefs: [{
-                targets: 0,
-                orderable: false,
-                render: function (data, type, full, meta) {
-                    return `
-            <div class="w-100 d-flex justify-content-center" onclick="removeTableSelectRaw('${key}', '${full._id}', '1')">
-              <div class="fas fa-ban pointer text-danger text-hover-secondary" style="font-size: 16px;"></div>
-            </div>
-          `;
-                },
-            }],
-            order: [[1, 'desc']],
-        });
-    });
-
-    const getTableUsersData = async (key, ids) => {
-        const users = await getUsers(ids);
-        table_select_data[key] = users;
-        reloadTable(`#table_select_results_${key}`, table_select_data[key]);
-        reloadTableAjax(`#table_select_${key}`);
-    }
-
-    const getUsers = async (ids) => {
-        const response = await sendRequest(urls.getUsers, { users_ids: ids }, 'GET');
-        return response.data.users;
-    }
-
-    const removeTableSelectRaw = (key, rawId, reloadMain) => {
-        if (!table_select_data[key]) {
-            return;
-        }
-
-        table_select_data[key] = table_select_data[key].filter((item) => {
-            return item._id != rawId;
-        });
-
-        reloadTable(`#table_select_results_${key}`, table_select_data[key]);
-        if (reloadMain) {
-            reloadTableAjax(`#table_select_${key}`);
-        }
-    }
-
-    const reloadTable = (tableKey, data) => {
-        const table = $(tableKey).DataTable().clear();
-        for (var k = 0; k < data.length; k++) {
-            table.row.add(data[k]);
-        }
-        table.draw();
-    }
-
-    const reloadTableAjax = (tableKey) => {
-        const table = $(tableKey).DataTable().ajax.reload();
-    }
-
-    $('#form').on('submit', (e) => {
-        if (tableSelects) {
-            Object.keys(tableSelects).forEach((key) => {
-                $('<input>').attr({
-                    type: 'hidden',
-                    id: key,
-                    name: key,
-                    value: JSON.stringify(getArrayValues(table_select_data[key], 'id')),
-                }).appendTo('#form');
-            });
-        }
-    });
-}
-
 $(function () {
     initMap();
     initTagify();
@@ -403,7 +246,6 @@ $(function () {
     initDatePickers();
     initTimePicker();
     initSwitches();
-    initTableSelects();
 });
 
 // Livewire

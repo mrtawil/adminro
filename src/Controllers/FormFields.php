@@ -8,7 +8,6 @@ class FormFields
     protected $forms = [];
     protected $selects = [];
     protected $multi_selects = [];
-    protected $table_selects = [];
 
     public function __construct($controllerSettings)
     {
@@ -33,11 +32,6 @@ class FormFields
     public function addMultiSelect($key, $multi_select)
     {
         $this->multi_selects[$key] = $multi_select;
-    }
-
-    public function addTableSelect($key, $table_select)
-    {
-        $this->table_selects[$key] = $table_select;
     }
 
     public function forms($main = true, $only_attributes = false)
@@ -92,20 +86,6 @@ class FormFields
     public function multiSelects()
     {
         return $this->multi_selects;
-    }
-
-    public function tableSelect($key)
-    {
-        if (!isset($this->table_selects[$key])) {
-            return null;
-        }
-
-        return $this->table_selects[$key];
-    }
-
-    public function tableSelects()
-    {
-        return $this->table_selects;
     }
 
     public function customizeValidated()

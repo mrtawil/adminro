@@ -35,7 +35,6 @@
     <script>
         const old = @json(old());
         const formFields = @json($controllerSettings->formFields()->forms(only_attributes: true));
-        const tableSelects = @json($controllerSettings->formFields()->tableSelects());
         const item = null;
     </script>
 
