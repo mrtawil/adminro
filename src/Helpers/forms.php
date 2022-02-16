@@ -165,7 +165,6 @@ function removeFileFromStorage($model, $key, $form)
 {
     $file = $model->getOriginal($key);
     $file_path = $model->getOriginal($key . '_path');
-    ray(['model' => $model, 'key' => $key, 'form' => $form]);
 
     Storage::disk("public")->delete("$file_path/$file");
     foreach ($form->sizes() as $size) {
