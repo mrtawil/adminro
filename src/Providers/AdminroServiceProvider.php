@@ -4,8 +4,10 @@ namespace Adminro\Providers;
 
 use Adminro\Console\Commands\RefreshPermissions;
 use Adminro\Console\Commands\RefreshTablesWithDummy;
-use Adminro\Livewire\ModelSelect;
+use Adminro\Livewire\File;
+use Adminro\Livewire\Image;
 use Adminro\Livewire\Select;
+use Adminro\Livewire\Video;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -24,7 +26,9 @@ class AdminroServiceProvider extends ServiceProvider
         $this->publishes([__DIR__ . '/../config/adminro.php' => config_path('adminro.php')], 'adminro::config');
 
         Livewire::component('select', Select::class);
-        Livewire::component('model-select', ModelSelect::class);
+        Livewire::component('file', File::class);
+        Livewire::component('image', Image::class);
+        Livewire::component('video', Video::class);
 
         if ($this->app->runningInConsole()) {
             $this->commands([

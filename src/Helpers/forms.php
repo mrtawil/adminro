@@ -1,5 +1,6 @@
 <?php
 
+use Adminro\Classes\Form;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -166,8 +167,12 @@ function removeFileFromStorage($model, $key, $form)
     $file = $model->getOriginal($key);
     $file_path = $model->getOriginal($key . '_path');
 
+    if ($form instanceof Form) {
+        $form = $form->attributes();
+    }
+
     Storage::disk("public")->delete("$file_path/$file");
-    foreach ($form->sizes() as $size) {
+    foreach ($form['sizes'] as $size) {
         $height = $size[0];
         $width = $size[1];
 
