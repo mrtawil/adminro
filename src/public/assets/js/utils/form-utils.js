@@ -225,6 +225,9 @@ const initForms = () => {
             case 'textarea':
                 initTextAreaForm(key);
                 break;
+            case 'date':
+                initDatePickerForm(key);
+                break;
             case 'time':
                 initTimePickerForm(key);
                 break;
