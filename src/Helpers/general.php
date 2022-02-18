@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Adminro\Classes\Form;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
 
@@ -185,7 +186,139 @@ function getDistanceBetweenTwoPoints($latitudeFrom, $longitudeFrom, $latitudeTo,
     return $result;
 }
 
-function adminroViewsPath()
+function getFormName($key, $suffix = '', $prefix = '')
 {
-    return __DIR__ . '/../resources/views';
+    $name = '';
+
+    $name_words = explode('.', $suffix . $key . $prefix);
+    foreach ($name_words as $key => $name_word) {
+        if ($key === 0) {
+            $name .= $name_word;
+        } else {
+            $name .= '[' . $name_word . ']';
+        }
+    }
+
+    return $name;
+}
+
+function getFormId($key, $suffix = '', $prefix = '')
+{
+    $id = '';
+
+    $id_words = explode('.', $suffix . $key . $prefix);
+    foreach ($id_words as $key => $id_word) {
+        if ($key === 0) {
+            $id .= $id_word;
+        } else {
+            $id .= '-' . $id_word;
+        }
+    }
+
+    return $id;
+}
+
+function getFormValue($key, $form, $model, $edit_mode, $suffix = '', $prefix = '')
+{
+    if ($form instanceof Form) {
+        $form = $form->attributes();
+    }
+
+    if ($form['hidden_value']) {
+        return;
+    }
+
+    if ($edit_mode) {
+        switch ($form['type']) {
+            case 'tagify':
+                return implode(' ,', $model[$key] ?? []) ?? '';
+                break;
+
+            case 'date':
+                if (!isset($model[$key])) {
+                    return null;
+                }
+
+                if ($model[$key] instanceof Carbon) {
+                    return $model[$key]->toDateString();
+                } else {
+                    return Carbon::parse($model[$key])->toDateString();
+                }
+                break;
+
+            case 'map':
+                if (!isset($model[$key])) {
+                    return '';
+                }
+
+                if (env('DB_CONNECTION') == 'mysql') {
+                    if (isStringMatch($suffix . $key . $prefix, 'latitude')) return $model[$key]->getLat();
+                    if (isStringMatch($suffix . $key . $prefix, 'longitute')) return $model[$key]->getLng();
+                } else if (env('DB_CONNECTION') == 'mongodb') {
+                    if (isStringMatch($suffix . $key . $prefix, 'latitude')) return $model[$key]['coordinates'][1];
+                    if (isStringMatch($suffix . $key . $prefix, 'longitute')) return $model[$key]['coordinates'][0];
+                }
+
+            default:
+                return $model[$key] ?? '';
+                break;
+        }
+    }
+
+    if (old($key)) {
+        return old($key);
+    }
+
+    return $form['value_create'];
+}
+
+function getFormRequired($form, $edit_mode)
+{
+    if ($form instanceof Form) {
+        $form = $form->attributes();
+    }
+
+    if ($edit_mode && $form['required_edit']) {
+        return true;
+    }
+
+    if (!$edit_mode && $form['required_create']) {
+        return true;
+    }
+
+    return false;
+}
+
+function getFormReadOnly($form, $edit_mode)
+{
+    if ($form instanceof Form) {
+        $form = $form->attributes();
+    }
+
+    if ($edit_mode && $form['readonly_edit']) {
+        return true;
+    }
+
+    if (!$edit_mode && $form['readonly_create']) {
+        return true;
+    }
+
+    return false;
+}
+
+function getFormDisabled($form, $edit_mode)
+{
+    if ($form instanceof Form) {
+        $form = $form->attributes();
+    }
+
+    if ($edit_mode && $form['disabled_edit']) {
+        return true;
+    }
+
+    if (!$edit_mode && $form['disabled_create']) {
+        return true;
+    }
+
+    return false;
 }

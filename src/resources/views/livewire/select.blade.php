@@ -3,12 +3,12 @@
         @if ($select)
             <div class="col-md-{{ $form['column'] }} {{ $form['class_name'] }}" data-label="container_{{ $key }}">
                 <div class="form-group">
-                    <label class="font-weight-bold d-flex align-items-center" for="{{ $key }}">
-                        <span>{{ $form['name'] }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))*@endif @if ($form['additional'])<small class="text-muted">{{ $form['additional'] }}</small>@endif</span>
-                        <div id="{{ $key }}_loader" class="ml-2" style="display: none;">
+                    <div class="d-flex align-items-center">
+                        @include('adminro::includes.dashboard.forms.utils.label', ['key' => $key, 'form' => $form])
+                        <div id="{{ $key }}_loader" class="ml-2 mb-2" style="display: none;">
                             <div class="spinner spinner-track spinner-primary"></div>
                         </div>
-                    </label>
+                    </div>
                     <select wire:model="value" wire:change="onValueChange" name="{{ $key }}" id="{{ $key }}" class="form-control form-control-lg form-control-solid selectpicker" data-size="7" data-live-search="true" @if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create'])) required @endif @if ($form['multiple']) multiple @endif @if (($edit_mode && $form['readonly_edit']) || (!$edit_mode && $form['readonly_create'])) readonly @endif @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
                         @if ($select['empty_option'])
                             <option value="" selected>Select</option>

@@ -1,11 +1,6 @@
 <div class="col-md-{{ $form['column'] }} {{ $form['class_name'] }}" data-label="container_{{ $key }}">
     <div class="form-group">
-        <label class="font-weight-bold mb-3" for="{{ $key }}">{{ $form['name'] }}@if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create']))
-                *
-                @endif @if ($form['additional'])
-                    <small class="text-muted">{{ $form['additional'] }}</small>
-                @endif
-        </label>
+        @include('adminro::includes.dashboard.forms.utils.label', ['key' => $key, 'form' => $form])
         <input type="file" name="{{ $key }}" id="{{ $key }}" class="d-none" onchange="onFileInputChange('{{ $key }}')" @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
         <div class="dropzone dropzone-multi" id="dropzone-{{ $key }}">
             <div class="d-flex align-items-center">

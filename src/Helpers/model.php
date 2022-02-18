@@ -30,11 +30,11 @@ function getFileFormKeys($class)
 
 function filterModelValidated($class, $validated, $is_post_save)
 {
-    $validated = Arr::except($validated, getSpatialFields($class));
     $validated = Arr::only($validated, getFillable($class));
 
     if (!$is_post_save) {
         $validated = Arr::except($validated, getFileFormKeys($class));
+        $validated = Arr::except($validated, getSpatialFields($class));
     }
 
     return $validated;

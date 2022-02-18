@@ -419,6 +419,7 @@ class Form
             'class_name' => $this->className(),
             'permission' => $this->permission(),
             'sizes' => $this->sizes(),
+            'autocomplete' => $this->autocomplete(),
         ];
 
         return $attributes;
