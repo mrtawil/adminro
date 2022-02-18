@@ -6,7 +6,8 @@
                 <div id="kt_header_menu" class="header-menu header-menu-mobile  header-menu-layout-default">
                     <ul class="menu-nav">
                         <li class="menu-item">
-                        <h5 class="mb-0">@can('super-admin')Super Admin @elseif(Auth::user()->company()){{ Auth::user()->company->name }}@endif
+                            <h5 class="mb-0">
+                                {{-- {{ TODO: add text}} --}}
                             </h5>
                         </li>
                     </ul>
@@ -18,7 +19,8 @@
             <div class="topbar align-items-center">
                 <div class="mr-auto">
                     <div class="topbar-item d-block d-lg-none">
-                    <h5 class="mb-0">@can('super-admin')Super Admin @elseif(Auth::user()->company()){{ Auth::user()->company->name }}@endif
+                        <h5 class="mb-0">
+                            {{-- {{ TODO: add text}} --}}
                         </h5>
                     </div>
                 </div>

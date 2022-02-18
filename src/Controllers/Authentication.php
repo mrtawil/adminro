@@ -10,7 +10,6 @@ class Authentication
     protected $controllerSettings;
     protected $required;
     protected $user;
-    protected $company;
 
     public function __construct($controllerSettings)
     {
@@ -30,21 +29,11 @@ class Authentication
     public function setAuth()
     {
         $this->setUser();
-        $this->setCompany();
     }
 
     public function setUser()
     {
         $this->user = Auth::user();
-    }
-
-    public function setCompany()
-    {
-        if (!$this->user) {
-            abort(409, 'Please set a valid user.');
-        }
-
-        $this->company = $this->user()->company;
     }
 
     public function required()
@@ -59,11 +48,6 @@ class Authentication
         }
 
         return $this->user;
-    }
-
-    public function company()
-    {
-        return $this->company;
     }
 
     public function authorize($action = '')

@@ -199,7 +199,6 @@ class Request
 
     public function addCreatorKeys()
     {
-        $this->addValidated('company_id', $this->controllerSettings()->auth()->company()->id);
         $this->addValidated('created_user_id', $this->controllerSettings()->auth()->user()->id);
     }
 }
