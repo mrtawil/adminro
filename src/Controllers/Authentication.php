@@ -3,7 +3,7 @@
 namespace Adminro\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Gate;
+use Illuminate\Support\Facades\Gate;
 
 class Authentication
 {
