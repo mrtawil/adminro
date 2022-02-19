@@ -16,18 +16,24 @@
         "php": "^7.2|^8.0",
         "laravel/ui": "^3.3",
         "livewire/livewire": "^2.10",
-        "laravel/framework": "^8.0",
-        "illuminate/support": "^8.0",
+        "laravel/framework": "^8.0|^9.0",
+        "illuminate/support": "^8.0|^9.0",
         "yajra/laravel-datatables": "^1.5",
         "yajra/laravel-datatables-buttons": "^4.0",
         "yajra/laravel-datatables-html": "^4.0",
         "yajra/laravel-datatables-oracle": "^9.18",
         "intervention/image": "^2.7",
-        "grimzy/laravel-mysql-spatial": "^5.0"
+        "grimzy/laravel-mysql-spatial": "dev-l9-compatibility"
     },
     "require-dev": {
         "spatie/laravel-ray": "^1.29"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mrtawil/laravel-mysql-spatial.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Adminro\\": "/src"
