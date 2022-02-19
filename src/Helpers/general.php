@@ -15,6 +15,10 @@ function setActiveDashboardAside($active_route)
 
     foreach ($dashboard['aside']['sections'] as $section) {
         foreach ($section['parents'] as $parent) {
+            if (isset($parent['other_routes']) && collect($parent['other_routes'])->contains($active_route)) {
+                if (!$active_parent) $active_parent = $parent;
+            }
+
             if (isset($parent['other_params'])) {
                 foreach ($parent['other_params'] as $other_param) {
                     if (!$query_params->contains($other_param)) {
@@ -34,6 +38,12 @@ function setActiveDashboardAside($active_route)
             }
 
             foreach ($items as $item) {
+                if (isset($item['other_routes']) && collect($item['other_routes'])->contains($active_route)) {
+                    if (!$active_parent) $active_parent = $parent;
+                    if (!$active_item) $active_item = $item;
+                    break;
+                }
+
                 if (isset($item['other_params'])) {
                     foreach ($item['other_params'] as $other_param) {
                         if (!$query_params->contains($other_param)) {
