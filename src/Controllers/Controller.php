@@ -33,7 +33,6 @@ class Controller extends BaseController
     protected $validation_classes_destroy = [];
     protected $validation_classes_restore = [];
     protected $validation_classes_force_delete = [];
-    protected $validation_classes_remove_file = [];
     protected $validation_classes_bulk_action = [];
     protected $subheader_show = true;
     protected $subheader_back = true;
@@ -187,7 +186,6 @@ class Controller extends BaseController
         $this->controllerSettings()->model()->find($id, false);
         $this->controllerSettings()->info()->setPageTitle('Edit ' . $this->controllerSettings()->info()->singularTitle());
         $this->controllerSettings()->info()->setBackUrl(route($this->controllerSettings()->route()->routeKey() . '.index'));
-        if (Route::has($this->route_key . '.remove_file')) $this->controllerSettings()->info()->setRemoveFileUrl(route($this->route_key . '.remove_file', ['id' => $id, 'attribute' => ':attribute']));
         $this->controllerSettings()->info()->setScriptFiles($this->edit_script_files);
         $this->controllerSettings()->request()->setEditMode(true);
         $this->controllerSettings()->subheader()->setDescription('Enter ' . $this->controllerSettings()->info()->singularTitle(uppercase: false) . ' details and save');
@@ -295,27 +293,6 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnForceDelete();
-
-        return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
-    }
-
-    public function removeFile(Request $request, $id, $attribute)
-    {
-        $this->controllerSettings()->auth()->setAuth();
-        $this->controllerSettings()->auth()->authorize(action: 'edit');
-        $this->controllerSettings()->request()->setRequest($request);
-        $this->controllerSettings()->route()->setRouteAction('remove_file');
-        $this->controllerSettings()->model()->find($id, true);
-        $this->addOnAll();
-        $this->policyAuthorize();
-
-        $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_remove_file);
-        $this->controllerSettings()->request()->validateClasses();
-        $this->addOnBeforeRemoveFile();
-        $this->controllerSettings()->model()->removeFile($attribute);
-        $this->controllerSettings()->route()->setRedirectAction('edit');
-        $this->controllerSettings()->route()->setRedirectData();
-        $this->addOnRemoveFile($attribute);
 
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }

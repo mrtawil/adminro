@@ -111,17 +111,6 @@ class Model
         }
     }
 
-    public function removeFile($attribute)
-    {
-        try {
-            removeFileFromStorage($this->model(), $attribute, $this->controllerSettings()->formFields()->form($attribute));
-            $this->model()->update([$attribute => null, $attribute . '_path' => null]);
-            $this->controllerSettings()->route()->setSessionType('success');
-        } catch (Exception $e) {
-            throw ValidationException::withMessages([$e->getMessage()]);
-        }
-    }
-
     public function bulkAction()
     {
         $bulk_action = $this->controllerSettings()->request()->validated()['bulk_action'];

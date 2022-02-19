@@ -55,10 +55,6 @@ trait Controller
     {
     }
 
-    public function addOnRemoveFile($attribute)
-    {
-    }
-
     public function addOnBulkAction()
     {
     }
@@ -80,10 +76,6 @@ trait Controller
     }
 
     public function addOnBeforeForceDelete()
-    {
-    }
-
-    public function addOnBeforeRemoveFile()
     {
     }
 

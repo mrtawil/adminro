@@ -18,7 +18,6 @@ class Info
     protected $destroy_url;
     protected $restore_url;
     protected $force_delete_url;
-    protected $remove_file_url;
     protected $bulk_action_url;
     protected $singular_title;
     protected $plural_title;
@@ -90,11 +89,6 @@ class Info
     public function setForceDeleteUrl($force_delete_url)
     {
         $this->force_delete_url = $force_delete_url;
-    }
-
-    public function setRemoveFileUrl($remove_file_url)
-    {
-        $this->remove_file_url = $remove_file_url;
     }
 
     public function setBulkActionUrl($bulk_action_url)
@@ -190,11 +184,6 @@ class Info
     public function forceDeleteUrl()
     {
         return $this->force_delete_url;
-    }
-
-    public function removeFileUrl($attribute)
-    {
-        return Str::replace(':attribute', $attribute, $this->remove_file_url);
     }
 
     public function bulkActionUrl()
