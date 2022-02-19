@@ -11,8 +11,9 @@ class Route
     protected $route_key;
     protected $route_action;
     protected $redirect_action;
+    protected $redirect_url;
     protected $params = [];
-    protected $session_type;
+    protected $session_type = 'success';
     protected $session_messages;
 
     const ROUTE_ACTION_MESSAGES = [
@@ -55,6 +56,11 @@ class Route
         $this->redirect_action = $redirect_action;
     }
 
+    public function setRedirectUrl($redirect_url)
+    {
+        $this->redirect_url = $redirect_url;
+    }
+
     public function setParams($params)
     {
         $this->params = $params;
@@ -95,6 +101,11 @@ class Route
         return $this->redirect_action;
     }
 
+    public function redirectUrl()
+    {
+        return $this->redirect_url;
+    }
+
     public function sessionType()
     {
         return $this->session_type;
@@ -118,13 +129,13 @@ class Route
         $this->setRedirectAction($redirect_action);
 
         if ($redirect_action == 'edit') {
-            $this->addParam('id', $this->controllerSettings()->model()->model()['id']);
+            if ($this->controllerSettings()->model()->model()) $this->addParam('id', $this->controllerSettings()->model()->model()['id']);
         }
 
         if (Arr::has(self::ROUTE_ACTION_MESSAGES, [$this->routeAction()])) {
             $session_message = self::ROUTE_ACTION_MESSAGES[$this->routeAction()];
             if (isStringMatch($session_message, '{model}')) $session_message = Str::replace('{model}', $this->controllerSettings()->info()->singularTitle(), $session_message);
-            if (isStringMatch($session_message, '{title}')) $session_message = Str::replace('{title}', $this->controllerSettings()->model()->model()['title'], $session_message);
+            if (isStringMatch($session_message, '{title}') && $this->controllerSettings()->model()->model()) $session_message = Str::replace('{title}', $this->controllerSettings()->model()->model()['title'], $session_message);
             $this->setSessionMessages([$session_message]);
         }
     }

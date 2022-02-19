@@ -35,7 +35,6 @@ class Controller extends BaseController
     protected $validation_classes_force_delete = [];
     protected $validation_classes_bulk_action = [];
     protected $subheader_show = true;
-    protected $subheader_back = true;
     protected $action_create = true;
     protected $action_edit = true;
     protected $action_update = true;
@@ -46,7 +45,9 @@ class Controller extends BaseController
     protected $action_search = true;
     protected $action_reset = true;
     protected $action_buttons = true;
-    protected $bulk_action = true;
+    protected $action_bulk_action = true;
+    protected $action_back = true;
+    protected $action_exit = true;
     protected $create_script_files = [];
     protected $edit_script_files = [];
 
@@ -67,7 +68,7 @@ class Controller extends BaseController
         $this->controllerSettings()->info()->setSingularTitle($this->singular_title);
         $this->controllerSettings()->info()->setPluralTitle(Str::plural($this->singular_title));
         $this->controllerSettings()->subheader()->setShow($this->subheader_show);
-        $this->controllerSettings()->subheader()->setBack($this->subheader_back);
+        $this->controllerSettings()->actions()->setBack($this->action_back);
         $this->controllerSettings()->actions()->setCreate($this->action_create);
         $this->controllerSettings()->actions()->setEdit($this->action_edit);
         $this->controllerSettings()->actions()->setUpdate($this->action_update);
@@ -78,7 +79,7 @@ class Controller extends BaseController
         $this->controllerSettings()->actions()->setSearch($this->action_search);
         $this->controllerSettings()->actions()->setReset($this->action_reset);
         $this->controllerSettings()->actions()->setButtons($this->action_buttons);
-        $this->controllerSettings()->actions()->setBulkAction($this->bulk_action);
+        $this->controllerSettings()->actions()->setBulkAction($this->action_bulk_action);
 
         if ($this->model) {
             $this->controllerSettings()->info()->setStoreFolderName($this->model::STORE_FOLDER_NAME);
@@ -133,9 +134,8 @@ class Controller extends BaseController
         $this->controllerSettings()->info()->setScriptFiles($this->create_script_files);
         $this->controllerSettings()->subheader()->setDescription('Enter ' . $this->controllerSettings()->info()->singularTitle(uppercase: false) . ' details and save');
         $this->controllerSettings()->subheader()->setAction(true);
-        $this->controllerSettings()->subheader()->setActionCreate(true);
-        $this->controllerSettings()->subheader()->setActionUpdate(true);
-        $this->controllerSettings()->subheader()->setActionExit(true);
+        $this->controllerSettings()->actions()->setDestroy(false);
+        $this->controllerSettings()->actions()->setExit(true);
         $this->controllerSettings()->formFields()->addConfigDefaults();
         $this->addOnAll();
         $this->policyAuthorize();
@@ -173,6 +173,10 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnStore();
 
+        if ($this->controllerSettings()->route()->redirectUrl()) {
+            return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+        }
+
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }
 
@@ -188,10 +192,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setEditMode(true);
         $this->controllerSettings()->subheader()->setDescription('Enter ' . $this->controllerSettings()->info()->singularTitle(uppercase: false) . ' details and save');
         $this->controllerSettings()->subheader()->setAction(true);
-        $this->controllerSettings()->subheader()->setActionCreate(true);
-        $this->controllerSettings()->subheader()->setActionUpdate(true);
-        $this->controllerSettings()->subheader()->setActionDestroy(true);
-        $this->controllerSettings()->subheader()->setActionExit(true);
+        $this->controllerSettings()->actions()->setExit(true);
         $this->controllerSettings()->formFields()->addConfigDefaults();
         $this->addOnAll();
         $this->policyAuthorize();
@@ -229,6 +230,10 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnUpdate();
 
+        if ($this->controllerSettings()->route()->redirectUrl()) {
+            return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+        }
+
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }
 
@@ -249,6 +254,10 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnDestroy();
+
+        if ($this->controllerSettings()->route()->redirectUrl()) {
+            return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+        }
 
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }
@@ -271,6 +280,10 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnRestore();
 
+        if ($this->controllerSettings()->route()->redirectUrl()) {
+            return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+        }
+
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }
 
@@ -292,6 +305,10 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnForceDelete();
 
+        if ($this->controllerSettings()->route()->redirectUrl()) {
+            return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+        }
+
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }
 
@@ -312,6 +329,10 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnBulkAction();
+
+        if ($this->controllerSettings()->route()->redirectUrl()) {
+            return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+        }
 
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }

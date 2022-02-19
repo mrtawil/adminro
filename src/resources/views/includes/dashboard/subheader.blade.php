@@ -15,7 +15,7 @@
                     <div class="spinner-border text-primary"></div>
                 </div>
                 <div ref="subheaderRight">
-                    @if ($controllerSettings->subheader()->back() && $controllerSettings->info()->backUrl())
+                    @if ($controllerSettings->actions()->back() && $controllerSettings->info()->backUrl())
                         <a href="{{ $controllerSettings->info()->backUrl() }}" class="btn btn-default font-weight-bold btn-sm px-3 font-size-base">Back</a>
                     @endif
 
@@ -26,7 +26,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-sm p-0 m-0 dropdown-menu-right">
                                 <ul class="navi py-5">
-                                    @if ($controllerSettings->subheader()->actionUpdate())
+                                    @if ($controllerSettings->actions()->update())
                                         <li class="navi-item">
                                             <button class="navi-link" form="form" name="submit" value="continue">
                                                 <span class="navi-icon"><i class="flaticon2-writing"></i></span>
@@ -34,7 +34,7 @@
                                             </button>
                                         </li>
                                     @endif
-                                    @if ($controllerSettings->subheader()->actionPrint())
+                                    @if ($controllerSettings->actions()->print())
                                         <li class="navi-item">
                                             <button class="navi-link" form="form" name="submit" value="print">
                                                 <span class="navi-icon"><i class="flaticon2-print"></i></span>
@@ -42,7 +42,7 @@
                                             </button>
                                         </li>
                                     @endif
-                                    @if ($controllerSettings->subheader()->actionCreate())
+                                    @if ($controllerSettings->actions()->create())
                                         <li class="navi-item">
                                             <button class="navi-link" form="form" name="submit" value="add_new">
                                                 <span class="navi-icon"><i class="flaticon2-medical-records"></i></span>
@@ -50,7 +50,7 @@
                                             </button>
                                         </li>
                                     @endif
-                                    @if ($controllerSettings->subheader()->actionExit())
+                                    @if ($controllerSettings->actions()->exit())
                                         <li class="navi-item">
                                             <button class="navi-link" form="form" name="submit" value="exit">
                                                 <span class="navi-icon"><i class="flaticon2-hourglass-1"></i></span>
@@ -58,7 +58,7 @@
                                             </button>
                                         </li>
                                     @endif
-                                    @if ($controllerSettings->subheader()->actionDestroy() && $controllerSettings->info()->destroyUrl())
+                                    @if ($controllerSettings->actions()->destroy() && $controllerSettings->info()->destroyUrl())
                                         <form action="{{ Str::replace(':id', $controllerSettings->model()->model()->id, $controllerSettings->info()->destroyUrl()) }}" method="POST">
                                             @method("DELETE")
                                             @csrf

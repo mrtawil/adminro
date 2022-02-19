@@ -8,7 +8,7 @@ class Actions
     protected $create = true;
     protected $edit = true;
     protected $update = true;
-    protected $destroy = true;
+    protected $destroy = false;
     protected $show = false;
     protected $print = false;
     protected $restore = true;
@@ -17,6 +17,8 @@ class Actions
     protected $reset = true;
     protected $buttons = true;
     protected $bulk_action = true;
+    protected $back = true;
+    protected $exit = false;
 
     public function __construct($controllerSettings)
     {
@@ -88,6 +90,16 @@ class Actions
         $this->bulk_action = $bulk_action;
     }
 
+    public function setBack($back)
+    {
+        $this->back = $back;
+    }
+
+    public function setExit($exit)
+    {
+        $this->exit = $exit;
+    }
+
     public function create()
     {
         return $this->create;
@@ -146,5 +158,15 @@ class Actions
     public function bulkAction()
     {
         return $this->bulk_action;
+    }
+
+    public function back()
+    {
+        return $this->back;
+    }
+
+    public function exit()
+    {
+        return $this->exit;
     }
 }
