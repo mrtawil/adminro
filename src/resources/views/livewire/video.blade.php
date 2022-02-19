@@ -9,7 +9,7 @@
                 </div>
                 @if ($edit_mode && !$form['hidden_value'] && isset($model[$key]) && $model[$key])
                     <div class="dropzone-panel mb-lg-0 mb-2">
-                        <button class="dropzone-select btn btn-light-danger font-weight-bold btn-sm" wire:click.prevent="removeFile">Remove video</button>
+                        <a class="dropzone-select btn btn-light-danger font-weight-bold btn-sm" onclick="return confirm('Are you sure?') || event.stopImmediatePropagation();" wire:click.prevent="removeFile">Remove video</a>
                     </div>
                 @endif
             </div>
