@@ -64,7 +64,6 @@ class Controller extends BaseController
         $this->controllerSettings()->auth()->setRequired(true);
         $this->controllerSettings()->route()->setRouteKey($this->route_key);
         $this->controllerSettings()->info()->setKey($this->key);
-        $this->controllerSettings()->info()->setBackUrl(route('dashboard.index'));
         $this->controllerSettings()->info()->setSingularTitle($this->singular_title);
         $this->controllerSettings()->info()->setPluralTitle(Str::plural($this->singular_title));
         $this->controllerSettings()->subheader()->setShow($this->subheader_show);
@@ -87,6 +86,7 @@ class Controller extends BaseController
             $this->controllerSettings()->formFields()->setForms($this->model::formFields());
         }
 
+        if (Route::has($this->route_key . '.index')) $this->controllerSettings()->info()->setBackUrl(route($this->route_key . '.index'));
         if (Route::has($this->route_key . '.index')) $this->controllerSettings()->info()->setActiveRoute($this->route_key . '.index');
         if (Route::has($this->route_key . '.create')) $this->controllerSettings()->info()->setCreateUrl(route($this->route_key . '.create'));
         if (Route::has($this->route_key . '.store')) $this->controllerSettings()->info()->setStoreUrl(route($this->route_key . '.store'));
@@ -130,7 +130,6 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->route()->setRouteAction('create');
         $this->controllerSettings()->info()->setPageTitle('Add ' . $this->controllerSettings()->info()->singularTitle());
-        $this->controllerSettings()->info()->setBackUrl(route($this->controllerSettings()->route()->routeKey() . '.index'));
         $this->controllerSettings()->info()->setScriptFiles($this->create_script_files);
         $this->controllerSettings()->subheader()->setDescription('Enter ' . $this->controllerSettings()->info()->singularTitle(uppercase: false) . ' details and save');
         $this->controllerSettings()->subheader()->setAction(true);
@@ -185,7 +184,6 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRouteAction('edit');
         $this->controllerSettings()->model()->find($id, false);
         $this->controllerSettings()->info()->setPageTitle('Edit ' . $this->controllerSettings()->info()->singularTitle());
-        $this->controllerSettings()->info()->setBackUrl(route($this->controllerSettings()->route()->routeKey() . '.index'));
         $this->controllerSettings()->info()->setScriptFiles($this->edit_script_files);
         $this->controllerSettings()->request()->setEditMode(true);
         $this->controllerSettings()->subheader()->setDescription('Enter ' . $this->controllerSettings()->info()->singularTitle(uppercase: false) . ' details and save');
