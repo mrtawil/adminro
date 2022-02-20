@@ -43,14 +43,14 @@ function getSelectQueryItems($select, $class)
 
     default_query:
     $default_query = $select['default_query'];
-    if ($default_query) {
-        switch ($default_query['class']) {
-            case SelectStringQuery::class:
-                $items = getSelectStringQueryItems($default_query, $class);
-                break;
-        }
-
+    if (!$default_query) {
         goto end;
+    }
+
+    switch ($default_query['class']) {
+        case SelectStringQuery::class:
+            $items = getSelectStringQueryItems($default_query, $class);
+            break;
     }
 
     end:
