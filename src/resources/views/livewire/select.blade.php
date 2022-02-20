@@ -51,20 +51,6 @@
                 rebuildSelect(key, select, value);
                 $('#' + key + '_loader').hide();
             });
-
-            var addListenerOnSearchChange = (key) => {
-                let el = $('div[data-label="container_' + key + '"] input[type="search"]');
-                $(el).on('keyup', (e) => {
-                    const value = e.target.value;
-                    console.log('value:', value);
-
-                    @this.onSearchChange(value);
-                });
-            }
-
-            $(function() {
-                // addListenerOnSearchChange(key);
-            });
         });
     </script>
 </div>

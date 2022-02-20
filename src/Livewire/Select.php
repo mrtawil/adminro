@@ -115,10 +115,4 @@ class Select extends Component
     {
         $this->reset('value');
     }
-
-    public function onSearchChange($search)
-    {
-        $this->search = $search;
-        $this->rebuildSelect();
-    }
 }
