@@ -98,6 +98,7 @@ class Select extends Component
 
     public function onValueChange()
     {
+        ray(['key' => $this->key, 'value' => $this->value]);
         $this->rebuildSelect();
     }
 

@@ -22,20 +22,33 @@ const onFileInputChange = (key) => {
 
 // Select
 const rebuildSelect = (key, select, value) => {
-    $('.forms #' + key).empty();
+    var data = $.map(JSON.parse(JSON.stringify(select.items)), function (item) {
+        item.id = item[select.value_key];
+        item.text = item[select.title_key];
 
-    if (select.empty_optio) {
-        $('.forms #' + key).append($('<option></option>').attr('value', '').text('Select'));
-    }
-
-    $.each(select.items, function (index, item) {
-        $('.forms #' + key).append($('<option></option>')
-            .attr('value', item[select.value_key])
-            .prop('selected', item[select.value_key] == value)
-            .text(item[select.title_key]));
+        return item;
     });
 
-    $('.forms #' + key).selectpicker('refresh');
+    if (select.empty_option) {
+        data.unshift({ id: '', text: 'Select' });
+    }
+
+    // $('.forms #' + key).select2("data", data, true);
+
+    $('.forms #' + key).empty().select2({
+        data: data,
+    });
+
+    // $('.forms #' + key).empty();
+
+    // if (select.empty_option) {
+    //     $('.forms #' + key).append($('<option></option>').attr('value', '').text('Select'));
+    // }
+
+    // $.each(select.items, function (index, item) {
+    //     var newOption = new Option(item[select.title_key], item[select.value_key], true, item[select.value_key] == value);
+    //     $('.forms #' + key).append(newOption).trigger('change');
+    // });
 }
 
 // ------------------- Initialize Forms -------------------
@@ -46,7 +59,7 @@ const initTagifyForm = (key, form) => {
 
 // Select
 const initSelectForm = (key, form) => {
-    $('.forms #' + key).selectpicker();
+    $('.forms #' + key).select2();
 }
 
 // Map
@@ -266,3 +279,9 @@ const initForms = () => {
 $(function () {
     initForms();
 });
+
+const initWidgets = () => {
+    $('.select2').select2();
+    $('.selectpicker').selectpicker();
+}
+initWidgets();

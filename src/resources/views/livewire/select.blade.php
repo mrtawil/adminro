@@ -9,7 +9,7 @@
                             <div class='spinner spinner-track spinner-primary'></div>
                         </div>
                     </div>
-                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg form-control-solid selectpicker' data-size='7' data-live-search='true' data-none-selected-text='Select' @if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create'])) required @endif @if ($form['multiple']) multiple @endif @if (($edit_mode && $form['readonly_edit']) || (!$edit_mode && $form['readonly_create'])) readonly @endif @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
+                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg form-control-solid select2' data-size='7' data-live-search='true' data-none-selected-text='Select' @if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create'])) required @endif @if ($form['multiple']) multiple @endif @if (($edit_mode && $form['readonly_edit']) || (!$edit_mode && $form['readonly_create'])) readonly @endif @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
                         @if ($select['empty_option'])
                             <option value='' selected>Select</option>
                         @endif
@@ -50,6 +50,10 @@
 
                 rebuildSelect(key, select, value);
                 $('#' + key + '_loader').hide();
+            });
+
+            $('#' + key).on('change', (e) => {
+                @this.set('value', e.target.value);
             });
         });
     </script>
