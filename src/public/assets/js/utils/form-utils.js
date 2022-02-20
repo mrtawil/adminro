@@ -22,9 +22,11 @@ const onFileInputChange = (key) => {
 
 // Select
 const rebuildSelect = (key, select, value) => {
+    let search_value = $('div[data-label="container_' + key + '"] input[type="search"]').val();
+
     $('.forms #' + key).empty();
 
-    if (select.empty_option) {
+    if (select.empty_option && (!search_value || (search_value && select.items.length > 0))) {
         $('.forms #' + key).append($('<option></option>').attr('value', '').text('Select'));
     }
 
