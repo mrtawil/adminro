@@ -34,7 +34,7 @@
 @section('scripts')
     <script>
         const old = @json(old());
-        const formFields = @json($controllerSettings->formFields()->forms(only_attributes: true));
+        const formFields = @json($controllerSettings->formFields()->attributes());
         const item = @json($controllerSettings->model()->model());
     </script>
 

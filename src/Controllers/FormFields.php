@@ -34,7 +34,7 @@ class FormFields
         $this->multi_selects[$key] = $multi_select;
     }
 
-    public function forms($main = true, $only_attributes = false)
+    public function forms($main = true)
     {
         $forms = collect($this->forms);
 
@@ -46,13 +46,7 @@ class FormFields
             return true;
         });
 
-        if ($only_attributes) {
-            $forms = $forms->map(function ($form) {
-                return $form->attributes();
-            });
-        }
-
-        return $forms;
+        return $forms->toArray();
     }
 
     public function form($key)
@@ -86,6 +80,29 @@ class FormFields
     public function multiSelects()
     {
         return $this->multi_selects;
+    }
+
+    public function attributes()
+    {
+        $forms = collect($this->forms())->map(function ($form) {
+            return $form->attributes();
+        });
+
+        $selects = collect($this->selects())->map(function ($select) {
+            return $select->attributes();
+        });
+
+        $multi_selects = collect($this->multiSelects())->map(function ($multi_select) {
+            return $multi_select->attributes();
+        });
+
+        $attributes = [
+            'forms' => $forms,
+            'selects' => $selects,
+            'multi_selects' => $multi_selects,
+        ];
+
+        return $attributes;
     }
 
     public function addConfigDefaults()
