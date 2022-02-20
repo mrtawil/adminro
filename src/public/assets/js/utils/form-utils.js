@@ -1,3 +1,4 @@
+// ------------------- Method -------------------
 // Attach files
 const onAttachFilesClick = (key) => {
     $('.forms #' + key).trigger('click');
@@ -19,13 +20,37 @@ const onFileInputChange = (key) => {
     }
 }
 
+// Select
+const rebuildSelect = (key, select, value) => {
+    $('.forms #' + key).empty();
+
+    if (select.empty_option) {
+        $('.forms #' + key).append($('<option></option>').attr('value', '').text('Select'));
+    }
+
+    $.each(select.items, function (index, item) {
+        $('.forms #' + key).append($('<option></option>')
+            .attr('value', item[select.value_key])
+            .prop('selected', item[select.value_key] == value)
+            .text(item[select.title_key]));
+    });
+
+    $('.forms #' + key).selectpicker('refresh');
+}
+
+// ------------------- Initialize Forms -------------------
 // Tagify
-const initTagifyForm = (key) => {
+const initTagifyForm = (key, form) => {
     new Tagify($('.forms #' + key)[0], {});
 }
 
+// Select
+const initSelectForm = (key, form) => {
+    $('.forms #' + key).selectpicker();
+}
+
 // Map
-const initMapForm = (key) => {
+const initMapForm = (key, form) => {
     var map;
     var marker;
     var centerLocation;
@@ -126,7 +151,7 @@ const initMapForm = (key) => {
     $(idUseMyLocation).on('click', useMyLocation);
 }
 
-const initMultiSelectForm = (key) => {
+const initMultiSelectForm = (key, form) => {
     $('.forms #' + key).multiSelect({
         selectableHeader: "<input type='text' class='form-control search-input mb-3' autocomplete='off' placeholder='type to filter'>",
         selectionHeader: "<input type='text' class='form-control search-input mb-3' autocomplete='off' placeholder='type to filter'>",
@@ -164,7 +189,7 @@ const initMultiSelectForm = (key) => {
     });
 }
 
-const initTextAreaForm = (key) => {
+const initTextAreaForm = (key, form) => {
     if (item && item[key]) {
         $('.forms #' + key).text(item[key]);
     } else if (old) {
@@ -172,7 +197,7 @@ const initTextAreaForm = (key) => {
     }
 };
 
-const initDatePickerForm = (key) => {
+const initDatePickerForm = (key, form) => {
     let arrows;
     if (KTUtil.isRTL()) {
         arrows = {
@@ -195,7 +220,7 @@ const initDatePickerForm = (key) => {
     });
 }
 
-const initTimePickerForm = (key) => {
+const initTimePickerForm = (key, form) => {
     $('.forms #' + key).timepicker({
         defaultTime: '',
         minuteStep: 1,
@@ -204,35 +229,35 @@ const initTimePickerForm = (key) => {
     });
 }
 
-const initSwitchForm = (key) => {
+const initSwitchForm = (key, form) => {
     $('.forms #' + key + '[data-switch=true]').bootstrapSwitch();
 }
 
 const initForms = () => {
-    Object.keys(formFields).forEach((key) => {
-        const form = formFields[key];
+    Object.keys(formFields.forms).forEach((key) => {
+        const form = formFields.forms[key];
 
         switch (form.type) {
             case 'map':
-                initMapForm(key);
+                initMapForm(key, form);
                 break;
             case 'tagify':
-                initTagifyForm(key);
+                initTagifyForm(key, form);
+                break;
+            case 'select':
+                initSelectForm(key, form);
                 break;
             case 'multiselect':
-                initMultiSelectForm(key);
+                initMultiSelectForm(key, form);
                 break;
             case 'textarea':
-                initTextAreaForm(key);
-                break;
-            case 'date':
-                initDatePickerForm(key);
+                initTextAreaForm(key, form);
                 break;
             case 'time':
-                initTimePickerForm(key);
+                initTimePickerForm(key, form);
                 break;
             case 'switch':
-                initSwitchForm(key);
+                initSwitchForm(key, form);
                 break;
         }
     });
@@ -240,17 +265,4 @@ const initForms = () => {
 
 $(function () {
     initForms();
-});
-
-// Livewire
-document.addEventListener('DOMContentLoaded', () => {
-    Livewire.hook('message.received', (message, component) => {
-        $(component.el).find('.selectpicker').selectpicker('destroy');
-    });
-});
-
-window.addEventListener('contentChanged', event => {
-    if (event.detail.type == 'selectpicker') {
-        $('#' + event.detail.key).selectpicker();
-    }
 });

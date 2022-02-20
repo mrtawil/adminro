@@ -16,6 +16,7 @@ class Select extends Component
     public $select;
     public $select_cp;
     public $value = '';
+    public $search = '';
 
     public function render()
     {
@@ -102,7 +103,7 @@ class Select extends Component
 
     public function rebuildSelect()
     {
-        $this->dispatchBrowserEvent('contentChanged', ['key' => $this->key, 'type' => 'selectpicker']);
+        $this->dispatchBrowserEvent($this->key . '_rebuild', ['key' => $this->key]);
     }
 
     public function storeProperty($key, $value)
@@ -113,5 +114,11 @@ class Select extends Component
     public function resetValue()
     {
         $this->reset('value');
+    }
+
+    public function onSearchChange($search)
+    {
+        $this->search = $search;
+        $this->rebuildSelect();
     }
 }
