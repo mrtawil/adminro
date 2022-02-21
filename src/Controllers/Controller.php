@@ -2,8 +2,10 @@
 
 namespace Adminro\Controllers;
 
+use Adminro\Classes\Select;
 use Adminro\Controllers\ControllerSettings;
 use Adminro\Requests\BulkActionRequest;
+use Adminro\Requests\SelectRequest;
 use Adminro\Traits\Controller as TraitsController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -34,6 +36,7 @@ class Controller extends BaseController
     protected $validation_classes_restore = [];
     protected $validation_classes_force_delete = [];
     protected $validation_classes_bulk_action = [];
+    protected $validation_classes_get_select_items = [];
     protected $subheader_show = true;
     protected $action_create = true;
     protected $action_edit = true;
@@ -169,6 +172,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->validateClasses();
         $this->controllerSettings()->formFields()->customizeValidated();
         $this->addOnBeforeStore();
+
         $this->controllerSettings()->model()->store();
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnStore();
@@ -226,6 +230,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->validateClasses();
         $this->controllerSettings()->formFields()->customizeValidated();
         $this->addOnBeforeUpdate();
+
         $this->controllerSettings()->model()->update();
         $this->controllerSettings()->route()->setRedirectData();
         $this->addOnUpdate();
@@ -250,6 +255,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_destroy);
         $this->controllerSettings()->request()->validateClasses();
         $this->addOnBeforeDestroy();
+
         $this->controllerSettings()->model()->destroy();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
@@ -275,6 +281,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_restore);
         $this->controllerSettings()->request()->validateClasses();
         $this->addOnBeforeRestore();
+
         $this->controllerSettings()->model()->restore();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
@@ -300,6 +307,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_force_delete);
         $this->controllerSettings()->request()->validateClasses();
         $this->addOnBeforeForceDelete();
+
         $this->controllerSettings()->model()->forceDelete();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
@@ -325,6 +333,7 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_bulk_action);
         $this->controllerSettings()->request()->validateClasses();
         $this->addOnBeforeBulkAction();
+
         $this->controllerSettings()->model()->bulkAction();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
@@ -335,5 +344,26 @@ class Controller extends BaseController
         }
 
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
+    }
+
+    public function getSelectItems(SelectRequest $request)
+    {
+        $this->controllerSettings()->auth()->setAuth();
+        $this->controllerSettings()->auth()->authorize(action: 'browse');
+        $this->controllerSettings()->request()->setRequest($request);
+        $this->controllerSettings()->request()->setValidated($request->validated());
+        $this->addOnAll();
+        $this->policyAuthorize();
+
+        $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_get_select_items);
+        $this->controllerSettings()->request()->validateClasses();
+        $this->addOnBeforeGetSelectItems();
+
+        $this->controllerSettings()->select()->getItems();
+
+        return response()->select(
+            $this->controllerSettings()->select()->items(),
+            $this->controllerSettings()->select()->paginationMore(),
+        );
     }
 }
