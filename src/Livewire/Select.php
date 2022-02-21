@@ -88,6 +88,8 @@ class Select extends Component
 
     public function updateSelectItems()
     {
+        return;
+
         if ($this->select['static_items']) {
             $this->select['items'] = $this->select_cp['items'];
             return;

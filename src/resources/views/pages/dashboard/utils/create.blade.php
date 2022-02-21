@@ -2,7 +2,6 @@
 
 @section('head')
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/multiselect/css/multi-select.css' type='text/css' />
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/select2/css/select2.min.css' type='text/css' />
 
     @isset($dataTable)
         <link href='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/datatables.bundle.css' rel='stylesheet' type='text/css' />

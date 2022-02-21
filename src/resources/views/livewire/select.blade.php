@@ -41,6 +41,7 @@
             select.listeners.forEach((listener) => {
                 window.addEventListener(listener.key_listener + '_loader', () => {
                     $('#' + key + '_loader').show();
+                    $('#' + key).prop("disabled", true);
                 });
             });
 
@@ -48,13 +49,64 @@
                 select = @this.select;
                 value = @this.value;
 
-                rebuildSelect(key, select, value);
+                let active_request = getActiveSelectRequest();
+                console.log({
+                    key: key,
+                    active_request: active_request
+                });
+
+                let options = {
+                    placeholder: "Search for items",
+                    allowClear: true,
+                    minimumInputLength: 0,
+                    escapeMarkup: function(markup) {
+                        return markup;
+                    },
+                }
+
+                if (active_request) {
+                    options.ajax = {
+                        url: active_request.url,
+                        dataType: 'json',
+                        delay: 250,
+                        cache: true,
+                        data: function(params) {
+                            query = {
+                                q: params.term,
+                                page: params.page || 1,
+                            };
+
+                            active_request.params.forEach((param) => {
+                                query[param] = @this[param];
+                            });
+
+                            return query;
+                        },
+                    }
+                }
+
+                $('#' + key).select2(options);
+
                 $('#' + key + '_loader').hide();
+                $('#' + key).prop("disabled", false);
             });
 
             $('#' + key).on('change', (e) => {
                 @this.set('value', e.target.value);
             });
+
+            var getActiveSelectRequest = () => {
+                if (select.default_request) {
+                    return select.default_request;
+                }
+
+                let conditional_request = select.conditional_requests.find((conditional_request) => @this[conditional_request.conditional_key] == conditional_request.conditional_value);
+                if (conditional_request) {
+                    return conditional_request.request;
+                }
+
+                return null;
+            }
         });
     </script>
 </div>

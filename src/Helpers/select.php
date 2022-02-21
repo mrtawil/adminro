@@ -16,13 +16,13 @@ function getSelectQueryItems($select, $class)
         $select = $select->attributes();
     }
 
-    conditional_queries:
-    $conditional_queries = $select['conditional_queries'];
-    if (count($conditional_queries) <= 0) {
+    conditional_requests:
+    $conditional_requests = $select['conditional_requests'];
+    if (count($conditional_requests) <= 0) {
         goto default_query;
     }
 
-    foreach ($conditional_queries as $conditional_query) {
+    foreach ($conditional_requests as $conditional_query) {
         $conditional_key = $conditional_query['conditional_key'];
         if (!property_exists($class, $conditional_key) || (property_exists($class, $conditional_key) && ($class->$conditional_key === null || $class->$conditional_key === ''))) {
             continue;
