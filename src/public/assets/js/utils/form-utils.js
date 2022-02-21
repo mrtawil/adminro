@@ -20,37 +20,6 @@ const onFileInputChange = (key) => {
     }
 }
 
-// Select
-const rebuildSelect = (key, select, value) => {
-    var data = $.map(JSON.parse(JSON.stringify(select.items)), function (item) {
-        item.id = item[select.value_key];
-        item.text = item[select.title_key];
-
-        return item;
-    });
-
-    if (select.empty_option) {
-        data.unshift({ id: '', text: 'Select' });
-    }
-
-    // $('.forms #' + key).select2("data", data, true);
-
-    $('.forms #' + key).empty().select2({
-        data: data,
-    });
-
-    // $('.forms #' + key).empty();
-
-    // if (select.empty_option) {
-    //     $('.forms #' + key).append($('<option></option>').attr('value', '').text('Select'));
-    // }
-
-    // $.each(select.items, function (index, item) {
-    //     var newOption = new Option(item[select.title_key], item[select.value_key], true, item[select.value_key] == value);
-    //     $('.forms #' + key).append(newOption).trigger('change');
-    // });
-}
-
 // ------------------- Initialize Forms -------------------
 // Tagify
 const initTagifyForm = (key, form) => {
