@@ -89,7 +89,6 @@
 
                 $('#' + key).select2(options);
             }
-            initSelectForm(key);
 
             var getActiveSelectRequest = (select) => {
                 if (select.default_request) {
@@ -103,6 +102,8 @@
 
                 return null;
             }
+
+            initSelectForm(key, getActiveSelectRequest(select));
         });
     </script>
 </div>

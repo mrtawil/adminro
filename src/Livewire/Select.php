@@ -36,12 +36,7 @@ class Select extends Component
         $this->select_cp = $this->select;
 
         foreach ($this->select['listeners'] as $listener) {
-            if ($listener['default'] === null) {
-                continue;
-            }
-
-            $key_listener = $listener['key_listener'];
-            $this->$key_listener = $listener['default'];
+            $this->{$listener['key_listener']} = $listener['default'] ?? null;
         }
 
         if (!$this->form['hidden_value']) {
@@ -60,10 +55,6 @@ class Select extends Component
         $listeners = collect();
         foreach ($this->select['listeners'] as $select_listener) {
             $listeners->put($select_listener['key_listener'] . '_changed', 'handleListenerFunctions');
-
-            if (!property_exists($this, $select_listener['key_listener'])) {
-                $this->{$select_listener['key_listener']} = null;
-            }
         }
 
         return $listeners->toArray();

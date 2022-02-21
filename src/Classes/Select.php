@@ -2,6 +2,8 @@
 
 namespace Adminro\Classes;
 
+use Illuminate\Support\Collection;
+
 class Select
 {
     protected $items = [];
@@ -63,6 +65,10 @@ class Select
 
     public function setItems($items)
     {
+        if (!is_array($items) && !$items instanceof Collection) {
+            $items = [$items];
+        }
+
         $this->items = $items;
 
         return $this;
