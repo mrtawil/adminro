@@ -60,6 +60,10 @@ class Select extends Component
         $listeners = collect();
         foreach ($this->select['listeners'] as $select_listener) {
             $listeners->put($select_listener['key_listener'] . '_changed', 'handleListenerFunctions');
+
+            if (!property_exists($this, $select_listener['key_listener'])) {
+                $this->{$select_listener['key_listener']} = null;
+            }
         }
 
         return $listeners->toArray();
@@ -100,7 +104,6 @@ class Select extends Component
 
     public function onValueChange()
     {
-        ray(['key' => $this->key, 'value' => $this->value]);
         $this->rebuildSelect();
     }
 

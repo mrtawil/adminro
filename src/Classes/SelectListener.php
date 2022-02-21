@@ -9,7 +9,7 @@ class SelectListener
     protected $default;
 
     const DEFAULT_FUNCTIONS = [
-        'storeProperty', 'resetValue', 'updateSelectItems', 'rebuildSelect'
+        'storeProperty', 'resetValue', 'rebuildSelect'
     ];
 
     public function __construct($attributes = [])

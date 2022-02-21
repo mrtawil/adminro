@@ -9,7 +9,7 @@
                             <div class='spinner spinner-track spinner-primary'></div>
                         </div>
                     </div>
-                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg form-control-solid select2' data-size='7' data-live-search='true' data-none-selected-text='Select' @if (($edit_mode && $form['required_edit']) || (!$edit_mode && $form['required_create'])) required @endif @if ($form['multiple']) multiple @endif @if (($edit_mode && $form['readonly_edit']) || (!$edit_mode && $form['readonly_create'])) readonly @endif @if (($edit_mode && $form['disabled_edit']) || (!$edit_mode && $form['disabled_create'])) disabled @endif>
+                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg form-control-solid' data-size='7' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' value='{{ getFormValue($key, $form, $model, $edit_mode, $suffix ?? '', $prefix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
                         @if ($select['empty_option'])
                             <option value='' selected>Select</option>
                         @endif
@@ -53,14 +53,14 @@
                 select = @this.select;
                 value = @this.value;
 
-                let active_request = getActiveSelectRequest();
-                console.log({
-                    key: key,
-                    active_request: active_request
-                });
+                initSelectForm(key, getActiveSelectRequest(select));
+                $('#' + key + '_loader').hide();
+                $('#' + key).prop('disabled', false);
+            });
 
+            var initSelectForm = (key, active_request) => {
                 let options = {
-                    placeholder: 'Search for items',
+                    placeholder: 'Select',
                     allowClear: true,
                     minimumInputLength: 0,
                 }
@@ -71,14 +71,11 @@
                         dataType: 'json',
                         delay: 250,
                         cache: true,
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
                         data: function(params) {
                             query = {
                                 q: params.term,
                                 page: params.page || 1,
-                                select: select,
+                                select: JSON.stringify(select),
                             };
 
                             active_request.params.forEach((param) => {
@@ -91,11 +88,10 @@
                 }
 
                 $('#' + key).select2(options);
-                $('#' + key + '_loader').hide();
-                $('#' + key).prop('disabled', false);
-            });
+            }
+            initSelectForm(key);
 
-            var getActiveSelectRequest = () => {
+            var getActiveSelectRequest = (select) => {
                 if (select.default_request) {
                     return select.default_request;
                 }

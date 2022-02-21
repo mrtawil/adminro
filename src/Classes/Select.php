@@ -258,7 +258,7 @@ class Select
     {
         $items = collect($this->items())->map(function ($item) {
             $item['id'] = $this->value($item);
-            $item['title'] = $this->title($item);
+            $item['text'] = $this->title($item);
             return $item;
         });
 
