@@ -51,5 +51,11 @@ class AdminroServiceProvider extends ServiceProvider
             if ($errors) $response['errors'] = $errors;
             return Response::json($response, $status);
         });
+
+        Response::macro('select', function ($results = [], $pagination = false, $status = 200) {
+            $response['results'] = $results;
+            $response['pagination']['more'] = $pagination;
+            return Response::json($response, $status);
+        });
     }
 }
