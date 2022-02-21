@@ -257,8 +257,8 @@ class Select
     public function attributes()
     {
         $items = collect($this->items())->map(function ($item) {
-            $item[$this->titleKey()] = $this->title($item);
-            $item[$this->valueKey()] = $this->value($item);
+            $item['id'] = $this->value($item);
+            $item['title'] = $this->title($item);
             return $item;
         });
 

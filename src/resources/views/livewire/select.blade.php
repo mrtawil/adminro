@@ -41,8 +41,12 @@
             select.listeners.forEach((listener) => {
                 window.addEventListener(listener.key_listener + '_loader', () => {
                     $('#' + key + '_loader').show();
-                    $('#' + key).prop("disabled", true);
+                    $('#' + key).prop('disabled', true);
                 });
+            });
+
+            $('#' + key).on('change', (e) => {
+                @this.set('value', e.target.value);
             });
 
             window.addEventListener(key + '_rebuild', (event) => {
@@ -56,12 +60,9 @@
                 });
 
                 let options = {
-                    placeholder: "Search for items",
+                    placeholder: 'Search for items',
                     allowClear: true,
                     minimumInputLength: 0,
-                    escapeMarkup: function(markup) {
-                        return markup;
-                    },
                 }
 
                 if (active_request) {
@@ -70,10 +71,14 @@
                         dataType: 'json',
                         delay: 250,
                         cache: true,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                         data: function(params) {
                             query = {
                                 q: params.term,
                                 page: params.page || 1,
+                                select: select,
                             };
 
                             active_request.params.forEach((param) => {
@@ -86,13 +91,8 @@
                 }
 
                 $('#' + key).select2(options);
-
                 $('#' + key + '_loader').hide();
-                $('#' + key).prop("disabled", false);
-            });
-
-            $('#' + key).on('change', (e) => {
-                @this.set('value', e.target.value);
+                $('#' + key).prop('disabled', false);
             });
 
             var getActiveSelectRequest = () => {

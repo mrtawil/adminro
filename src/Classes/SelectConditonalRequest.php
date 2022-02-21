@@ -83,7 +83,9 @@ class SelectConditonalRequest
     public function attributes()
     {
         $request = $this->request();
-        if ($request) $request = $request->attributes();
+        if ($request instanceof SelectRequest) {
+            $request = $request->attributes();
+        }
 
         $attributes = [
             'conditional_key' => $this->conditionalKey(),

@@ -27,4 +27,15 @@ return [
     */
 
     'model_owner_settings_manager' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Select page limit
+    |--------------------------------------------------------------------------
+    |
+    | The number of select items sent per response
+    |
+    */
+
+    'select_page_limit' => 10,
 ];
