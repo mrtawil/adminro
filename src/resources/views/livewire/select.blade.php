@@ -31,6 +31,9 @@
         <script>
             document.addEventListener('livewire:load', function() {
                 const key = @this.key;
+                var key_listeners = @this.select.listeners.map((listener) => {
+                    return listener.key_listener;
+                });
 
                 const select_loader_event = new Event(key + '_loader');
                 @this.on(key + '_changed', () => {
@@ -108,7 +111,7 @@
                         }
                     }
 
-                    if (@this.select.static_items || (!@this.select.static_items && active_request)) {
+                    if ((@this.select.static_items && checkParams(key_listeners)) || (!@this.select.static_items && active_request)) {
                         $('.forms #' + key).prop('disabled', false);
                     } else {
                         $('.forms #' + key).prop('disabled', true);
