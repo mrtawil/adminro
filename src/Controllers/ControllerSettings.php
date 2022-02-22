@@ -26,6 +26,7 @@ class ControllerSettings
         $this->request = new Request(controllerSettings: $this);
         $this->route = new Route(controllerSettings: $this);
         $this->dataTable = new DataTable(controllerSettings: $this);
+        $this->select = new Select(controllerSettings: $this);
         $this->global_variables = new GlobalVariables(controllerSettings: $this);
     }
 
@@ -72,6 +73,11 @@ class ControllerSettings
     public function dataTable(): DataTable
     {
         return $this->dataTable;
+    }
+
+    public function select(): Select
+    {
+        return $this->select;
     }
 
     public function globalVariables(): GlobalVariables

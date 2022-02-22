@@ -16,6 +16,7 @@
     <link href='{{ URL::asset('vendor/adminro/assets/css/custom.css') }}' rel='stylesheet' type='text/css'>
     @livewireStyles
     @yield('head')
+    @stack('head')
 </head>
 
 <body id='kt_body' class='header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading'>
@@ -49,6 +50,7 @@
     <script src='{{ URL::asset('vendor/adminro/assets/js/pages/admin.js') }}'></script>
     @livewireScripts
     @yield('scripts')
+    @stack('scripts')
 </body>
 
 </html>

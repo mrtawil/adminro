@@ -2,6 +2,8 @@
 
 namespace Adminro\Classes;
 
+use Illuminate\Support\Collection;
+
 class Select
 {
     protected $items = [];
@@ -14,8 +16,8 @@ class Select
     protected $empty_option = true;
     protected $static_items = true;
     protected $listeners = [];
-    protected $default_query;
-    protected $conditional_queries = [];
+    protected $default_request;
+    protected $conditional_requests = [];
 
     public function __construct($attributes = [])
     {
@@ -27,7 +29,7 @@ class Select
         if (isset($attributes['value_key'])) $this->setValueKey($attributes['value_key']);
         if (isset($attributes['empty_option'])) $this->setEmptyOption($attributes['empty_option']);
         if (isset($attributes['static_items'])) $this->setStaticItems($attributes['static_items']);
-        if (isset($attributes['default_query'])) $this->setDefaultQuery(SelectStringQuery::make($attributes['default_query']));
+        if (isset($attributes['default_request'])) $this->setDefaultRequest(SelectRequest::make($attributes['default_request']));
 
         if (isset($attributes['additional'])) {
             foreach ($attributes['additional'] as $additional) {
@@ -41,9 +43,9 @@ class Select
             }
         }
 
-        if (isset($attributes['conditional_queries'])) {
-            foreach ($attributes['conditional_queries'] as $conditional_query) {
-                $this->addConditionalQuery(SelectConditonalQuery::make(attributes: $conditional_query));
+        if (isset($attributes['conditional_requests'])) {
+            foreach ($attributes['conditional_requests'] as $conditional_request) {
+                $this->addConditionalRequest(SelectConditonalRequest::make(attributes: $conditional_request));
             }
         }
     }
@@ -63,6 +65,10 @@ class Select
 
     public function setItems($items)
     {
+        if (!is_array($items) && !$items instanceof Collection) {
+            $items = [$items];
+        }
+
         $this->items = $items;
 
         return $this;
@@ -149,23 +155,23 @@ class Select
         return $this;
     }
 
-    public function setDefaultQuery($default_query)
+    public function setDefaultRequest($default_request)
     {
-        $this->default_query = $default_query;
+        $this->default_request = $default_request;
 
         return $this;
     }
 
-    public function setConditionalQueries($conditional_queries)
+    public function setConditionalRequests($conditional_requests)
     {
-        $this->conditional_queries = $conditional_queries;
+        $this->conditional_requests = $conditional_requests;
 
         return $this;
     }
 
-    public function addConditionalQuery(SelectConditonalQuery $conditional_query)
+    public function addConditionalRequest(SelectConditonalRequest $conditional_request)
     {
-        array_push($this->conditional_queries, $conditional_query);
+        array_push($this->conditional_requests, $conditional_request);
 
         return $this;
     }
@@ -220,14 +226,14 @@ class Select
         return $this->listeners;
     }
 
-    public function defaultQuery()
+    public function defaultRequest()
     {
-        return $this->default_query;
+        return $this->default_request;
     }
 
-    public function conditionalQueries()
+    public function conditionalRequests()
     {
-        return $this->conditional_queries;
+        return $this->conditional_requests;
     }
 
     public function title($item)
@@ -257,8 +263,8 @@ class Select
     public function attributes()
     {
         $items = collect($this->items())->map(function ($item) {
-            $item[$this->titleKey()] = $this->title($item);
-            $item[$this->valueKey()] = $this->value($item);
+            $item['id'] = $this->value($item);
+            $item['text'] = $this->title($item);
             return $item;
         });
 
@@ -270,13 +276,11 @@ class Select
             return $listener->attributes();
         });
 
-        $default_query = $this->defaultQuery();
-        if ($default_query) {
-            $default_query = $default_query->attributes();
-        }
+        $default_request = $this->defaultRequest();
+        if ($default_request) $default_request = $default_request->attributes();
 
-        $conditional_queries = collect($this->conditionalQueries())->map(function ($conditional_query) {
-            return $conditional_query->attributes();
+        $conditional_requests = collect($this->conditionalRequests())->map(function ($conditional_request) {
+            return $conditional_request->attributes();
         });
 
         $attributes = [
@@ -290,8 +294,8 @@ class Select
             'empty_option' => $this->emptyOption(),
             'static_items' => $this->staticItems(),
             'listeners' => $listeners,
-            'default_query' => $default_query,
-            'conditional_queries' => $conditional_queries,
+            'default_request' => $default_request,
+            'conditional_requests' => $conditional_requests,
         ];
 
         return $attributes;

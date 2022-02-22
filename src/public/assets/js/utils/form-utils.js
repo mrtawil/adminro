@@ -20,24 +20,6 @@ const onFileInputChange = (key) => {
     }
 }
 
-// Select
-const rebuildSelect = (key, select, value) => {
-    $('.forms #' + key).empty();
-
-    if (select.empty_optio) {
-        $('.forms #' + key).append($('<option></option>').attr('value', '').text('Select'));
-    }
-
-    $.each(select.items, function (index, item) {
-        $('.forms #' + key).append($('<option></option>')
-            .attr('value', item[select.value_key])
-            .prop('selected', item[select.value_key] == value)
-            .text(item[select.title_key]));
-    });
-
-    $('.forms #' + key).selectpicker('refresh');
-}
-
 // ------------------- Initialize Forms -------------------
 // Tagify
 const initTagifyForm = (key, form) => {
@@ -46,7 +28,7 @@ const initTagifyForm = (key, form) => {
 
 // Select
 const initSelectForm = (key, form) => {
-    $('.forms #' + key).selectpicker();
+    $('.forms #' + key).select2();
 }
 
 // Map
@@ -245,7 +227,7 @@ const initForms = () => {
                 initTagifyForm(key, form);
                 break;
             case 'select':
-                initSelectForm(key, form);
+                // initSelectForm(key, form);
                 break;
             case 'multiselect':
                 initMultiSelectForm(key, form);
@@ -266,3 +248,9 @@ const initForms = () => {
 $(function () {
     initForms();
 });
+
+const initWidgets = () => {
+    $('.select2').select2();
+    $('.selectpicker').selectpicker();
+}
+initWidgets();

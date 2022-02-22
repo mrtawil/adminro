@@ -8,6 +8,7 @@ use Adminro\Livewire\File;
 use Adminro\Livewire\Image;
 use Adminro\Livewire\Select;
 use Adminro\Livewire\Video;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -36,5 +37,25 @@ class AdminroServiceProvider extends ServiceProvider
                 RefreshTablesWithDummy::class,
             ]);
         }
+
+        Response::macro('success', function ($message = '', $data = [], $status = 200) {
+            $response = [];
+            if ($message) $response['message'] = $message;
+            if ($data) $response['data'] = $data;
+            return Response::json($response, $status);
+        });
+
+        Response::macro('error', function ($message = '', $errors = [], $status = 400) {
+            $response = [];
+            if ($message) $response['message'] = $message;
+            if ($errors) $response['errors'] = $errors;
+            return Response::json($response, $status);
+        });
+
+        Response::macro('select', function ($results = [], $pagination = false, $status = 200) {
+            $response['results'] = $results;
+            $response['pagination']['more'] = $pagination;
+            return Response::json($response, $status);
+        });
     }
 }

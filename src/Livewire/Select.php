@@ -36,12 +36,7 @@ class Select extends Component
         $this->select_cp = $this->select;
 
         foreach ($this->select['listeners'] as $listener) {
-            if ($listener['default'] === null) {
-                continue;
-            }
-
-            $key_listener = $listener['key_listener'];
-            $this->$key_listener = $listener['default'];
+            $this->{$listener['key_listener']} = $listener['default'] ?? null;
         }
 
         if (!$this->form['hidden_value']) {
@@ -51,8 +46,6 @@ class Select extends Component
                 $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
             }
         }
-
-        $this->updateSelectItems();
     }
 
     protected function getListeners()
@@ -86,16 +79,6 @@ class Select extends Component
         $this->emit($this->key . '_changed', $this->key, $value);
     }
 
-    public function updateSelectItems()
-    {
-        if ($this->select['static_items']) {
-            $this->select['items'] = $this->select_cp['items'];
-            return;
-        }
-
-        $this->select['items'] = AdminloSelect::make(items: getSelectQueryItems($this->select, $this), attributes: $this->select)->attributes()['items'];
-    }
-
     public function onValueChange()
     {
         $this->rebuildSelect();
@@ -103,7 +86,7 @@ class Select extends Component
 
     public function rebuildSelect()
     {
-        $this->dispatchBrowserEvent($this->key . '_rebuild', ['key' => $this->key]);
+        $this->emitSelf($this->key . '_rebuild', ['key' => $this->key]);
     }
 
     public function storeProperty($key, $value)
@@ -114,5 +97,6 @@ class Select extends Component
     public function resetValue()
     {
         $this->reset('value');
+        $this->emit($this->key . '_changed', $this->key, null);
     }
 }

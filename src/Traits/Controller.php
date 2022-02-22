@@ -35,6 +35,10 @@ trait Controller
     {
     }
 
+    public function addOnShow()
+    {
+    }
+
     public function addOnEdit()
     {
     }
@@ -59,6 +63,10 @@ trait Controller
     {
     }
 
+    public function addOnGetSelectItems()
+    {
+    }
+
     public function addOnBeforeStore()
     {
     }
@@ -80,6 +88,10 @@ trait Controller
     }
 
     public function addOnBeforeBulkAction()
+    {
+    }
+
+    public function addOnBeforeGetSelectItems()
     {
     }
 }

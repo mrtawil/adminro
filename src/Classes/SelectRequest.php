@@ -2,29 +2,33 @@
 
 namespace Adminro\Classes;
 
-class SelectStringQuery
+class SelectRequest
 {
-    protected $query;
+    protected $url;
     protected $params = [];
 
     public function __construct($attributes = [])
     {
-        if (isset($attributes['query'])) $this->setQuery($attributes['query']);
+        if (isset($attributes['url'])) $this->setUrl($attributes['url']);
         if (isset($attributes['params'])) $this->setParams($attributes['params']);
     }
 
-    static public function make($query = null, $attributes = [])
+    static public function make($url = null, $params = null, $attributes = [])
     {
-        if ($query !== null) {
-            $attributes['query'] = $query;
+        if ($url !== null) {
+            $attributes['url'] = $url;
+        }
+
+        if ($params !== null) {
+            $attributes['params'] = $params;
         }
 
         return new static($attributes);
     }
 
-    public function setQuery($query)
+    public function setUrl($url)
     {
-        $this->query = $query;
+        $this->url = $url;
 
         return $this;
     }
@@ -36,9 +40,9 @@ class SelectStringQuery
         return $this;
     }
 
-    public function query()
+    public function url()
     {
-        return $this->query;
+        return $this->url;
     }
 
     public function params()
@@ -49,8 +53,7 @@ class SelectStringQuery
     public function attributes()
     {
         $attributes = [
-            'class' => get_class($this),
-            'query' => $this->query(),
+            'url' => $this->url(),
             'params' => $this->params(),
         ];
 

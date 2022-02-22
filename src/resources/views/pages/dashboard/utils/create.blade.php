@@ -40,6 +40,7 @@
 
     <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/multiselect/js/jquery.multi-select.js'></script>
     <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/multiselect/js/jquery.quicksaerch.js'></script>
+    <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/select2/js/select2.full.min.js'></script>
 
     <script src='{{ URL::asset('vendor/adminro/assets/js/utils/modals.js') }}'></script>
     <script src='{{ URL::asset('vendor/adminro/assets/js/utils/form-utils.js') }}'></script>

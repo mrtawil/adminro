@@ -41,14 +41,20 @@ class Model
         return $this->model;
     }
 
-    public function find($id, $with_trashed = false)
+    public function find($id, $with_trashed = false, $findOrFail = true)
     {
         $model = $this->class()::query();
         if ($with_trashed) {
             $model->withTrashed();
         }
 
-        $this->setModel($model->find($id));
+        if ($findOrFail) {
+            $model = $model->findOrFail($id);
+        } else {
+            $model = $model->find($id);
+        }
+
+        $this->setModel($model);
     }
 
     public function store()
