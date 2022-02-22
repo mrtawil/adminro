@@ -111,5 +111,6 @@ class Select extends Component
     public function resetValue()
     {
         $this->reset('value');
+        $this->emit($this->key . '_changed', $this->key, null);
     }
 }
