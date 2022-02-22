@@ -111,7 +111,11 @@ class Select
         $active_request = $this->controllerSettings()->request()->validatedKey('active_request');
         if (isset($active_request['params'])) {
             foreach ($active_request['params'] as $param) {
-                $model->where($param, $this->controllerSettings()->request()->request()->input($param));
+                if (is_array($this->controllerSettings()->request()->request()->input($param))) {
+                    $model->whereIn($param, $this->controllerSettings()->request()->request()->input($param));
+                } else {
+                    $model->where($param, $this->controllerSettings()->request()->request()->input($param));
+                }
             }
         }
 
