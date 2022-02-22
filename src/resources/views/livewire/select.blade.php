@@ -39,15 +39,15 @@
 
                 @this.select.listeners.forEach((listener) => {
                     window.addEventListener(listener.key_listener + '_loader', () => {
-                        $('#' + key).prop('disabled', true);
+                        $('.forms #' + key).prop('disabled', true);
                         $('#' + key + '_loader').show();
                     });
                 });
 
-                $('#' + key).on('change', (e) => {
+                $('.forms #' + key).on('change', (e) => {
                     if (@this.form.multiple) {
                         let values = [];
-                        $('#' + key).find(':selected').each(function(index, option) {
+                        $('.forms #' + key).find(':selected').each(function(index, option) {
                             values.push($(option).val());
                         });
 
@@ -109,15 +109,15 @@
                     }
 
                     if (@this.select.static_items || (!@this.select.static_items && active_request)) {
-                        $('#' + key).prop('disabled', false);
+                        $('.forms #' + key).prop('disabled', false);
                     } else {
-                        $('#' + key).prop('disabled', true);
+                        $('.forms #' + key).prop('disabled', true);
                     }
 
-                    $('#' + key).select2(options);
+                    $('.forms #' + key).select2(options);
 
                     if (first_load) {
-                        $('#' + key).on("select2:clear", function(e) {
+                        $('.forms #' + key).on("select2:clear", function(e) {
                             $(this).on("select2:opening.cancelOpen", function(e) {
                                 e.preventDefault();
 
