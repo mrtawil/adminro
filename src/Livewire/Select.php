@@ -2,7 +2,6 @@
 
 namespace Adminro\Livewire;
 
-use Adminro\Classes\Select as AdminloSelect;
 use Adminro\Controllers\ControllerSettings;
 use Exception;
 use Livewire\Component;
