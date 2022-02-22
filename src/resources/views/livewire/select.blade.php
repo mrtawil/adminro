@@ -30,6 +30,7 @@
     <script>
         document.addEventListener('livewire:load', function() {
             const key = @this.key;
+            var select_js_listeners = false;
 
             const select_loader_event = new Event(key + '_loader');
             @this.on(key + '_changed', () => {
@@ -96,6 +97,18 @@
                 }
 
                 $('#' + key).select2(options);
+
+                if (!select_js_listeners) {
+                    select_js_listeners = true;
+
+                    $('#' + key).on("select2:clear", function(e) {
+                        $(this).on("select2:opening.cancelOpen", function(e) {
+                            e.preventDefault();
+
+                            $(this).off("select2:opening.cancelOpen");
+                        });
+                    });
+                }
             }
 
             var getActiveSelectRequest = (select) => {
