@@ -227,7 +227,7 @@ const initForms = () => {
                 initTagifyForm(key, form);
                 break;
             case 'select':
-                // initSelectForm(key, form);
+                initSelectForm(key, form);
                 break;
             case 'multiselect':
                 initMultiSelectForm(key, form);
