@@ -46,8 +46,6 @@ class Select extends Component
                 $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
             }
         }
-
-        $this->updateSelectItems();
     }
 
     protected function getListeners()
@@ -79,18 +77,6 @@ class Select extends Component
     public function updated($name, $value)
     {
         $this->emit($this->key . '_changed', $this->key, $value);
-    }
-
-    public function updateSelectItems()
-    {
-        return;
-
-        if ($this->select['static_items']) {
-            $this->select['items'] = $this->select_cp['items'];
-            return;
-        }
-
-        $this->select['items'] = AdminloSelect::make(items: getSelectQueryItems($this->select, $this), attributes: $this->select)->attributes()['items'];
     }
 
     public function onValueChange()
