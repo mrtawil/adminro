@@ -82,7 +82,7 @@
                         options.data = @this.select.items;
                     }
 
-                    if (active_request) {
+                    if (active_request && !@this.select.static_items) {
                         options.ajax = {
                             url: active_request.url,
                             dataType: 'json',
