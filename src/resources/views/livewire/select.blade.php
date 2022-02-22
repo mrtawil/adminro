@@ -85,7 +85,11 @@
                     options.ajax = {
                         url: active_request.url,
                         dataType: 'json',
+                        method: 'POST',
                         delay: 250,
+                        headers: {
+                            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+                        },
                         data: function(params) {
                             query = {
                                 q: params.term,
