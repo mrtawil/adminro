@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 class Select
 {
     protected $items = [];
-    protected $items_selected = [];
+    protected $items_selected = null;
     protected $title_prefix = '';
     protected $title_key = 'title';
     protected $title_capitalize = false;
@@ -76,10 +76,6 @@ class Select
 
     public function setItemsSelected($items_selected)
     {
-        if (!is_array($items_selected)) {
-            $items_selected = [$items_selected];
-        }
-
         $this->items_selected = $items_selected;
 
         return $this;
