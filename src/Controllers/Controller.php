@@ -186,6 +186,22 @@ class Controller extends BaseController
         return redirect()->route($this->controllerSettings()->route()->redirectRoute(), $this->controllerSettings()->route()->params())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
     }
 
+    public function show(Request $request, $id)
+    {
+        $this->controllerSettings()->auth()->setAuth();
+        $this->controllerSettings()->auth()->authorize(action: 'read');
+        $this->controllerSettings()->request()->setRequest($request);
+        $this->controllerSettings()->route()->setRouteAction('show');
+        $this->controllerSettings()->model()->find($id, false);
+        $this->controllerSettings()->info()->setPageTitle('Show ' . $this->controllerSettings()->info()->singularTitle());
+        $this->addOnAll();
+        $this->policyAuthorize();
+
+        $this->addOnShow();
+
+        return 'show';
+    }
+
     public function edit(Request $request, $id)
     {
         $this->controllerSettings()->auth()->setAuth();

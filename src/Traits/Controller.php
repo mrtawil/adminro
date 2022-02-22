@@ -35,6 +35,10 @@ trait Controller
     {
     }
 
+    public function addOnShow()
+    {
+    }
+
     public function addOnEdit()
     {
     }
