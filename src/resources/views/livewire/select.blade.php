@@ -9,7 +9,7 @@
                             <div class='spinner spinner-track spinner-primary'></div>
                         </div>
                     </div>
-                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg' data-size='7' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' @if ($form['multiple']) multiple @endif value='{{ getFormValue($key, $form, $model, $edit_mode, $suffix ?? '', $prefix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
+                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' @if ($form['multiple']) multiple @endif value='{{ getFormValue($key, $form, $model, $edit_mode, $suffix ?? '', $prefix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
                         @if ($select['empty_option'] && !$form['multiple'])
                             <option value='' selected>Select</option>
                         @endif
@@ -30,7 +30,6 @@
     <script>
         document.addEventListener('livewire:load', function() {
             const key = @this.key;
-            var select_js_listeners = false;
 
             const select_loader_event = new Event(key + '_loader');
             @this.on(key + '_changed', () => {
@@ -58,19 +57,27 @@
             });
 
             @this.on(key + '_rebuild', (event) => {
-                initSelectForm(key, getActiveSelectRequest(@this.select));
+                initSelectForm(key, getActiveSelectRequest(@this.select), false);
                 $('#' + key + '_loader').hide();
             });
 
-            var initSelectForm = (key, active_request) => {
+            var initSelectForm = (key, active_request, first_load) => {
                 let options = {
-                    data: @this.select.items,
                     placeholder: 'Select',
                     allowClear: true,
                     minimumInputLength: 0,
                     escapeMarkup: function(markup) {
                         return markup;
                     },
+                    language: {
+                        searching: function() {
+                            // return 'Searching';
+                        }
+                    }
+                }
+
+                if (first_load) {
+                    options.data = @this.select.items;
                 }
 
                 if (active_request) {
@@ -78,7 +85,6 @@
                         url: active_request.url,
                         dataType: 'json',
                         delay: 250,
-                        cache: true,
                         data: function(params) {
                             query = {
                                 q: params.term,
@@ -96,10 +102,6 @@
                     }
                 }
 
-                if (!@this.select.static_items) {
-                    $('#' + key).empty();
-                }
-
                 if (@this.select.static_items || (!@this.select.static_items && active_request)) {
                     $('#' + key).prop('disabled', false);
                 } else {
@@ -108,9 +110,7 @@
 
                 $('#' + key).select2(options);
 
-                if (!select_js_listeners) {
-                    select_js_listeners = true;
-
+                if (first_load) {
                     $('#' + key).on("select2:clear", function(e) {
                         $(this).on("select2:opening.cancelOpen", function(e) {
                             e.preventDefault();
@@ -153,7 +153,7 @@
                 return true;
             }
 
-            initSelectForm(key, getActiveSelectRequest(@this.select));
+            initSelectForm(key, getActiveSelectRequest(@this.select), true);
         });
     </script>
 </div>
