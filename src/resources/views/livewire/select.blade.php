@@ -9,8 +9,8 @@
                             <div class='spinner spinner-track spinner-primary'></div>
                         </div>
                     </div>
-                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg form-control-solid' data-size='7' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' value='{{ getFormValue($key, $form, $model, $edit_mode, $suffix ?? '', $prefix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
-                        @if ($select['empty_option'])
+                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control form-control-lg form-control-solid' data-size='7' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' @if ($form['multiple']) multiple @endif value='{{ getFormValue($key, $form, $model, $edit_mode, $suffix ?? '', $prefix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
+                        @if ($select['empty_option'] && !$form['multiple'])
                             <option value='' selected>Select</option>
                         @endif
                         @foreach ($select['items'] as $item)
@@ -45,7 +45,16 @@
             });
 
             $('#' + key).on('change', (e) => {
-                @this.set('value', e.target.value);
+                if (@this.form.multiple) {
+                    let values = [];
+                    $('#' + key).find(':selected').each(function(index, option) {
+                        values.push($(option).val());
+                    });
+
+                    @this.set('value', values);
+                } else {
+                    @this.set('value', e.target.value);
+                }
             });
 
             @this.on(key + '_rebuild', (event) => {
