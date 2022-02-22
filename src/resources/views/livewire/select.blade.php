@@ -64,6 +64,7 @@
 
             var initSelectForm = (key, active_request) => {
                 let options = {
+                    data: @this.select.items,
                     placeholder: 'Select',
                     allowClear: true,
                     minimumInputLength: 0,
