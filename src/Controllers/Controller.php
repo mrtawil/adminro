@@ -51,6 +51,7 @@ class Controller extends BaseController
     protected $action_bulk_action = true;
     protected $action_back = true;
     protected $action_exit = true;
+    protected $select_page_limit;
     protected $create_script_files = [];
     protected $edit_script_files = [];
 
@@ -83,6 +84,7 @@ class Controller extends BaseController
         $this->controllerSettings()->actions()->setReset($this->action_reset);
         $this->controllerSettings()->actions()->setButtons($this->action_buttons);
         $this->controllerSettings()->actions()->setBulkAction($this->action_bulk_action);
+        $this->controllerSettings()->select()->setPageLimit($this->select_page_limit ?? config('adminro.select_page_limit'));
 
         if ($this->model) {
             $this->controllerSettings()->info()->setStoreFolderName($this->model::STORE_FOLDER_NAME);

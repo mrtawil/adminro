@@ -7,6 +7,7 @@ use Adminro\Classes\Select as SelectClass;
 class Select
 {
     protected $controllerSettings;
+    protected $page_limit;
     protected $items = [];
     protected $count = 0;
     protected $pagination_more = false;
@@ -22,6 +23,11 @@ class Select
         return $this->controllerSettings;
     }
 
+    public function setPageLimit($page_limit)
+    {
+        $this->page_limit = $page_limit;
+    }
+
     public function setItems($items)
     {
         $this->items = $items;
@@ -35,6 +41,11 @@ class Select
     public function setPaginationMore($pagination_more)
     {
         $this->pagination_more = $pagination_more;
+    }
+
+    public function pageLimit()
+    {
+        return $this->page_limit;
     }
 
     public function items()
@@ -64,21 +75,51 @@ class Select
         return $this->pagination_more;
     }
 
+    public function validateParams()
+    {
+        $active_request = $this->controllerSettings()->request()->validatedKey('active_request');
+        if (!isset($active_request['params'])) {
+            return true;
+        }
+
+        foreach ($active_request['params'] as $param) {
+            if ($this->controllerSettings()->request()->request()->input($param) === null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getItems()
     {
         $this->get_items = true;
 
+        if (!$this->validateParams()) {
+            $this->setItems([]);
+            $this->setCount(0);
+            $this->setPaginationMore(false);
+            return;
+        }
+
         $model = $this->controllerSettings()->model()->class()
             ::selectItems()
-            ->when($this->controllerSettings()->request()->validatedKey('q'), function ($query) {
-                $query->where('title', 'LIKE', '%' . $this->controllerSettings()->request()->validatedKey('q') . '%');
-            });
+            ->when($this->controllerSettings()->request()->requestKey('q'), function ($query) {
+                $query->selectSearch($this->controllerSettings()->request()->validatedKey('q'));
+            });;
+
+        $active_request = $this->controllerSettings()->request()->validatedKey('active_request');
+        if (isset($active_request['params'])) {
+            foreach ($active_request['params'] as $param) {
+                $model->where($param, $this->controllerSettings()->request()->request()->input($param));
+            }
+        }
 
         $model_count = clone $model;
         $model_count = $model_count->count();
 
         $model = $model
-            ->selectPaginate($this->controllerSettings()->request()->validatedKey('page'))
+            ->selectPaginate($this->controllerSettings()->request()->validatedKey('page'), $this->pageLimit())
             ->get();
 
         $select = SelectClass::make($model, attributes: json_decode((string) $this->controllerSettings()->request()->validatedKey('select'), true));

@@ -63,6 +63,9 @@
                     placeholder: 'Select',
                     allowClear: true,
                     minimumInputLength: 0,
+                    escapeMarkup: function(markup) {
+                        return markup;
+                    },
                 }
 
                 if (active_request) {
@@ -70,12 +73,13 @@
                         url: active_request.url,
                         dataType: 'json',
                         delay: 250,
-                        cache: true,
+                        cache: false,
                         data: function(params) {
                             query = {
                                 q: params.term,
                                 page: params.page || 1,
                                 select: JSON.stringify(select),
+                                active_request: active_request,
                             };
 
                             active_request.params.forEach((param) => {
@@ -85,6 +89,10 @@
                             return query;
                         },
                     }
+                }
+
+                if (!select.static_items) {
+                    $('#' + key).empty();
                 }
 
                 $('#' + key).select2(options);

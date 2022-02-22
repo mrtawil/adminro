@@ -27,6 +27,7 @@ class SelectRequest extends FormRequest
             'q' => ['nullable', 'string'],
             'page' => ['integer', 'min:1'],
             'select' => ['required', 'json'],
+            'active_request' => ['nullable', 'array'],
         ];
     }
 }
