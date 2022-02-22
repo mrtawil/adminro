@@ -100,7 +100,7 @@ class Select extends Component
 
     public function rebuildSelect()
     {
-        $this->dispatchBrowserEvent($this->key . '_rebuild', ['key' => $this->key]);
+        $this->emitSelf($this->key . '_rebuild', ['key' => $this->key]);
     }
 
     public function storeProperty($key, $value)
