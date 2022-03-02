@@ -41,7 +41,7 @@ class Select extends Component
         if (!$this->form['hidden_value']) {
             $this->value = $this->select['items_selected'] ?? '';
 
-            if (!$this->edit_mode && $this->value === null) {
+            if (!$this->edit_mode && ($this->value === null || (is_array($this->value) && count($this->value) <= 0))) {
                 $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
             }
         }
