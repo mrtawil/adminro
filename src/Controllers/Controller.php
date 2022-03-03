@@ -85,6 +85,7 @@ class Controller extends BaseController
         $this->controllerSettings()->actions()->setButtons($this->action_buttons);
         $this->controllerSettings()->actions()->setBulkAction($this->action_bulk_action);
         $this->controllerSettings()->select()->setPageLimit($this->select_page_limit ?? config('adminro.select_page_limit'));
+        $this->controllerSettings()->dataTable()->setDataTableClass($this->dataTable_class);
 
         if ($this->model) {
             $this->controllerSettings()->info()->setStoreFolderName($this->model::STORE_FOLDER_NAME);

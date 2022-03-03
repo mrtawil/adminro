@@ -3,11 +3,13 @@
 namespace Adminro\Controllers;
 
 use Adminro\Constants\Constants;
+use Exception;
 
 class DataTable
 {
     protected $controllerSettings;
     protected $dataTable;
+    protected $dataTable_class;
     protected $forms = [];
 
     public function __construct($controllerSettings)
@@ -25,6 +27,11 @@ class DataTable
         $this->dataTable = $dataTable;
     }
 
+    public function setDataTableClass($dataTable_class)
+    {
+        $this->dataTable_class = $dataTable_class;
+    }
+
     public function dataTable()
     {
         return $this->dataTable;
@@ -35,8 +42,21 @@ class DataTable
         return $this->forms;
     }
 
-    public function initDataTable($class)
+    public function dataTableClass()
     {
+        return $this->dataTable_class;
+    }
+
+    public function initDataTable($class = null)
+    {
+        if (!$class) {
+            $class = $this->dataTableClass();
+        }
+
+        if (!$class) {
+            throw new Exception('Datatable class is missing.');
+        }
+
         $this->setDataTable(app($class, ['controllerSettings' => $this->controllerSettings()]));
         $this->addColumnsForms();
         $this->setFormOption('status', 'options', Constants::PUBLISH_WITH_DELETED);
