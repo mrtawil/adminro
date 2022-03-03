@@ -14,8 +14,8 @@
                             <option value='' selected>Select</option>
                         @endif
                         @foreach ($select['items'] as $item)
-                            <option value='{{ $item[$select['value_key']] }}' @selected($item[$select['value_key']]==$this->value)>
-                                <span>{{ $item[$select['title_key']] }}</span>
+                            <option value='{{ $item['id'] }}' @selected($item['id']==$this->value)>
+                                <span>{{ $item['text'] }}</span>
                             </option>
                         @endforeach
                     </select>
