@@ -2,7 +2,6 @@
 
 namespace Adminro\Controllers;
 
-use Adminro\Classes\Select;
 use Adminro\Controllers\ControllerSettings;
 use Adminro\Requests\BulkActionRequest;
 use Adminro\Requests\SelectRequest;
