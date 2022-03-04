@@ -25,6 +25,7 @@ class Controller extends BaseController
     protected $singular_title;
     protected $model;
     protected $dataTable_class;
+    protected $service_classes = [];
     protected $validation_rules_store = [];
     protected $validation_rules_update = [];
     protected $validation_classes_index = [];
@@ -86,6 +87,8 @@ class Controller extends BaseController
         $this->controllerSettings()->actions()->setBulkAction($this->action_bulk_action);
         $this->controllerSettings()->select()->setPageLimit($this->select_page_limit ?? config('adminro.select_page_limit'));
         $this->controllerSettings()->dataTable()->setDataTableClass($this->dataTable_class);
+        $this->controllerSettings()->services()->setServiceClasses($this->service_classes);
+        $this->controllerSettings()->services()->initServiceClasses();
 
         if ($this->model) {
             $this->controllerSettings()->info()->setStoreFolderName($this->model::STORE_FOLDER_NAME);
@@ -105,6 +108,7 @@ class Controller extends BaseController
         if (Route::has($this->route_key . '.bulk_action')) $this->controllerSettings()->info()->setBulkActionUrl(route($this->route_key . '.bulk_action'));
 
         $this->addOnConstruct();
+        $this->controllerSettings()->services()->executeMethod('addOnConstruct');
     }
 
     public function index(Request $request)
@@ -115,13 +119,18 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRouteAction('index');
         $this->controllerSettings()->info()->setPageTitle($this->controllerSettings()->info()->pluralTitle() . ' List');
         $this->controllerSettings()->info()->setBackUrl(route('dashboard.index'));
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_index);
         $this->controllerSettings()->request()->validateClasses();
-        $this->controllerSettings()->dataTable()->initDataTable($this->dataTable_class);
+        $this->controllerSettings()->dataTable()->initDataTable();
+
         $this->addOnIndex();
+        $this->controllerSettings()->services()->executeMethod('addOnIndex');
 
         if ($this->controllerSettings()->dataTable()->dataTable()) {
             return $this->controllerSettings()->dataTable()->dataTable()->render('adminro::pages.dashboard.utils.index', ['controllerSettings' => $this->controllerSettings, 'dataTable' => $this->controllerSettings()->dataTable()->dataTable()]);
@@ -143,12 +152,17 @@ class Controller extends BaseController
         $this->controllerSettings()->actions()->setDestroy(false);
         $this->controllerSettings()->actions()->setExit(true);
         $this->controllerSettings()->formFields()->addConfigDefaults();
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_create);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnCreate();
+        $this->controllerSettings()->services()->executeMethod('addOnCreate');
 
         if ($this->controllerSettings()->dataTable()->dataTable()) {
             return $this->controllerSettings()->dataTable()->dataTable()->render('adminro::pages.dashboard.utils.create', ['controllerSettings' => $this->controllerSettings, 'dataTable' => $this->controllerSettings()->dataTable()->dataTable()]);
@@ -163,7 +177,10 @@ class Controller extends BaseController
         $this->controllerSettings()->auth()->authorize(action: 'add');
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->route()->setRouteAction('store');
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setEditMode(false);
@@ -174,11 +191,15 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_store);
         $this->controllerSettings()->request()->validateClasses();
         $this->controllerSettings()->formFields()->customizeValidated();
+
         $this->addOnBeforeStore();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeStore');
 
         $this->controllerSettings()->model()->store();
         $this->controllerSettings()->route()->setRedirectData();
+
         $this->addOnStore();
+        $this->controllerSettings()->services()->executeMethod('addOnStore');
 
         if ($this->controllerSettings()->route()->redirectUrl()) {
             return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
@@ -195,10 +216,14 @@ class Controller extends BaseController
         $this->controllerSettings()->route()->setRouteAction('show');
         $this->controllerSettings()->model()->find($id, false);
         $this->controllerSettings()->info()->setPageTitle('Show ' . $this->controllerSettings()->info()->singularTitle());
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->addOnShow();
+        $this->controllerSettings()->services()->executeMethod('addOnShow');
 
         return 'show';
     }
@@ -217,12 +242,17 @@ class Controller extends BaseController
         $this->controllerSettings()->subheader()->setAction(true);
         $this->controllerSettings()->actions()->setExit(true);
         $this->controllerSettings()->formFields()->addConfigDefaults();
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_edit);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnEdit();
+        $this->controllerSettings()->services()->executeMethod('addOnEdit');
 
         if ($this->controllerSettings()->dataTable()->dataTable()) {
             return $this->controllerSettings()->dataTable()->dataTable()->render('adminro::pages.dashboard.utils.edit', ['controllerSettings' => $this->controllerSettings, 'dataTable' => $this->controllerSettings()->dataTable()->dataTable()]);
@@ -238,7 +268,10 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->route()->setRouteAction('update');
         $this->controllerSettings()->model()->find($id, false);
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setEditMode(true);
@@ -248,11 +281,15 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_update);
         $this->controllerSettings()->request()->validateClasses();
         $this->controllerSettings()->formFields()->customizeValidated();
+
         $this->addOnBeforeUpdate();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeUpdate');
 
         $this->controllerSettings()->model()->update();
         $this->controllerSettings()->route()->setRedirectData();
+
         $this->addOnUpdate();
+        $this->controllerSettings()->services()->executeMethod('addOnUpdate');
 
         if ($this->controllerSettings()->route()->redirectUrl()) {
             return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
@@ -268,17 +305,24 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->route()->setRouteAction('destroy');
         $this->controllerSettings()->model()->find($id, false);
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_destroy);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnBeforeDestroy();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeDestroy');
 
         $this->controllerSettings()->model()->destroy();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
+
         $this->addOnDestroy();
+        $this->controllerSettings()->services()->executeMethod('addOnDestroy');
 
         if ($this->controllerSettings()->route()->redirectUrl()) {
             return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
@@ -294,17 +338,24 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->route()->setRouteAction('restore');
         $this->controllerSettings()->model()->find($id, true);
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_restore);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnBeforeRestore();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeRestore');
 
         $this->controllerSettings()->model()->restore();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
+
         $this->addOnRestore();
+        $this->controllerSettings()->services()->executeMethod('addOnRestore');
 
         if ($this->controllerSettings()->route()->redirectUrl()) {
             return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
@@ -320,17 +371,24 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->route()->setRouteAction('force_delete');
         $this->controllerSettings()->model()->find($id, true);
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_force_delete);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnBeforeForceDelete();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeForceDelete');
 
         $this->controllerSettings()->model()->forceDelete();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
+
         $this->addOnForceDelete();
+        $this->controllerSettings()->services()->executeMethod('addOnForceDelete');
 
         if ($this->controllerSettings()->route()->redirectUrl()) {
             return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
@@ -346,17 +404,24 @@ class Controller extends BaseController
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->request()->setValidated($request->validated());
         $this->controllerSettings()->route()->setRouteAction('bulk_action');
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_bulk_action);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnBeforeBulkAction();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeBulkAction');
 
         $this->controllerSettings()->model()->bulkAction();
         $this->controllerSettings()->route()->setRedirectAction('index');
         $this->controllerSettings()->route()->setRedirectData();
+
         $this->addOnBulkAction();
+        $this->controllerSettings()->services()->executeMethod('addOnBulkAction');
 
         if ($this->controllerSettings()->route()->redirectUrl()) {
             return redirect()->to($this->controllerSettings()->route()->redirectUrl())->with($this->controllerSettings()->route()->sessionType(), $this->controllerSettings()->route()->sessionMessages());
@@ -371,14 +436,22 @@ class Controller extends BaseController
         $this->controllerSettings()->auth()->authorize(action: 'browse');
         $this->controllerSettings()->request()->setRequest($request);
         $this->controllerSettings()->request()->setValidated($request->validated());
+
         $this->addOnAll();
+        $this->controllerSettings()->services()->executeMethod('addOnAll');
+
         $this->policyAuthorize();
 
         $this->controllerSettings()->request()->setValidationClasses($this->validation_classes_get_select_items);
         $this->controllerSettings()->request()->validateClasses();
+
         $this->addOnBeforeGetSelectItems();
+        $this->controllerSettings()->services()->executeMethod('addOnBeforeGetSelectItems');
 
         $this->controllerSettings()->select()->getItems();
+
+        $this->addOnGetSelectItems();
+        $this->controllerSettings()->services()->executeMethod('addOnGetSelectItems');
 
         return response()->select(
             $this->controllerSettings()->select()->items(),

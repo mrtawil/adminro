@@ -13,6 +13,8 @@ class ControllerSettings
     protected $request;
     protected $route;
     protected $dataTable;
+    protected $select;
+    protected $services;
     protected $global_variables;
 
     public function __construct()
@@ -27,6 +29,7 @@ class ControllerSettings
         $this->route = new Route(controllerSettings: $this);
         $this->dataTable = new DataTable(controllerSettings: $this);
         $this->select = new Select(controllerSettings: $this);
+        $this->services = new Service(controllerSettings: $this);
         $this->global_variables = new GlobalVariables(controllerSettings: $this);
     }
 
@@ -78,6 +81,11 @@ class ControllerSettings
     public function select(): Select
     {
         return $this->select;
+    }
+
+    public function services(): Service
+    {
+        return $this->services;
     }
 
     public function globalVariables(): GlobalVariables
