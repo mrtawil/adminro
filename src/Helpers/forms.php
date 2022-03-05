@@ -1,6 +1,8 @@
 <?php
 
 use Adminro\Classes\Form;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Grimzy\LaravelMysqlSpatial\Types\Point;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -179,4 +181,53 @@ function removeFileFromStorage($model, $key, $form)
         $targetFile = "$file_path/{$height}x{$width}/$file";
         Storage::disk("public")->delete($targetFile);
     }
+}
+
+function formatModel($model, $forms, $specific_attribtues = [])
+{
+    if (!$model) {
+        return null;
+    }
+
+    $model_formatted = [];
+    foreach ($specific_attribtues as $specific_attribute) {
+        $model_formatted[$specific_attribute] = $model[$specific_attribute] ?? null;
+    }
+
+    foreach ($forms as $key => $form) {
+        if (!isset($model[$key]) || !isset($model_formatted[$key])) {
+            continue;
+        }
+
+        if ($form->type() == "image") {
+            $fileName = $model[$key];
+            $filePath = $model[$key . '_path'] ?? null;
+
+            $files = collect();
+            $files->put('default', getStorageUrl($filePath, $fileName));
+            foreach ($form->sizes() as $size) {
+                $files->put("{$size[0]}x{$size[1]}", getStorageUrl($filePath, $fileName, "{$size[0]}x{$size[1]}"));
+            }
+
+            $model_formatted[$key] = $files;
+        }
+
+        if ($form->type() == "date") {
+            $model_formatted[$key] = Carbon::parse($model[$key])->tz(env('APP_TIMEZONE'))->format('Y-m-d');
+
+            if (isset($model_formatted[$key . '_time_ago'])) {
+                $model_formatted[$key . '_time_ago'] = Carbon::parse($model[$key])->tz(env('APP_TIMEZONE'))->diffForHumans();
+            }
+
+            if (isset($model_formatted[$key . '_time_ago_short'])) {
+                $model_formatted[$key . '_time_ago_short'] = Carbon::parse($model[$key])->tz(env('APP_TIMEZONE'))->diffForHumans(['parts' => 1, 'short' => true, 'syntax' => CarbonInterface::DIFF_ABSOLUTE]);
+            }
+        }
+
+        if ($form->type() == "time") {
+            $model_formatted[$key] = Carbon::parse($model[$key])->tz(env('APP_TIMEZONE'))->format('h:i a');
+        }
+    }
+
+    return $model_formatted;
 }
