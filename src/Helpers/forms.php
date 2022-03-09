@@ -183,15 +183,15 @@ function removeFileFromStorage($model, $key, $form)
     }
 }
 
-function formatModel($model, $forms, $specific_attribtues = [])
+function formatModel($model, $forms, $attributes = [])
 {
     if (!$model) {
         return null;
     }
 
     $model_formatted = [];
-    foreach ($specific_attribtues as $specific_attribute) {
-        $model_formatted[$specific_attribute] = $model[$specific_attribute] ?? null;
+    foreach ($attributes as $attribute) {
+        $model_formatted[$attribute] = $model[$attribute] ?? null;
     }
 
     foreach ($forms as $key => $form) {
