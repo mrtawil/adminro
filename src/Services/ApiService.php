@@ -17,10 +17,17 @@ class ApiService
         return new static();
     }
 
-    public function formatModel($attributes = [], ...$models)
+    public function formatModel($attributes = [], $models = [])
     {
         if (!$this->model) {
             throw new Exception('Please specify a model in the class');
+        }
+
+        $collection_force = false;
+
+        if (!$models instanceof Collection) {
+            $models = collect([$models]);
+            $collection_force = true;
         }
 
         $models_formatted = collect();
@@ -30,7 +37,7 @@ class ApiService
             $models_formatted->push($model_formatted);
         }
 
-        if (!is_array($models) && !$models instanceof Collection) {
+        if ($collection_force) {
             return $models_formatted->first();
         }
 
