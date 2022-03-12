@@ -24,7 +24,6 @@ class ApiService
         }
 
         $collection_force = false;
-
         if (!$models instanceof Collection) {
             $models = collect([$models]);
             $collection_force = true;
@@ -33,7 +32,7 @@ class ApiService
         $models_formatted = collect();
         foreach ($models as $model) {
             $model_formatted = formatModel($model, $this->model::formFields(), $attributes);
-            $this->addOnFormatModel($attributes, $model, $model_formatted);
+            $model_formatted = $this->addOnFormatModel($attributes, $model, $model_formatted);
             $models_formatted->push($model_formatted);
         }
 
