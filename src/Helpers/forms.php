@@ -64,6 +64,8 @@ function postSaveModel($model, $validated, $forms, $isStore, $storeFolderName = 
                     if ($validated[$key]["latitude"] != 0 || $validated[$key]["longitude"] != 0) {
                         $location = new Point($validated[$key]["latitude"], $validated[$key]["longitude"]);
                         $model[$key] = $location;
+                    } else {
+                        $model[$key] = null;
                     }
                 }
             }
