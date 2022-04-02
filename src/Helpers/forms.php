@@ -233,3 +233,14 @@ function formatModel($model, $forms, $attributes = [])
 
     return $model_formatted;
 }
+
+function saveFile($file, $storeFolderName = 'others')
+{
+    $fileStoreName = 'file-' . Str::random(16) . '.' . $file->extension();
+    Storage::putFileAs("public/$storeFolderName/", $file, $fileStoreName);
+
+    return [
+        'name' => $fileStoreName,
+        'path' => $storeFolderName,
+    ];
+}
