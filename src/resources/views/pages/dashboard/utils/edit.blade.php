@@ -61,8 +61,8 @@
     @endforeach
 
     @foreach (collect($controllerSettings->formFields()->forms())->where('type', 'addition') as $form)
-        @if ($form['script_file'])
-            <script src='{{ $form['script_file'] }}'></script>
+        @if ($form->scriptPath())
+            <script src='{{ $form->scriptPath() }}'></script>
         @endif
     @endforeach
 @endsection

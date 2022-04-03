@@ -30,6 +30,8 @@ class Form
     protected $permission = null;
     protected $sizes = [];
     protected $autocomplete = 'off';
+    protected $blade_path;
+    protected $script_path;
 
     public function __construct($attributes = [])
     {
@@ -57,6 +59,8 @@ class Form
         if (isset($attributes['permission'])) $this->setPermission($attributes['permission']);
         if (isset($attributes['sizes'])) $this->setSizes($attributes['sizes']);
         if (isset($attributes['autocomplete'])) $this->setAutocomplete($attributes['autocomplete']);
+        if (isset($attributes['blade_path'])) $this->setAutocomplete($attributes['blade_path']);
+        if (isset($attributes['script_path'])) $this->setAutocomplete($attributes['script_path']);
     }
 
     static public function make($type = null, $name = null, $required_both = null, $attributes = [])
@@ -263,6 +267,20 @@ class Form
         return $this;
     }
 
+    public function setBladePath($blade_path)
+    {
+        $this->blade_path = $blade_path;
+
+        return $this;
+    }
+
+    public function setScriptPath($script_path)
+    {
+        $this->script_path = $script_path;
+
+        return $this;
+    }
+
     public function type()
     {
         return $this->type;
@@ -393,6 +411,16 @@ class Form
         return $this->autocomplete;
     }
 
+    public function bladePath()
+    {
+        return $this->blade_path;
+    }
+
+    public function scriptPath()
+    {
+        return $this->script_path;
+    }
+
     public function attributes()
     {
         $attributes = [
@@ -420,6 +448,8 @@ class Form
             'permission' => $this->permission(),
             'sizes' => $this->sizes(),
             'autocomplete' => $this->autocomplete(),
+            'blade_path' => $this->bladePath(),
+            'script_path' => $this->scriptPath(),
         ];
 
         return $attributes;
