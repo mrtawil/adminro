@@ -11,6 +11,7 @@ class Select
     protected $items = [];
     protected $count = 0;
     protected $pagination_more = false;
+    protected $custom_query;
     private $get_items = false;
 
     public function __construct($controllerSettings)
@@ -41,6 +42,11 @@ class Select
     public function setPaginationMore($pagination_more)
     {
         $this->pagination_more = $pagination_more;
+    }
+
+    public function setCustomQuery($custom_query)
+    {
+        $this->custom_query = $custom_query;
     }
 
     public function pageLimit()
@@ -75,6 +81,11 @@ class Select
         return $this->pagination_more;
     }
 
+    public function customQuery()
+    {
+        return $this->custom_query;
+    }
+
     public function validateParams()
     {
         $active_request = $this->controllerSettings()->request()->validatedKey('active_request');
@@ -102,11 +113,15 @@ class Select
             return;
         }
 
-        $model = $this->controllerSettings()->model()->class()
-            ::selectItems()
-            ->when($this->controllerSettings()->request()->requestKey('q'), function ($query) {
-                $query->selectSearch($this->controllerSettings()->request()->validatedKey('q'));
-            });;
+        if ($this->customQuery()) {
+            $model = $this->customQuery();
+        } else {
+            $model = $this->controllerSettings()->model()->class()::selectItems();
+        }
+
+        $model->when($this->controllerSettings()->request()->requestKey('q'), function ($query) {
+            $query->selectSearch($this->controllerSettings()->request()->validatedKey('q'));
+        });;
 
         $active_request = $this->controllerSettings()->request()->validatedKey('active_request');
         if (isset($active_request['params'])) {
@@ -126,7 +141,7 @@ class Select
             ->selectPaginate($this->controllerSettings()->request()->validatedKey('page'), $this->pageLimit())
             ->get();
 
-        $select = SelectClass::make($model, attributes: json_decode((string) $this->controllerSettings()->request()->validatedKey('select'), true));
+        $select = SelectClass::make($model, attributes: json_decode((string)$this->controllerSettings()->request()->validatedKey('select'), true));
 
         $this->setItems($select->attributes()['items']);
         $this->setCount($model_count);
