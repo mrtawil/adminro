@@ -14,8 +14,12 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
     $created_user_profile_full_name_column = collect($columns)->firstWhere('data', 'created_user.profile.full_name');
     $model_title_column = collect($columns)->firstWhere('data', 'model.title');
 
-    $columnsDateRange = collect($columns)->filter(function ($column) {
-        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date_range';
+    $columnsDate = collect($columns)->filter(function ($column) {
+        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date';
+    });
+
+    $columnsDateTime = collect($columns)->filter(function ($column) {
+        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date_time';
     });
 
     $columnsImage = collect($columns)->filter(function ($column) {
@@ -47,21 +51,39 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         });
     }
 
-    foreach ($columnsDateRange as $columnDateRange) {
-        $datatables->addColumn($columnDateRange['data'], function ($item) use ($controllerSettings) {
-            return view('adminro::includes.dashboard.datatables.columns.created_at', ['controllerSettings' => $controllerSettings, 'item' => $item]);
+    foreach ($columnsDate as $columnDate) {
+        $datatables->addColumn($columnDate['data'], function ($item) use ($controllerSettings, $columnDate) {
+            return view('adminro::includes.dashboard.datatables.columns.date', ['controllerSettings' => $controllerSettings, 'item' => $item, 'date' => $item[$columnDate['data']]]);
         });
 
-        $datatables->filterColumn($columnDateRange['data'], function ($query, $keyword) use ($columnDateRange) {
-            $date_range_table = explode('/', $keyword);
-            $start_date = Carbon::parse($date_range_table[0])->startOfDay();
-            $end_date = Carbon::parse($date_range_table[1])->endOfDay();
+        $datatables->filterColumn($columnDate['data'], function ($query, $keyword) use ($columnDate) {
+            $date_table = explode('/', $keyword);
+            $start_date = Carbon::parse($date_table[0])->startOfDay();
+            $end_date = Carbon::parse($date_table[1])->endOfDay();
 
-            $query->whereBetween($columnDateRange['data'], [$start_date, $end_date]);
+            $query->whereBetween($columnDate['data'], [$start_date, $end_date]);
         });
 
-        $datatables->orderColumn($columnDateRange['data'], function ($query, $order) use ($columnDateRange) {
-            $query->orderBy($columnDateRange['data'], $order);
+        $datatables->orderColumn($columnDate['data'], function ($query, $order) use ($columnDate) {
+            $query->orderBy($columnDate['data'], $order);
+        });
+    }
+
+    foreach ($columnsDateTime as $columnDateTime) {
+        $datatables->addColumn($columnDateTime['data'], function ($item) use ($controllerSettings, $columnDateTime) {
+            return view('adminro::includes.dashboard.datatables.columns.date_time', ['controllerSettings' => $controllerSettings, 'item' => $item, 'date' => $item[$columnDateTime['data']]]);
+        });
+
+        $datatables->filterColumn($columnDateTime['data'], function ($query, $keyword) use ($columnDateTime) {
+            $date_table = explode('/', $keyword);
+            $start_date = Carbon::parse($date_table[0])->startOfDay();
+            $end_date = Carbon::parse($date_table[1])->endOfDay();
+
+            $query->whereBetween($columnDateTime['data'], [$start_date, $end_date]);
+        });
+
+        $datatables->orderColumn($columnDateTime['data'], function ($query, $order) use ($columnDateTime) {
+            $query->orderBy($columnDateTime['data'], $order);
         });
     }
 
