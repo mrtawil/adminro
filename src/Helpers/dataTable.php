@@ -31,23 +31,23 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
     });
 
     foreach ($columnsImage as $columnImage) {
-        $datatables->addColumn($columnImage['data'], function ($item) use ($columnImage) {
+        $datatables->addColumn($columnImage['data'], function ($item) use ($controllerSettings, $columnImage) {
             if (!$item[$columnImage['data']]) {
                 return null;
             }
 
-            return getStorageUrl($item[$columnImage['data'] . '_path'], $item[$columnImage['data']]);
+            return view('adminro::includes.dashboard.datatables.columns.image', ['controllerSettings' => $controllerSettings, 'item' => $item, 'image' => getStorageUrl($item[$columnImage['data'] . '_path'], $item[$columnImage['data']])]);
         });
     }
 
     foreach ($columnsImageIntent as $columnImageIntent) {
         $nameTable = explode('.', $columnImageIntent['name']);
-        $datatables->addColumn($columnImageIntent['data'], function ($item) use ($nameTable) {
+        $datatables->addColumn($columnImageIntent['data'], function ($item) use ($controllerSettings, $nameTable) {
             if (!$item[$nameTable[0]][$nameTable[1]]) {
                 return null;
             }
 
-            return getStorageUrl($item[$nameTable[0]][$nameTable[1] . '_path'], $item[$nameTable[0]][$nameTable[1]]);
+            return view('adminro::includes.dashboard.datatables.columns.image', ['controllerSettings' => $controllerSettings, 'item' => $item, 'image' => getStorageUrl($item[$nameTable[0]][$nameTable[1] . '_path'], $item[$nameTable[0]][$nameTable[1]])]);
         });
     }
 
