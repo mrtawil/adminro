@@ -59,7 +59,7 @@ class DataTable
 
         $this->setDataTable(app($class, ['controllerSettings' => $this->controllerSettings()]));
         $this->addColumnsForms();
-        $this->setFormOption('status', 'options', Constants::PUBLISH_WITH_DELETED);
+        $this->setFormOption('status', 'options', Constants::STATUS_PUBLISH_WITH_DELETED);
     }
 
     public function addForm($key, $options)

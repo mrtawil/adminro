@@ -4,53 +4,60 @@ namespace Adminro\Constants;
 
 class Constants
 {
-    const PUBLISH = [
+    const STATUS_UNPUBLISHED = 0;
+    const STATUS_PUBLISHED = 1;
+    const STATUS_UNDER_REVIEW = 2;
+    const STATUS_ABANDONED = 3;
+    const STATUS_PENDING = 4;
+    const STATUS_DELETED = 5;
+
+    const STATUS_PUBLISH = [
         [
             "title" => "Unpublished",
-            "value" => 0,
+            "value" => Constants::STATUS_UNPUBLISHED,
         ],
         [
             "title" => "Published",
-            "value" => 1,
+            "value" => Constants::STATUS_PUBLISHED,
         ],
         [
             "title" => "Under Review",
-            "value" => 2,
+            "value" => Constants::STATUS_UNDER_REVIEW,
         ],
         [
             "title" => "Abandoned",
-            "value" => 3,
+            "value" => Constants::STATUS_ABANDONED,
         ],
         [
             "title" => "Pending",
-            "value" => 4,
+            "value" => Constants::STATUS_PENDING,
         ],
     ];
 
-    const PUBLISH_WITH_DELETED = [
+    const STATUS_PUBLISH_WITH_DELETED = [
         [
             "title" => "Unpublished",
-            "value" => 0,
+            "value" => Constants::STATUS_UNPUBLISHED,
         ],
         [
             "title" => "Published",
-            "value" => 1,
+            "value" => Constants::STATUS_PUBLISHED,
         ],
         [
             "title" => "Under Review",
-            "value" => 2,
+            "value" => Constants::STATUS_UNDER_REVIEW,
         ],
         [
             "title" => "Abandoned",
-            "value" => 3,
+            "value" => Constants::STATUS_ABANDONED,
         ],
         [
             "title" => "Pending",
-            "value" => 4,
+            "value" => Constants::STATUS_PENDING,
         ],
         [
             "title" => "Deleted",
-            "value" => 5,
+            "value" => Constants::STATUS_DELETED,
         ],
     ];
 

@@ -2,6 +2,7 @@
 
 namespace Adminro\Controllers;
 
+use Adminro\Constants\Constants;
 use Exception;
 use Illuminate\Validation\ValidationException;
 
@@ -87,7 +88,7 @@ class Model
     {
         try {
             $this->model()->delete();
-            $this->model()->update(['status' => 4]);
+            $this->model()->update(['status' => Constants::STATUS_DELETED]);
             $this->controllerSettings()->route()->setSessionType('success');
         } catch (Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);
@@ -98,7 +99,7 @@ class Model
     {
         try {
             $this->model()->restore();
-            $this->model()->update(['status' => 1]);
+            $this->model()->update(['status' => Constants::STATUS_PUBLISHED]);
             $this->controllerSettings()->route()->setSessionType('success');
         } catch (Exception $e) {
             throw ValidationException::withMessages([$e->getMessage()]);

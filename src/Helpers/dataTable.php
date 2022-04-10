@@ -1,5 +1,6 @@
 <?php
 
+use Adminro\Constants\Constants;
 use Adminro\Controllers\ControllerSettings;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -152,7 +153,7 @@ function prepareDataTableHTML($datatables, $columns)
 
 function prepareDataTableQuery($model, $request)
 {
-    if (intVal(getDataTableRequestParam('status', $request)) == 5) {
+    if (intVal(getDataTableRequestParam('status', $request)) == Constants::STATUS_DELETED) {
         $model->onlyTrashed();
     }
 
