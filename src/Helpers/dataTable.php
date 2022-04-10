@@ -122,8 +122,8 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
 
 function prepareDataTableHTML($datatables, $columns)
 {
-    $init_complete_callback = strip_tags(file_get_contents(__DIR__ . '\..\resources\views\includes\dashboard\datatables\callbacks\init_complete.blade.php'));
-    $draw_callback = strip_tags(file_get_contents(__DIR__ . '\..\resources\views\includes\dashboard\datatables\callbacks\draw.blade.php'));
+    $init_complete_callback = strip_tags(file_get_contents(__DIR__ . '/../resources/views/includes/dashboard/datatables/callbacks/init_complete.blade.php'));
+    $draw_callback = strip_tags(file_get_contents(__DIR__ . '/../resources/views/includes/dashboard/datatables/callbacks/draw.blade.php'));
 
     return $datatables->builder()
         ->setTableId('datatable-html')
