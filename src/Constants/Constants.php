@@ -21,6 +21,10 @@ class Constants
             "title" => "Abandoned",
             "value" => 3,
         ],
+        [
+            "title" => "Pending",
+            "value" => 4,
+        ],
     ];
 
     const PUBLISH_WITH_DELETED = [
@@ -41,12 +45,16 @@ class Constants
             "value" => 3,
         ],
         [
-            "title" => "Deleted",
+            "title" => "Pending",
             "value" => 4,
+        ],
+        [
+            "title" => "Deleted",
+            "value" => 5,
         ],
     ];
 
     const BULK_ACTION_VALUES = [
-        'bulk_delete', 'bulk_restore',  'bulk_force_delete'
+        'bulk_delete', 'bulk_restore', 'bulk_force_delete'
     ];
 }

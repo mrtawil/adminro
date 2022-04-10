@@ -152,7 +152,7 @@ function prepareDataTableHTML($datatables, $columns)
 
 function prepareDataTableQuery($model, $request)
 {
-    if (intVal(getDataTableRequestParam('status', $request)) == 4) {
+    if (intVal(getDataTableRequestParam('status', $request)) == 5) {
         $model->onlyTrashed();
     }
 
