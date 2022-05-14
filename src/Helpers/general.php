@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use Adminro\Classes\Form;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
+use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
 function setActiveDashboardAside($active_route)
 {
@@ -196,11 +197,11 @@ function getDistanceBetweenTwoPoints($latitudeFrom, $longitudeFrom, $latitudeTo,
     return $result;
 }
 
-function getFormName($key, $suffix = '', $prefix = '')
+function getFormName($key, $prefix = '', $suffix = '')
 {
     $name = '';
 
-    $name_words = explode('.', $suffix . $key . $prefix);
+    $name_words = explode('.', $prefix . $key . $suffix);
     foreach ($name_words as $key => $name_word) {
         if ($key === 0) {
             $name .= $name_word;
@@ -212,11 +213,11 @@ function getFormName($key, $suffix = '', $prefix = '')
     return $name;
 }
 
-function getFormId($key, $suffix = '', $prefix = '')
+function getFormId($key, $prefix = '', $suffix = '')
 {
     $id = '';
 
-    $id_words = explode('.', $suffix . $key . $prefix);
+    $id_words = explode('.', $prefix . $key . $suffix);
     foreach ($id_words as $key => $id_word) {
         if ($key === 0) {
             $id .= $id_word;
@@ -228,7 +229,7 @@ function getFormId($key, $suffix = '', $prefix = '')
     return $id;
 }
 
-function getFormValue($key, $form, $model, $edit_mode, $suffix = '', $prefix = '')
+function getFormValue($key, $form, $model, $edit_mode, $prefix = '', $suffix = '', $translatable = '')
 {
     if ($form instanceof Form) {
         $form = $form->attributes();
@@ -238,45 +239,60 @@ function getFormValue($key, $form, $model, $edit_mode, $suffix = '', $prefix = '
         return;
     }
 
+    if ($translatable) {
+        try {
+            $value = $model?->getTranslation($key, $translatable);
+        } catch (AttributeIsNotTranslatable $e) {
+            $value = null;
+        }
+    } else {
+        $value = $model[$key] ?? null;
+    }
+
     if ($edit_mode) {
         switch ($form['type']) {
             case 'tagify':
-                return implode(' ,', $model[$key] ?? []) ?? '';
+                return implode(' ,', $value ?? []) ?? '';
                 break;
 
             case 'date':
-                if (!isset($model[$key])) {
+                if (!isset($value)) {
                     return null;
                 }
 
-                if ($model[$key] instanceof Carbon) {
-                    return $model[$key]->toDateString();
+                if ($value instanceof Carbon) {
+                    return $value->toDateString();
                 } else {
-                    return Carbon::parse($model[$key])->toDateString();
+                    return Carbon::parse($value)->toDateString();
                 }
                 break;
 
             case 'map':
-                if (!isset($model[$key])) {
+                if (!isset($value)) {
                     return '';
                 }
 
                 if (env('DB_CONNECTION') == 'mysql') {
-                    if (isStringMatch($suffix . $key . $prefix, 'latitude')) return $model[$key]->getLat();
-                    if (isStringMatch($suffix . $key . $prefix, 'longitute')) return $model[$key]->getLng();
+                    if (isStringMatch($prefix . $key . $suffix, 'latitude')) return $value->getLat();
+                    if (isStringMatch($prefix . $key . $suffix, 'longitute')) return $value->getLng();
                 } else if (env('DB_CONNECTION') == 'mongodb') {
-                    if (isStringMatch($suffix . $key . $prefix, 'latitude')) return $model[$key]['coordinates'][1];
-                    if (isStringMatch($suffix . $key . $prefix, 'longitute')) return $model[$key]['coordinates'][0];
+                    if (isStringMatch($prefix . $key . $suffix, 'latitude')) return $value['coordinates'][1];
+                    if (isStringMatch($prefix . $key . $suffix, 'longitute')) return $value['coordinates'][0];
                 }
 
             default:
-                return $model[$key] ?? '';
+                return $value;
                 break;
         }
     }
 
-    if (old($key)) {
-        return old($key);
+    $old = old($key);
+    if ($old) {
+        if ($translatable) {
+            return $old[$translatable] ?? "";
+        }
+
+        return $old;
     }
 
     return $form['value_create'];
@@ -331,4 +347,38 @@ function getFormDisabled($form, $edit_mode)
     }
 
     return false;
+}
+
+function getTranslatableLabelSuffix($translatable)
+{
+    if (!$translatable) {
+        return '';
+    }
+
+    return '(' . $translatable . ')';
+}
+
+
+function getTranslatableKeySuffix($translatable)
+{
+    if (!$translatable) {
+        return '';
+    }
+
+    return '[' . $translatable . ']';
+}
+
+function getLocalesFromClassName($className)
+{
+    $locales = collect();
+    $classes = collect(explode(' ', $className));
+
+    $classes->each(function ($class) use ($locales) {
+        if (isStringMatch($class, 'locale-')) {
+            $locale = explode('locale-', $class)[1];
+            $locales->push($locale);
+        }
+    });
+
+    return $locales->toArray();
 }

@@ -5,7 +5,7 @@ const onAttachFilesClick = (key) => {
 }
 
 const onFileRemoveClick = (key) => {
-    $('#file-' + key).val('');
+    $('.forms #' + key).val('');
     onFileInputChange(key);
 }
 
@@ -22,17 +22,17 @@ const onFileInputChange = (key) => {
 
 // ------------------- Initialize Forms -------------------
 // Tagify
-const initTagifyForm = (key, form) => {
-    new Tagify($('.forms #' + key)[0], {});
+const initTagifyForm = (selector, key, form, value) => {
+    new Tagify($(selector)[0], {});
 }
 
 // Select
-const initSelectForm = (key, form) => {
-    $('.forms #' + key).select2();
+const initSelectForm = (selector, key, form, value) => {
+    $(selector).select2();
 }
 
 // Map
-const initMapForm = (key, form) => {
+const initMapForm = (selector, key, form, value) => {
     var map;
     var marker;
     var centerLocation;
@@ -133,8 +133,8 @@ const initMapForm = (key, form) => {
     $(idUseMyLocation).on('click', useMyLocation);
 }
 
-const initMultiSelectForm = (key, form) => {
-    $('.forms #' + key).multiSelect({
+const initMultiSelectForm = (selector, key, form, value) => {
+    $(selector).multiSelect({
         selectableHeader: "<input type='text' class='form-control search-input mb-3' autocomplete='off' placeholder='type to filter'>",
         selectionHeader: "<input type='text' class='form-control search-input mb-3' autocomplete='off' placeholder='type to filter'>",
         afterInit: function (ms) {
@@ -171,15 +171,11 @@ const initMultiSelectForm = (key, form) => {
     });
 }
 
-const initTextAreaForm = (key, form) => {
-    if (item && item[key]) {
-        $('.forms #' + key).text(item[key]);
-    } else if (old) {
-        $('.forms #' + key).text(old[key]);
-    }
+const initTextAreaForm = (selector, key, form, value) => {
+    $(selector).text(value);
 };
 
-const initDatePickerForm = (key, form) => {
+const initDatePickerForm = (selector, key, form, value) => {
     let arrows;
     if (KTUtil.isRTL()) {
         arrows = {
@@ -193,7 +189,7 @@ const initDatePickerForm = (key, form) => {
         }
     }
 
-    $('.forms #' + key).datepicker({
+    $(selector).datepicker({
         rtl: KTUtil.isRTL(),
         todayHighlight: true,
         orientation: 'bottom left',
@@ -202,8 +198,8 @@ const initDatePickerForm = (key, form) => {
     });
 }
 
-const initTimePickerForm = (key, form) => {
-    $('.forms #' + key).timepicker({
+const initTimePickerForm = (selector, key, form, value) => {
+    $(selector).timepicker({
         defaultTime: '',
         minuteStep: 1,
         showSeconds: false,
@@ -211,40 +207,64 @@ const initTimePickerForm = (key, form) => {
     });
 }
 
-const initSwitchForm = (key, form) => {
-    $('.forms #' + key + '[data-switch=true]').bootstrapSwitch();
+const initSwitchForm = (selector, key, form, value) => {
+    $(selector + '[data-switch=true]').bootstrapSwitch();
 }
 
 const initForms = () => {
     Object.keys(formFields.forms).forEach((key) => {
         const form = formFields.forms[key];
+        form.translatables.forEach(translatable => {
+            let selector, value;
+            if (translatable) {
+                selector = ".forms [id='" + key + "[" + translatable + "]" + "']";
+            } else {
+                selector = ".forms [id='" + key + "']";
+            }
 
-        switch (form.type) {
-            case 'map':
-                initMapForm(key, form);
-                break;
-            case 'tagify':
-                initTagifyForm(key, form);
-                break;
-            case 'select':
-                // initSelectForm(key, form);
-                break;
-            case 'multiselect':
-                initMultiSelectForm(key, form);
-                break;
-            case 'textarea':
-                initTextAreaForm(key, form);
-                break;
-            case 'date':
-                initDatePickerForm(key, form);
-                break;
-            case 'time':
-                initTimePickerForm(key, form);
-                break;
-            case 'switch':
-                initSwitchForm(key, form);
-                break;
-        }
+            if (item) {
+                if (translatable) {
+                    value = item[key][translatable];
+                } else {
+                    value = item[key];
+                }
+            } else {
+                if (translatable) {
+                    value = old[key][translatable];
+                } else {
+                    value = old[key];
+                }
+            }
+
+            console.log({ selector, value });
+
+            switch (form.type) {
+                case 'map':
+                    initMapForm(selector, key, form, value);
+                    break;
+                case 'tagify':
+                    initTagifyForm(selector, key, form, value);
+                    break;
+                case 'select':
+                    // initSelectForm(selector, key, form, value);
+                    break;
+                case 'multiselect':
+                    initMultiSelectForm(selector, key, form, value);
+                    break;
+                case 'textarea':
+                    initTextAreaForm(selector, key, form, value);
+                    break;
+                case 'date':
+                    initDatePickerForm(selector, key, form, value);
+                    break;
+                case 'time':
+                    initTimePickerForm(selector, key, form, value);
+                    break;
+                case 'switch':
+                    initSwitchForm(selector, key, form, value);
+                    break;
+            }
+        });
     });
 }
 

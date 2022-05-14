@@ -9,12 +9,12 @@
                             <div class='spinner spinner-track spinner-primary'></div>
                         </div>
                     </div>
-                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control' style='width: 100%; display: none;' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' @if ($form['multiple']) multiple @endif value='{{ getFormValue($key, $form, $model, $edit_mode, $suffix ?? '', $prefix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
+                    <select wire:model='value' wire:change='onValueChange' name='{{ $key }}' id='{{ $key }}' class='form-control' style='width: 100%; display: none;' data-live-search='true' placeholder='{{ $form['placeholder'] }}' max='{{ $form['max_value'] }}' min='{{ $form['min_value'] }}' step='{{ $form['step'] }}' autocomplete='{{ $form['autocomplete'] }}' maxlength='{{ $form['max_length'] }}' @if ($form['multiple']) multiple @endif value='{{ getFormValue($key, $form, $model, $edit_mode, $prefix ?? '', $suffix ?? '') }}' @if (getFormRequired($form, $edit_mode)) required @endif @if (getFormReadOnly($form, $edit_mode)) readonly @endif @if (getFormDisabled($form, $edit_mode)) disabled @endif>
                         @if ($select['empty_option'] && !$form['multiple'])
                             <option value='' selected>Select</option>
                         @endif
                         @foreach ($select['items'] as $item)
-                            <option value='{{ $item['id'] }}' @selected($item['id']==$this->value)>
+                            <option value='{{ $item['id'] }}' @selected($item['id'] == $this->value)>
                                 <span>{{ $item['text'] }}</span>
                             </option>
                         @endforeach

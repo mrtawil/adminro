@@ -30,6 +30,8 @@ class Form
     protected $permission = null;
     protected $sizes = [];
     protected $autocomplete = 'off';
+    protected $translatable = false;
+    protected $translatables = [];
     protected $blade_path;
     protected $script_path;
 
@@ -59,6 +61,8 @@ class Form
         if (isset($attributes['permission'])) $this->setPermission($attributes['permission']);
         if (isset($attributes['sizes'])) $this->setSizes($attributes['sizes']);
         if (isset($attributes['autocomplete'])) $this->setAutocomplete($attributes['autocomplete']);
+        if (isset($attributes['translatable'])) $this->setTranslatable($attributes['translatable']);
+        if (isset($attributes['translatables'])) $this->setTranslatables($attributes['translatables']);
         if (isset($attributes['blade_path'])) $this->setAutocomplete($attributes['blade_path']);
         if (isset($attributes['script_path'])) $this->setAutocomplete($attributes['script_path']);
     }
@@ -267,6 +271,20 @@ class Form
         return $this;
     }
 
+    public function setTranslatable($translatable)
+    {
+        $this->translatable = $translatable;
+
+        return $this;
+    }
+
+    public function setTranslatables($translatables)
+    {
+        $this->translatables = $translatables;
+
+        return $this;
+    }
+
     public function setBladePath($blade_path)
     {
         $this->blade_path = $blade_path;
@@ -411,6 +429,16 @@ class Form
         return $this->autocomplete;
     }
 
+    public function translatable()
+    {
+        return $this->translatable;
+    }
+
+    public function translatables()
+    {
+        return $this->translatables;
+    }
+
     public function bladePath()
     {
         return $this->blade_path;
@@ -448,6 +476,8 @@ class Form
             'permission' => $this->permission(),
             'sizes' => $this->sizes(),
             'autocomplete' => $this->autocomplete(),
+            'translatable' => $this->translatable(),
+            'translatables' => $this->translatables(),
             'blade_path' => $this->bladePath(),
             'script_path' => $this->scriptPath(),
         ];
