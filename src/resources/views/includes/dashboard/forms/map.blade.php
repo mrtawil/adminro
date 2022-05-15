@@ -12,12 +12,12 @@
 <div class="col-md-{{ $form->column() }} {{ $form->className() }}" data-label="container_{{ $key }}_latitude">
     <div class="form-group">
         <label class="font-weight-bold" for="{{ $key }}-latitude">Latitude</label>
-        @include('adminro::includes.dashboard.forms.utils.input', ['key' => $key, 'form'=> $form->attributes(), 'model' => $controllerSettings->model()->model(), 'edit_mode' => $controllerSettings->request()->editMode(), 'type' => 'text', 'prefix' => '.latitude'])
+        @include('adminro::includes.dashboard.forms.utils.input', ['key' => $key, 'form' => $form->attributes(), 'model' => $controllerSettings->model()->model(), 'edit_mode' => $controllerSettings->request()->editMode(), 'type' => 'text', 'suffix' => '.latitude'])
     </div>
 </div>
 <div class="col-md-{{ $form->column() }} {{ $form->className() }}" data-label="container_{{ $key }}_longitude">
     <div class="form-group">
         <label class="font-weight-bold" for="{{ $key }}-longitude">Longitude</label>
-        @include('adminro::includes.dashboard.forms.utils.input', ['key' => $key, 'form'=> $form->attributes(), 'model' => $controllerSettings->model()->model(), 'edit_mode' => $controllerSettings->request()->editMode(), 'type' => 'text', 'prefix' => '.longitude'])
+        @include('adminro::includes.dashboard.forms.utils.input', ['key' => $key, 'form' => $form->attributes(), 'model' => $controllerSettings->model()->model(), 'edit_mode' => $controllerSettings->request()->editMode(), 'type' => 'text', 'suffix' => '.longitude'])
     </div>
 </div>

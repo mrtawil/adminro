@@ -2,9 +2,10 @@
 
 namespace Adminro\Controllers;
 
-use Exception;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
+use Adminro\Classes\Form;
+use Exception;
 
 class Request
 {
@@ -128,9 +129,9 @@ class Request
 
     public function addFormFieldsRules()
     {
-        $forms = $this->controllerSettings()->formFields()->forms();
+        $forms = collect($this->controllerSettings()->formFields()->forms());
 
-        foreach ($forms as $key => $form) {
+        $forms->each(function (Form $form, $key) {
             if (($form->requiredCreate() && !$this->editMode()) || ($form->requiredEdit() && $this->editMode())) {
                 $this->addRule($key, 'required');
             } else {
@@ -138,11 +139,21 @@ class Request
             }
 
             if ($form->type() == 'text') {
-                $this->addRule($key, 'string');
+                if ($form->translatable()) {
+                    $this->addRule($key, 'array');
+                    $this->addRule($key . '.*', 'string');
+                } else {
+                    $this->addRule($key, 'string');
+                }
             }
 
             if ($form->type() == 'textarea') {
-                $this->addRule($key, 'string');
+                if ($form->translatable()) {
+                    $this->addRule($key, 'array');
+                    $this->addRule($key . '.*', 'string');
+                } else {
+                    $this->addRule($key, 'string');
+                }
             }
 
             if ($form->type() == 'multiselect') {
@@ -172,7 +183,7 @@ class Request
             if (!in_array($key, array_keys($this->rules()))) {
                 $this->addRule($key, 'nullable');
             }
-        }
+        });
     }
 
     public function validate()

@@ -31,6 +31,45 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         return count(explode('.', $column['data'])) > 1 && $column['type'] == 'image';
     });
 
+    $columnsLocaleStrings = collect($columns)->filter(function ($column) {
+        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'string';
+    });
+
+    $columnsLocaleStringsIntent = collect($columns)->filter(function ($column) {
+        return count(explode('.', $column['data'])) > 1 && $column['type'] == 'string';
+    });
+
+    foreach ($columnsLocaleStrings as $columnsString) {
+        $locales = getLocalesFromClassName($columnsString["className"]);
+        $datatables->addColumn($columnsString['data'], function ($item) use ($controllerSettings, $columnsString, $locales) {
+            if (!$item[$columnsString['data']]) {
+                return null;
+            }
+
+            if (count($locales) > 0) {
+                return $item->getTranslation($columnsString['data'], $locales[0]);
+            }
+
+            return $item->{$columnsString['data']};
+        });
+    }
+
+    foreach ($columnsLocaleStringsIntent as $columnsStringIntent) {
+        $locales = getLocalesFromClassName($columnsStringIntent["className"]);
+        $nameTable = explode('.', $columnsStringIntent['name']);
+        $datatables->addColumn($columnsStringIntent['data'], function ($item) use ($controllerSettings, $nameTable, $locales) {
+            if (!$item[$nameTable[0]][$nameTable[1]]) {
+                return null;
+            }
+
+            if (count($locales) > 0) {
+                return $item->{$nameTable[0]}->getTranslation($nameTable[1], $locales[0]);
+            }
+
+            return $item->{$nameTable[0]}->{$nameTable[1]};
+        });
+    }
+
     foreach ($columnsImage as $columnImage) {
         $datatables->addColumn($columnImage['data'], function ($item) use ($controllerSettings, $columnImage) {
             if (!$item[$columnImage['data']]) {

@@ -23,7 +23,8 @@
         "yajra/laravel-datatables-html": "^4.0",
         "yajra/laravel-datatables-oracle": "^9.18",
         "intervention/image": "^2.7",
-        "grimzy/laravel-mysql-spatial": "dev-l9-compatibility"
+        "grimzy/laravel-mysql-spatial": "dev-l9-compatibility",
+        "spatie/laravel-translatable": "^6.0"
     },
     "require-dev": {
         "spatie/laravel-ray": "^1.29"
