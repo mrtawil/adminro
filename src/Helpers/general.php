@@ -240,9 +240,13 @@ function getFormValue($key, $form, $model, $edit_mode, $prefix = '', $suffix = '
     }
 
     if ($translatable) {
-        try {
-            $value = $model?->getTranslation($key, $translatable);
-        } catch (AttributeIsNotTranslatable $e) {
+        if (
+            $model
+            && method_exists($model, 'getTranslatableAttributes')
+            && in_array($key, $model->getTranslatableAttributes())
+        ) {
+            $value = $model->getTranslation($key, $translatable, false);
+        } else {
             $value = null;
         }
     } else {
