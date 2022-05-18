@@ -32,16 +32,16 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
     });
 
     $columnsLocaleStrings = collect($columns)->filter(function ($column) {
-        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'string';
+        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'string' && $column['className'];
     });
 
     $columnsLocaleStringsIntent = collect($columns)->filter(function ($column) {
-        return count(explode('.', $column['data'])) > 1 && $column['type'] == 'string';
+        return count(explode('.', $column['data'])) > 1 && $column['type'] == 'string' && $column['className'];
     });
 
     foreach ($columnsLocaleStrings as $columnsString) {
         $locales = getLocalesFromClassName($columnsString["className"]);
-        $datatables->addColumn($columnsString['data'], function ($item) use ($controllerSettings, $columnsString, $locales) {
+        $datatables->addColumn($columnsString['data'], function ($item) use ($columnsString, $locales) {
             if (!$item[$columnsString['data']]) {
                 return null;
             }
@@ -57,7 +57,7 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
     foreach ($columnsLocaleStringsIntent as $columnsStringIntent) {
         $locales = getLocalesFromClassName($columnsStringIntent["className"]);
         $nameTable = explode('.', $columnsStringIntent['name']);
-        $datatables->addColumn($columnsStringIntent['data'], function ($item) use ($controllerSettings, $nameTable, $locales) {
+        $datatables->addColumn($columnsStringIntent['data'], function ($item) use ($nameTable, $locales) {
             if (!$item[$nameTable[0]][$nameTable[1]]) {
                 return null;
             }
