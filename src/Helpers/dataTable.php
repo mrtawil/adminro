@@ -39,25 +39,38 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         return count(explode('.', $column['data'])) > 1 && $column['type'] == 'string' && $column['className'];
     });
 
-    foreach ($columnsLocaleStrings as $columnsString) {
-        $locales = getLocalesFromClassName($columnsString["className"]);
-        $datatables->addColumn($columnsString['data'], function ($item) use ($columnsString, $locales) {
-            if (!$item[$columnsString['data']]) {
+    foreach ($columnsLocaleStrings as $columnLocaleStrings) {
+        $locales = getLocalesFromClassName($columnLocaleStrings["className"]);
+        if (count($locales) <= 0) {
+            continue;
+        }
+
+        $datatables->addColumn($columnLocaleStrings['data'], function ($item) use ($columnLocaleStrings, $locales) {
+            if (!$item[$columnLocaleStrings['data']]) {
                 return null;
             }
 
             if (count($locales) > 0) {
-                return $item->getTranslation($columnsString['data'], $locales[0]);
+                return $item->getTranslation($columnLocaleStrings['data'], $locales[0]);
             }
 
-            return $item->{$columnsString['data']};
+            return $item->{$columnLocaleStrings['data']};
+        });
+
+
+        $datatables->filterColumn($columnLocaleStrings['data'], function ($query, $keyword) use ($columnLocaleStrings, $locales) {
+            $query->whereRaw("json_extract(LOWER(" . $columnLocaleStrings['data'] . "), \"$.$locales[0]\") LIKE convert(? using utf8mb4) collate utf8mb4_general_ci", ['%' . $keyword . '%']);
         });
     }
 
-    foreach ($columnsLocaleStringsIntent as $columnsStringIntent) {
-        $locales = getLocalesFromClassName($columnsStringIntent["className"]);
-        $nameTable = explode('.', $columnsStringIntent['name']);
-        $datatables->addColumn($columnsStringIntent['data'], function ($item) use ($nameTable, $locales) {
+    foreach ($columnsLocaleStringsIntent as $columnLocaleStringsIntent) {
+        $locales = getLocalesFromClassName($columnLocaleStringsIntent["className"]);
+        if (count($locales) <= 0) {
+            continue;
+        }
+
+        $nameTable = explode('.', $columnLocaleStringsIntent['name']);
+        $datatables->addColumn($columnLocaleStringsIntent['data'], function ($item) use ($nameTable, $locales) {
             if (!$item[$nameTable[0]][$nameTable[1]]) {
                 return null;
             }
@@ -67,6 +80,12 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
             }
 
             return $item->{$nameTable[0]}->{$nameTable[1]};
+        });
+
+        $datatables->filterColumn($columnLocaleStringsIntent['data'], function ($query, $keyword) use ($locales, $nameTable) {
+            $query->whereHas($nameTable[0], function ($query) use ($locales, $nameTable, $keyword) {
+                $query->where($nameTable[1] . '->' . $locales[0], 'like', '%' . $keyword . '%');
+            });
         });
     }
 
