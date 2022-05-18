@@ -374,6 +374,10 @@ function getTranslatableKeySuffix($translatable)
 
 function getLocalesFromClassName($className)
 {
+    if (!$className) {
+        return [];
+    }
+    
     $locales = collect();
     $classes = collect(explode(' ', $className));
 
