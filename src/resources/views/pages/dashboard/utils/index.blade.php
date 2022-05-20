@@ -29,6 +29,7 @@
 
         <script>
             const dataTable = @json($dataTable);
+            const status = @json(Adminro\Constants\Constants::STATUS);
         </script>
         <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/datatables.bundle.js'></script>
         <script src='https://cdn.jsdelivr.net/gh/mrtawil/adminro-assets/plugins/datatables/buttons.server-side.js'></script>

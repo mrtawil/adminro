@@ -129,11 +129,11 @@ class Model
             switch ($bulk_action) {
                 case 'bulk_delete':
                     $models_query->delete();
-                    $models_query->update(['status' => 4]);
+                    $models_query->update(['status' => Constants::STATUS_DELETED]);
                     break;
 
                 case 'bulk_restore':
-                    $models_query->update(['status' => 1]);
+                    $models_query->update(['status' => Constants::STATUS_PUBLISH]);
                     $models_query->restore();
                     break;
 

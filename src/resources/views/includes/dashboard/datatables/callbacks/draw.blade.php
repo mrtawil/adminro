@@ -3,8 +3,8 @@
         let table = this;
         let dTColumns = dataTable.collection;
 
-        let optionsNormal = ['', '1', '2', '3'];
-        let optionsDeleted = ['4'];
+        let optionsNormal = ['', status.UNPUBLISHED, status.PUBLISHED, status.UNDER_REVIEW, status.ABANDONED, status.PENDING];
+        let optionsDeleted = [status.DELETED];
         let bulkNormal = ['bulk_delete'];
         let bulkDeleted = ['bulk_restore', 'bulk_force_delete'];
 
@@ -18,7 +18,7 @@
         let optionBulkDelete = $('#bulk_action_select').find('.option_bulk_delete');
         let optionBulkForceDelete = $('#bulk_action_select').find('.option_bulk_force_delete');
 
-        if (optionsNormal.includes(statusValue)) {
+        if (optionsNormal.includes(parseInt(statusValue))) {
             if (!bulkNormal.includes(bulkActionValue)) {
                 $(bulkActionElement).val('');
             }
@@ -28,7 +28,7 @@
             if (optionBulkForceDelete) $(optionBulkForceDelete).hide();
         }
 
-        if (optionsDeleted.includes(statusValue)) {
+        if (optionsDeleted.includes(parseInt(statusValue))) {
             if (!bulkDeleted.includes(bulkActionValue)) {
                 $(bulkActionElement).val('');
             }

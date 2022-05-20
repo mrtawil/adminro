@@ -11,6 +11,15 @@ class Constants
     const STATUS_PENDING = 4;
     const STATUS_DELETED = 5;
 
+    const STATUS = [
+        'UNPUBLISHED' => Constants::STATUS_UNPUBLISHED,
+        'PUBLISHED' => Constants::STATUS_PUBLISHED,
+        'UNDER_REVIEW' => Constants::STATUS_UNDER_REVIEW,
+        'ABANDONED' => Constants::STATUS_ABANDONED,
+        'PENDING' => Constants::STATUS_PENDING,
+        'DELETED' => Constants::STATUS_DELETED,
+    ];
+
     const STATUS_PUBLISH = [
         [
             "title" => "Unpublished",
