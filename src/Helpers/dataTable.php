@@ -13,6 +13,7 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
 
     $checkbox_column = collect($columns)->firstWhere('data', 'checkbox');
     $created_user_profile_full_name_column = collect($columns)->firstWhere('data', 'created_user.profile.full_name');
+    $status_column = collect($columns)->firstWhere('data', 'status');
     $model_title_column = collect($columns)->firstWhere('data', 'model.title');
 
     $columnsDate = collect($columns)->filter(function ($column) {
@@ -161,6 +162,13 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
             $query->whereHas('createdUser.profile', function ($query) use ($keyword) {
                 $query->where(DB::raw('CONCAT_WS(" ", first_name, last_name)'), 'like', "%$keyword%");
             });
+        });
+    }
+
+
+    if ($status_column) {
+        $datatables->addColumn('status', function ($item) use ($controllerSettings) {
+            return view('adminro::includes.dashboard.datatables.columns.status', ['controllerSettings' => $controllerSettings, 'item' => $item]);
         });
     }
 
