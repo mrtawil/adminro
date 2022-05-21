@@ -32,10 +32,10 @@ class GlobalVariables
         return $this->global_variables;
     }
 
-    public function globalVariable($key)
+    public function globalVariable($key, $default = null)
     {
         if (!isset($this->global_variables[$key])) {
-            return null;
+            return $default;
         }
 
         return $this->global_variables[$key];

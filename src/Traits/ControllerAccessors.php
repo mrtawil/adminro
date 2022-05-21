@@ -92,4 +92,9 @@ trait ControllerAccessors
     {
         return $this->services()->service($service);
     }
+
+    public function globalVariable($key, $default = null)
+    {
+        return $this->globalVariables()->globalVariable($key, $default);
+    }
 }
