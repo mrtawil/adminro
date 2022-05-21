@@ -5,7 +5,8 @@ namespace Adminro\Controllers;
 use Adminro\Controllers\ControllerSettings;
 use Adminro\Requests\BulkActionRequest;
 use Adminro\Requests\SelectRequest;
-use Adminro\Traits\Controller as TraitsController;
+use Adminro\Traits\ControllerAccessors;
+use Adminro\Traits\ControllerAdOns;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -16,7 +17,7 @@ use Illuminate\Support\Str;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, TraitsController;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ControllerAdOns, ControllerAccessors;
 
     protected $controllerSettings;
     protected $key;

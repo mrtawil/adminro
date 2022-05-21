@@ -4,13 +4,8 @@ namespace Adminro\Traits;
 
 use Adminro\Controllers\ControllerSettings;
 
-trait Controller
+trait ControllerAdOns
 {
-    public function controllerSettings(): ControllerSettings
-    {
-        return $this->controllerSettings;
-    }
-
     public function policyAuthorize()
     {
     }
