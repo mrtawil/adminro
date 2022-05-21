@@ -15,4 +15,9 @@ trait ControllerAccessors
     {
         return $this->controllerSettings()->formFields();
     }
+
+    public function item()
+    {
+        return $this->controllerSettings()->model()->model();
+    }
 }
