@@ -4,6 +4,7 @@ namespace Adminro\Livewire;
 
 use Adminro\Controllers\ControllerSettings;
 use Exception;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Select extends Component
@@ -43,6 +44,10 @@ class Select extends Component
 
             if (!$this->edit_mode && ($this->value === null || (is_array($this->value) && count($this->value) <= 0))) {
                 $this->value = $controllerSettings->request()->request()->old($this->key) ?? '';
+            }
+
+            if ($this->value instanceof Collection) {
+                $this->value = $this->value->toArray();
             }
         }
     }
