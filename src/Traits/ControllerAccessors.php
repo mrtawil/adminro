@@ -87,4 +87,9 @@ trait ControllerAccessors
     {
         return $this->controllerSettings()->model()->model();
     }
+
+    public function service($service)
+    {
+        return $this->services()->service($service);
+    }
 }
