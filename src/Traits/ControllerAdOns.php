@@ -2,8 +2,6 @@
 
 namespace Adminro\Traits;
 
-use Adminro\Controllers\ControllerSettings;
-
 trait ControllerAdOns
 {
     public function policyAuthorize()
