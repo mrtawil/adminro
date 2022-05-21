@@ -11,6 +11,11 @@ trait ControllerAccessors
         return $this->controllerSettings;
     }
 
+    public function info()
+    {
+        return $this->controllerSettings()->info();
+    }
+
     public function formFields()
     {
         return $this->controllerSettings()->formFields();
