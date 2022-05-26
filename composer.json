@@ -36,18 +36,18 @@
         }
     ],
     "autoload": {
-        "psr-4": {
-            "Adminro\\": "/src"
-        },
         "files": [
-            "/src/Helpers/general.php",
-            "/src/Helpers/dataTable.php",
-            "/src/Helpers/forms.php",
-            "/src/Helpers/model.php",
-            "/src/Helpers/request.php",
-            "/src/Helpers/select.php",
-            "/src/Helpers/storage.php"
-        ]
+            "src/Helpers/general.php",
+            "src/Helpers/dataTable.php",
+            "src/Helpers/forms.php",
+            "src/Helpers/model.php",
+            "src/Helpers/request.php",
+            "src/Helpers/select.php",
+            "src/Helpers/storage.php"
+        ],
+        "psr-4": {
+            "Adminro\\": "src/"
+        }
     },
     "autoload-dev": {
         "psr-4": {}
