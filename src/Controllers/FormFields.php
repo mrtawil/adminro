@@ -40,7 +40,13 @@ class FormFields
 
         $forms = $forms->filter(function ($form) use ($main) {
             if ($form->main() !== $main) {
-                return null;
+                return false;
+            }
+
+            if ($this->controllerSettings->auth()->user()) {
+                if (!$this->controllerSettings->auth()->user()->can($form->permission())) {
+                    return false;
+                }
             }
 
             return true;
