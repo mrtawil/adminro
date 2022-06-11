@@ -4,7 +4,6 @@ use Carbon\Carbon;
 use Adminro\Classes\Form;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\URL;
-use Spatie\Translatable\Exceptions\AttributeIsNotTranslatable;
 
 function setActiveDashboardAside($active_route)
 {
@@ -377,7 +376,7 @@ function getLocalesFromClassName($className)
     if (!$className) {
         return [];
     }
-    
+
     $locales = collect();
     $classes = collect(explode(' ', $className));
 
