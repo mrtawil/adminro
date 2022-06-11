@@ -100,7 +100,7 @@ class DataTable
                     'index' => $key,
                     'type' => 'select',
                     'title' => $column['title'],
-                    'options' => [],
+                    'options' => isset($column['attributes']['options']) ? $column['attributes']['options'] : [],
                 ]);
             }
 
