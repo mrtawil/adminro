@@ -170,6 +170,10 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         $datatables->addColumn('status', function ($item) use ($controllerSettings) {
             return view('adminro::includes.dashboard.datatables.columns.status', ['controllerSettings' => $controllerSettings, 'item' => $item]);
         });
+
+        $datatables->filterColumn('status', function ($query, $keyword) {
+            $query->where('status', $keyword);
+        });
     }
 
     if ($model_title_column) {
