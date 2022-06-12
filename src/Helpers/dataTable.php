@@ -20,8 +20,8 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date';
     });
 
-    $columnsDateTime = collect($columns)->filter(function ($column) {
-        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date_time';
+    $columnsDateRange = collect($columns)->filter(function ($column) {
+        return count(explode('.', $column['data'])) == 1 && $column['type'] == 'date_range';
     });
 
     $columnsImage = collect($columns)->filter(function ($column) {
@@ -129,21 +129,21 @@ function prepareDataTableSQL(ControllerSettings $controllerSettings, $model)
         });
     }
 
-    foreach ($columnsDateTime as $columnDateTime) {
-        $datatables->addColumn($columnDateTime['data'], function ($item) use ($controllerSettings, $columnDateTime) {
-            return view('adminro::includes.dashboard.datatables.columns.date_time', ['controllerSettings' => $controllerSettings, 'item' => $item, 'date' => $item[$columnDateTime['data']]]);
+    foreach ($columnsDateRange as $columnDateRange) {
+        $datatables->addColumn($columnDateRange['data'], function ($item) use ($controllerSettings, $columnDateRange) {
+            return view('adminro::includes.dashboard.datatables.columns.date_time', ['controllerSettings' => $controllerSettings, 'item' => $item, 'date' => $item[$columnDateRange['data']]]);
         });
 
-        $datatables->filterColumn($columnDateTime['data'], function ($query, $keyword) use ($columnDateTime) {
+        $datatables->filterColumn($columnDateRange['data'], function ($query, $keyword) use ($columnDateRange) {
             $date_table = explode('/', $keyword);
             $start_date = Carbon::parse($date_table[0])->startOfDay();
             $end_date = Carbon::parse($date_table[1])->endOfDay();
 
-            $query->whereBetween($columnDateTime['data'], [$start_date, $end_date]);
+            $query->whereBetween($columnDateRange['data'], [$start_date, $end_date]);
         });
 
-        $datatables->orderColumn($columnDateTime['data'], function ($query, $order) use ($columnDateTime) {
-            $query->orderBy($columnDateTime['data'], $order);
+        $datatables->orderColumn($columnDateRange['data'], function ($query, $order) use ($columnDateRange) {
+            $query->orderBy($columnDateRange['data'], $order);
         });
     }
 
